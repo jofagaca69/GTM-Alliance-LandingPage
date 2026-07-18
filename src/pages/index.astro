@@ -1,0 +1,35 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>GTM Alliance</title>
+	</head>
+	<body class="bg-sky-50">
+		<Navbar />
+
+		<main id="inicio" class="flex min-h-screen items-center justify-center px-4 pt-28">
+			<h1 class="text-center text-3xl font-semibold text-gtm-navy sm:text-4xl">
+				Soluciones Integrales
+			</h1>
+		</main>
+
+		<script>
+			import { gsap } from '../scripts/gsap';
+
+			gsap.from('h1', {
+				opacity: 0,
+				y: 20,
+				duration: 0.8,
+				ease: 'power2.out',
+			});
+		</script>
+	</body>
+</html>

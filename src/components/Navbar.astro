@@ -1,0 +1,119 @@
+---
+const links = [
+	{ label: 'Inicio', href: '#inicio', active: true },
+	{ label: 'Quiénes Somos', href: '#quienes-somos' },
+	{ label: 'Carga Seca', href: '#carga-seca' },
+	{ label: 'Servicios', href: '#servicios' },
+	{ label: 'Contacto', href: '#contacto' },
+];
+---
+
+<header class="fixed inset-x-4 top-4 z-50 sm:inset-x-6 md:inset-x-0">
+	<div
+		class="mx-auto flex max-w-4xl items-center justify-between gap-4 rounded-full border border-white/60 bg-white/90 px-4 py-2.5 shadow-lg shadow-slate-900/5 backdrop-blur md:px-6"
+	>
+		<a href="#inicio" class="flex shrink-0 items-center gap-2">
+			<img src="/logo.svg" alt="GTM Alliance" class="h-8 w-auto" />
+			<span class="text-lg font-semibold tracking-tight text-gtm-navy">
+				GTM <span class="font-normal">ALLIANCE</span>
+			</span>
+		</a>
+
+		<nav class="hidden items-center gap-6 md:flex" aria-label="Principal">
+			{
+				links.map((link) => (
+					<a
+						href={link.href}
+						aria-current={link.active ? 'page' : undefined}
+						class={`pb-0.5 text-sm font-medium transition-colors ${
+							link.active
+								? 'border-b-2 border-gtm-gold text-gtm-navy'
+								: 'border-b-2 border-transparent text-slate-600 hover:text-gtm-navy'
+						}`}
+					>
+						{link.label}
+					</a>
+				))
+			}
+		</nav>
+
+		<button
+			type="button"
+			id="nav-toggle"
+			class="flex h-9 w-9 items-center justify-center rounded-full text-gtm-navy md:hidden"
+			aria-expanded="false"
+			aria-controls="nav-panel"
+			aria-label="Abrir menú"
+		>
+			<svg
+				id="icon-open"
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-6 w-6"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+			</svg>
+			<svg
+				id="icon-close"
+				xmlns="http://www.w3.org/2000/svg"
+				class="hidden h-6 w-6"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+			</svg>
+		</button>
+	</div>
+
+	<nav
+		id="nav-panel"
+		aria-label="Principal (móvil)"
+		class="mx-auto mt-2 hidden max-w-4xl flex-col gap-1 rounded-3xl border border-white/60 bg-white/95 p-3 shadow-lg shadow-slate-900/5 backdrop-blur md:hidden"
+	>
+		{
+			links.map((link) => (
+				<a
+					href={link.href}
+					aria-current={link.active ? 'page' : undefined}
+					class={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+						link.active
+							? 'bg-gtm-navy/5 text-gtm-navy'
+							: 'text-slate-600 hover:bg-gtm-navy/5 hover:text-gtm-navy'
+					}`}
+				>
+					{link.label}
+				</a>
+			))
+		}
+	</nav>
+</header>
+
+<script>
+	const toggle = document.getElementById('nav-toggle');
+	const panel = document.getElementById('nav-panel');
+	const iconOpen = document.getElementById('icon-open');
+	const iconClose = document.getElementById('icon-close');
+
+	function setOpen(open: boolean) {
+		toggle?.setAttribute('aria-expanded', String(open));
+		toggle?.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+		panel?.classList.toggle('hidden', !open);
+		panel?.classList.toggle('flex', open);
+		iconOpen?.classList.toggle('hidden', open);
+		iconClose?.classList.toggle('hidden', !open);
+	}
+
+	toggle?.addEventListener('click', () => {
+		const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+		setOpen(!isOpen);
+	});
+
+	panel?.querySelectorAll('a').forEach((link) => {
+		link.addEventListener('click', () => setOpen(false));
+	});
+</script>
