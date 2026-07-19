@@ -1,0 +1,121 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	/** Ruta relativa a la imagen OG, ej. "/images/og-home.png" */
+	image?: string;
+	/** Sobreescribe la URL canónica calculada automáticamente */
+	canonicalURL?: string;
+	/** Tipo de contenido Open Graph */
+	type?: 'website' | 'article';
+	/** Excluye la página de los índices de búsqueda */
+	noindex?: boolean;
+	/** Palabras clave adicionales */
+	keywords?: string;
+}
+
+const {
+	title,
+	description,
+	image = '/og-image.png',
+	type = 'website',
+	noindex = false,
+	keywords,
+} = Astro.props;
+
+const siteBase = Astro.site ?? new URL('https://gtmalliance.com');
+const canonicalURL = Astro.props.canonicalURL ?? new URL(Astro.url.pathname, siteBase).href;
+const ogImageURL = new URL(image, siteBase).href;
+const fullTitle = `${title} | GTM Alliance`;
+
+const defaultKeywords =
+	'logística internacional, carga seca, carga general, flete marítimo, transporte de carga, freight forwarder, GTM Alliance';
+
+const orgSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	name: 'GTM Alliance',
+	description: 'Logística internacional de carga seca y general por mar, tierra y aire.',
+	url: siteBase.href,
+	logo: new URL('/logo.svg', siteBase).href,
+	sameAs: [],
+	contactPoint: {
+		'@type': 'ContactPoint',
+		contactType: 'customer service',
+		availableLanguage: ['Spanish'],
+	},
+	hasOfferCatalog: {
+		'@type': 'OfferCatalog',
+		name: 'Servicios Logísticos',
+		itemListElement: [
+			{
+				'@type': 'Offer',
+				itemOffered: {
+					'@type': 'Service',
+					name: 'Carga Seca',
+					description: 'Transporte y gestión de carga seca por mar, tierra y aire.',
+				},
+			},
+			{
+				'@type': 'Offer',
+				itemOffered: {
+					'@type': 'Service',
+					name: 'Logística Internacional',
+					description: 'Soluciones logísticas integrales para comercio exterior.',
+				},
+			},
+		],
+	},
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+
+		<!-- Favicons -->
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+
+		<!-- SEO Primario -->
+		<title>{fullTitle}</title>
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords ? `${keywords}, ${defaultKeywords}` : defaultKeywords} />
+		<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+		<link rel="canonical" href={canonicalURL} />
+
+		<!-- Open Graph -->
+		<meta property="og:type" content={type} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={fullTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImageURL} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:site_name" content="GTM Alliance" />
+		<meta property="og:locale" content="es_MX" />
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={fullTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageURL} />
+
+		<!-- JSON-LD: Organización -->
+		<script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+	</head>
+
+	<body class="bg-sky-50">
+		<Navbar />
+
+		<main>
+			<slot />
+		</main>
+	</body>
+</html>

@@ -1,23 +1,12 @@
 ---
-import '../styles/global.css';
-import Navbar from '../components/Navbar.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 ---
 
-<html lang="es">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>GTM Alliance</title>
-	</head>
-	<body class="bg-sky-50">
-		<Navbar />
-
-		<main>
-			<Hero />
-		</main>
-	</body>
-</html>
+<BaseLayout
+	title="Logística Internacional de Carga"
+	description="En GTM Alliance movemos tu carga seca y general por mar, tierra y aire con soluciones logísticas confiables, seguras y a tiempo. Solicita tu cotización hoy."
+	keywords="logística de carga, freight forwarding, carga seca, importación exportación, agente aduanal"
+>
+	<Hero />
+</BaseLayout>
