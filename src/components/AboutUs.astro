@@ -1,0 +1,133 @@
+---
+const objetivos = [
+	'Optimizar la cadena de suministro de nuestros clientes.',
+	'Fortalecer alianzas con productores, industrias y operadores logísticos.',
+	'Expandir nuestra presencia en mercados internacionales.',
+	'Garantizar trazabilidad y calidad en cada producto exportado.',
+	'Impulsar el desarrollo de marcas propias para nuestros clientes.',
+];
+---
+
+<section id="quienes-somos" class="bg-slate-50 py-16 sm:py-24">
+	<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+		<div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
+			<div>
+				<span
+					class="about-eyebrow inline-block text-xs font-semibold tracking-widest text-gtm-gold uppercase"
+				>
+					Quiénes somos
+				</span>
+				<h2
+					class="about-title mt-3 text-3xl leading-tight font-bold text-gtm-navy sm:text-4xl lg:text-5xl"
+				>
+					Comprometidos con el crecimiento internacional de nuestros clientes
+				</h2>
+			</div>
+			<p class="about-intro text-base leading-relaxed text-slate-600 lg:self-center lg:text-lg">
+				GTM Alliance S.A.S. es una compañía colombiana dedicada a la gestión integral del
+				comercio exterior: conectamos productores, industrias y mercados internacionales
+				mediante soluciones logísticas confiables y estratégicas.
+			</p>
+		</div>
+
+		<div class="mt-12 grid grid-cols-1 gap-6 sm:mt-16 md:grid-cols-3">
+			<div class="about-card rounded-2xl bg-slate-100 p-8">
+				<span class="text-xs font-semibold tracking-widest text-gtm-gold uppercase">
+					Misión
+				</span>
+				<h3 class="mt-3 text-xl font-bold text-gtm-navy">Impulsar tu competitividad global</h3>
+				<p class="mt-4 text-sm leading-relaxed text-slate-600">
+					Brindar soluciones logísticas y comerciales que impulsen la competitividad de
+					nuestros clientes en mercados globales, garantizando trazabilidad, calidad y
+					cumplimiento normativo.
+				</p>
+			</div>
+
+			<div class="about-card rounded-2xl bg-slate-100 p-8">
+				<span class="text-xs font-semibold tracking-widest text-gtm-gold uppercase">
+					Visión
+				</span>
+				<h3 class="mt-3 text-xl font-bold text-gtm-navy">Liderar el comercio exterior</h3>
+				<p class="mt-4 text-sm leading-relaxed text-slate-600">
+					Ser una empresa líder en comercio exterior y logística internacional, reconocida
+					por su innovación, transparencia y capacidad de conectar industrias con
+					oportunidades globales.
+				</p>
+			</div>
+
+			<div class="about-card rounded-2xl bg-gtm-navy p-8">
+				<span class="text-xs font-semibold tracking-widest text-gtm-gold uppercase">
+					Objetivos estratégicos
+				</span>
+				<ul class="mt-4 space-y-3">
+					{
+						objetivos.map((item) => (
+							<li class="flex gap-3 text-sm leading-relaxed text-slate-200">
+								<span class="text-gtm-gold" aria-hidden="true">
+									→
+								</span>
+								<span>{item}</span>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	import { gsap } from '../scripts/gsap';
+
+	const section = document.querySelector('#quienes-somos');
+
+	if (section) {
+		const mm = gsap.matchMedia();
+
+		mm.add('(prefers-reduced-motion: no-preference)', () => {
+			const tl = gsap.timeline({
+				defaults: { ease: 'power3.out' },
+				scrollTrigger: {
+					trigger: section,
+					start: 'top 75%',
+				},
+			});
+
+			tl.fromTo(
+				'.about-eyebrow',
+				{ opacity: 0, y: 16 },
+				{ opacity: 1, y: 0, duration: 0.5 },
+			)
+				.fromTo(
+					'.about-title',
+					{ opacity: 0, y: 24 },
+					{ opacity: 1, y: 0, duration: 0.7 },
+					'-=0.3',
+				)
+				.fromTo(
+					'.about-intro',
+					{ opacity: 0, y: 24 },
+					{ opacity: 1, y: 0, duration: 0.7 },
+					'-=0.5',
+				)
+				.fromTo(
+					'.about-card',
+					{ opacity: 0, y: 32 },
+					{ opacity: 1, y: 0, duration: 0.6, stagger: 0.15 },
+					'-=0.3',
+				);
+
+			return () => {
+				tl.scrollTrigger?.kill();
+				tl.kill();
+			};
+		});
+
+		mm.add('(prefers-reduced-motion: reduce)', () => {
+			gsap.set(['.about-eyebrow', '.about-title', '.about-intro', '.about-card'], {
+				opacity: 1,
+				y: 0,
+			});
+		});
+	}
+</script>
