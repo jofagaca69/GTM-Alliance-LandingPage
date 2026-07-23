@@ -84,30 +84,32 @@ const productos = [
 				pasos.map((paso) => (
 					<div
 						class:list={[
-							'congelados-step p-6',
-							paso.num === '03' ? 'bg-gtm-navy' : 'bg-white',
+							'congelados-step group relative p-6 transition-colors duration-300',
+							paso.num === '03'
+								? 'bg-gtm-navy ring-0 ring-inset ring-gtm-gold transition-shadow hover:ring-2'
+								: 'bg-white hover:bg-gtm-navy',
 						]}
 					>
 						<span
 							class:list={[
-								'font-display block text-3xl font-bold',
-								paso.num === '03' ? 'text-white' : 'text-gtm-gold',
+								'font-display block text-3xl font-bold transition-colors duration-300',
+								paso.num === '03' ? 'text-white' : 'text-gtm-gold group-hover:text-white',
 							]}
 						>
 							{paso.num}
 						</span>
 						<h3
 							class:list={[
-								'font-display mt-3 text-sm font-bold',
-								paso.num === '03' ? 'text-white' : 'text-gtm-navy',
+								'font-display mt-3 text-sm font-bold transition-colors duration-300',
+								paso.num === '03' ? 'text-white' : 'text-gtm-navy group-hover:text-white',
 							]}
 						>
 							{paso.titulo}
 						</h3>
 						<p
 							class:list={[
-								'mt-2 text-xs leading-relaxed',
-								paso.num === '03' ? 'text-slate-300' : 'text-slate-500',
+								'mt-2 text-xs leading-relaxed transition-colors duration-300',
+								paso.num === '03' ? 'text-slate-300' : 'text-slate-500 group-hover:text-slate-300',
 							]}
 						>
 							{paso.descripcion}
