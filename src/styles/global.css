@@ -1,6 +1,35 @@
 @import "tailwindcss";
 
+/* Plus Jakarta Sans — cuerpo de texto (variable, wght 200–800) */
+@font-face {
+	font-family: "Plus Jakarta Sans";
+	src:
+		url("/fonts/PlusJakartaSans-Variable.woff2") format("woff2"),
+		url("/fonts/PlusJakartaSans-Variable.woff") format("woff");
+	font-weight: 200 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* Zodiak — títulos, énfasis, labels y wordmark (variable, wght 100–900) */
+@font-face {
+	font-family: "Zodiak";
+	src:
+		url("/fonts/Zodiak-Variable.woff2") format("woff2"),
+		url("/fonts/Zodiak-Variable.woff") format("woff");
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+}
+
 @theme {
 	--color-gtm-navy: #1c2f4a;
 	--color-gtm-gold: #d4a537;
+
+	--font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+	--font-display: "Zodiak", ui-serif, Georgia, serif;
+}
+
+body {
+	font-family: var(--font-sans);
 }
