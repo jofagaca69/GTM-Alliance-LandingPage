@@ -1,0 +1,83 @@
+---
+// Logos de empresas con las que hemos trabajado.
+// TODO: reemplazar/agregar logos reales aquí a medida que estén disponibles.
+const logo = { src: '/logos/coldfood.png', alt: 'Coldfood' };
+const logos = Array.from({ length: 6 }, () => logo);
+---
+
+<section id="clientes" class="bg-sky-50 py-16 sm:py-20">
+	<div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+		<span
+			class="font-display inline-block text-xs font-semibold tracking-widest text-gtm-gold uppercase"
+		>
+			Nuestros aliados
+		</span>
+		<h2 class="font-display mt-3 text-2xl font-bold text-gtm-navy sm:text-3xl">
+			Empresas que confían en nosotros
+		</h2>
+
+		<div
+			class="marquee group relative mt-10 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
+		>
+			<div class="marquee-track flex w-max items-center gap-16 sm:gap-20">
+				{
+					logos.map((item) => (
+						<img
+							src={item.src}
+							alt={item.alt}
+							loading="lazy"
+							class="h-16 w-auto shrink-0 grayscale opacity-60 transition duration-300 hover:grayscale-0 hover:opacity-100 sm:h-24"
+						/>
+					))
+				}
+				{
+					logos.map((item) => (
+						<img
+							src={item.src}
+							alt=""
+							aria-hidden="true"
+							loading="lazy"
+							class="h-16 w-auto shrink-0 grayscale opacity-60 transition duration-300 hover:grayscale-0 hover:opacity-100 sm:h-24"
+						/>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	import { gsap } from '../scripts/gsap';
+
+	const section = document.querySelector('.marquee');
+	const track = document.querySelector<HTMLElement>('.marquee-track');
+
+	if (section && track) {
+		const mm = gsap.matchMedia();
+
+		mm.add('(prefers-reduced-motion: no-preference)', () => {
+			const tween = gsap.to(track, {
+				xPercent: -50,
+				duration: 25,
+				ease: 'none',
+				repeat: -1,
+			});
+
+			const pause = () => tween.pause();
+			const resume = () => tween.resume();
+
+			section.addEventListener('mouseenter', pause);
+			section.addEventListener('mouseleave', resume);
+
+			return () => {
+				tween.kill();
+				section.removeEventListener('mouseenter', pause);
+				section.removeEventListener('mouseleave', resume);
+			};
+		});
+
+		mm.add('(prefers-reduced-motion: reduce)', () => {
+			gsap.set(track, { xPercent: 0 });
+		});
+	}
+</script>

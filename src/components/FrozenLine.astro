@@ -1,0 +1,236 @@
+---
+const pasos = [
+	{
+		num: '01',
+		titulo: 'Compra directa al agricultor',
+		descripcion:
+			'Trabajamos con agricultores certificados, seleccionando productos desde su origen para garantizar calidad, frescura y prácticas agrícolas responsables.',
+	},
+	{
+		num: '02',
+		titulo: 'Supervisión en cultivos',
+		descripcion:
+			'Seguimiento técnico en campo, verificando condiciones de cultivo, manejo del producto y cumplimiento de normas fitosanitarias.',
+	},
+	{
+		num: '03',
+		titulo: 'Procesamiento Coldfood',
+		descripcion:
+			'Plantas con certificaciones internacionales, control de temperatura, BPM y protocolos sanitarios estrictos.',
+	},
+	{
+		num: '04',
+		titulo: 'Transporte refrigerado',
+		descripcion:
+			'Cadena de frío monitoreada en tiempo real, asegurando estabilidad térmica hasta el puerto de embarque.',
+	},
+	{
+		num: '05',
+		titulo: 'Exportación y entrega',
+		descripcion:
+			'Seguimiento digital del contenedor y trazabilidad documental completa hasta el destino final.',
+	},
+];
+
+const tags = [
+	'Diseño de marca',
+	'Identidad visual',
+	'Empaques y etiquetas',
+	'Normativa país destino',
+	'Presentación comercial',
+];
+
+const productos = [
+	'Frutas congeladas',
+	'Verduras congeladas',
+	'Mezclas vegetales',
+	'Proteínas congeladas',
+	'Agrícolas procesados',
+	'Listos para exportación',
+];
+---
+
+<section id="congelados" class="bg-white py-16 sm:py-24">
+	<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+		<div class="flex flex-wrap items-center gap-3">
+			<span
+				class="congelados-eyebrow font-display inline-block text-xs font-semibold tracking-widest text-gtm-gold uppercase"
+			>
+				01 — Línea de congelados
+			</span>
+			<span
+				class="congelados-eyebrow rounded-full border border-gtm-navy/20 px-3 py-1 text-[11px] font-medium text-gtm-navy"
+			>
+				En alianza con Coldfood
+			</span>
+		</div>
+
+		<h2
+			class="congelados-title font-display mt-3 max-w-3xl text-3xl leading-tight font-bold text-gtm-navy sm:text-4xl lg:text-5xl"
+		>
+			Cadena de frío con trazabilidad total, del agricultor al destino final
+		</h2>
+
+		<p class="congelados-intro mt-4 max-w-3xl text-base leading-relaxed text-slate-600 lg:text-lg">
+			Junto a <span class="font-semibold text-gtm-navy">Coldfood</span> — especialista en procesamiento
+			y conservación de alimentos congelados — garantizamos calidad certificada y cumplimiento de
+			estándares internacionales en cada etapa.
+		</p>
+
+		<div
+			class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-gtm-navy/15 bg-gtm-navy/15 sm:mt-16 sm:grid-cols-2 lg:grid-cols-5"
+		>
+			{
+				pasos.map((paso) => (
+					<div
+						class:list={[
+							'congelados-step group relative p-6 transition-colors duration-300',
+							paso.num === '03'
+								? 'bg-gtm-navy ring-0 ring-inset ring-gtm-gold transition-shadow hover:ring-2'
+								: 'bg-white hover:bg-gtm-navy',
+						]}
+					>
+						<span
+							class:list={[
+								'font-display block text-3xl font-bold transition-colors duration-300',
+								paso.num === '03' ? 'text-white' : 'text-gtm-gold group-hover:text-white',
+							]}
+						>
+							{paso.num}
+						</span>
+						<h3
+							class:list={[
+								'font-display mt-3 text-sm font-bold transition-colors duration-300',
+								paso.num === '03' ? 'text-white' : 'text-gtm-navy group-hover:text-white',
+							]}
+						>
+							{paso.titulo}
+						</h3>
+						<p
+							class:list={[
+								'mt-2 text-xs leading-relaxed transition-colors duration-300',
+								paso.num === '03' ? 'text-slate-300' : 'text-slate-500 group-hover:text-slate-300',
+							]}
+						>
+							{paso.descripcion}
+						</p>
+					</div>
+				))
+			}
+		</div>
+
+		<div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+			<div class="congelados-block rounded-2xl bg-slate-50 p-8">
+				<span class="font-display text-xs font-semibold tracking-widest text-gtm-gold uppercase">
+					Desarrollo de marca
+				</span>
+				<h3 class="font-display mt-3 text-xl font-bold text-gtm-navy sm:text-2xl">
+					Tu producto, tu marca, nuestra logística.
+				</h3>
+				<p class="mt-4 text-sm leading-relaxed text-slate-600">
+					Creamos marcas personalizadas para clientes internacionales, listas para su mercado
+					destino.
+				</p>
+				<div class="mt-5 flex flex-wrap gap-2">
+					{
+						tags.map((tag) => (
+							<span class="rounded-full border border-gtm-navy/15 px-3 py-1 text-xs text-slate-600">
+								{tag}
+							</span>
+						))
+					}
+				</div>
+			</div>
+
+			<div class="congelados-block rounded-2xl bg-slate-50 p-8">
+				<span class="font-display text-xs font-semibold tracking-widest text-gtm-gold uppercase">
+					Productos
+				</span>
+				<div class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
+					<ul class="space-y-3">
+						{
+							productos.map((item) => (
+								<li class="flex gap-3 text-sm leading-relaxed text-slate-700">
+									<span class="text-gtm-gold" aria-hidden="true">
+										→
+									</span>
+									<span>{item}</span>
+								</li>
+							))
+						}
+					</ul>
+					<div class="min-h-[10rem] overflow-hidden rounded-xl">
+						<img
+							src="/images/linea-congelados.jpg"
+							alt="Productos congelados de la línea Coldfood + GTM Alliance: carnes, pescado, mariscos y vegetales"
+							loading="lazy"
+							class="h-full w-full object-cover"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	import { gsap } from '../scripts/gsap';
+
+	const section = document.querySelector('#congelados');
+
+	if (section) {
+		const mm = gsap.matchMedia();
+
+		mm.add('(prefers-reduced-motion: no-preference)', () => {
+			const tl = gsap.timeline({
+				defaults: { ease: 'power3.out' },
+				scrollTrigger: {
+					trigger: section,
+					start: 'top 75%',
+				},
+			});
+
+			tl.fromTo(
+				'.congelados-eyebrow',
+				{ opacity: 0, y: 16 },
+				{ opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
+			)
+				.fromTo(
+					'.congelados-title',
+					{ opacity: 0, y: 24 },
+					{ opacity: 1, y: 0, duration: 0.7 },
+					'-=0.3',
+				)
+				.fromTo(
+					'.congelados-intro',
+					{ opacity: 0, y: 24 },
+					{ opacity: 1, y: 0, duration: 0.7 },
+					'-=0.5',
+				)
+				.fromTo(
+					'.congelados-step',
+					{ opacity: 0, y: 32 },
+					{ opacity: 1, y: 0, duration: 0.6, stagger: 0.1 },
+					'-=0.3',
+				)
+				.fromTo(
+					'.congelados-block',
+					{ opacity: 0, y: 32 },
+					{ opacity: 1, y: 0, duration: 0.6, stagger: 0.15 },
+					'-=0.3',
+				);
+
+			return () => {
+				tl.scrollTrigger?.kill();
+				tl.kill();
+			};
+		});
+
+		mm.add('(prefers-reduced-motion: reduce)', () => {
+			gsap.set(
+				['.congelados-eyebrow', '.congelados-title', '.congelados-intro', '.congelados-step', '.congelados-block'],
+				{ opacity: 1, y: 0 },
+			);
+		});
+	}
+</script>
