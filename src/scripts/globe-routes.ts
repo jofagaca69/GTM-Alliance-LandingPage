@@ -105,11 +105,11 @@ export const KEYFRAMES: GlobeKeyframe[] = [
 	{
 		trigger: null,
 		focus: PLACES.bogota,
-		offsetX: 0.24,
+		offsetX: 0,
 		offsetY: 0,
-		scale: 1.0,
-		driftSpeed: 0.03,
-		opacity: 0.95,
+		scale: 1.05,
+		driftSpeed: 0.05,
+		opacity: 0.9,
 	},
 	{
 		trigger: '#clientes',

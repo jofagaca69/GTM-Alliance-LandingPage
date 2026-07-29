@@ -1,0 +1,79 @@
+---
+const year = new Date().getFullYear();
+---
+
+<section id="inicio" class="relative flex min-h-dvh flex-col items-center justify-center">
+	<!-- Scrim radial: mantiene el texto legible sobre el centro del globo -->
+	<div
+		class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_center,rgba(10,18,32,0.85)_0%,rgba(10,18,32,0.55)_55%,transparent_100%)]"
+	>
+	</div>
+
+	<div
+		class="relative mx-auto flex w-full max-w-2xl flex-col items-center gap-6 px-4 py-32 text-center sm:px-6"
+	>
+		<a href="#inicio" class="uc-logo inline-flex rounded-2xl bg-white p-3 shadow-lg">
+			<img src="/logo.webp" alt="GTM Alliance - Global Team Work" class="h-12 w-auto sm:h-14" />
+		</a>
+
+		<span
+			class="uc-eyebrow font-display inline-block rounded-full border border-white/15 bg-white/10 px-4 py-1 text-xs font-semibold tracking-widest text-gtm-gold uppercase backdrop-blur"
+		>
+			Sitio en construcción
+		</span>
+
+		<h1 class="uc-title font-display text-4xl leading-tight font-bold text-white sm:text-5xl">
+			Estamos preparando <span class="text-gtm-gold">algo grande</span>
+		</h1>
+
+		<p class="uc-subtitle max-w-xl text-base text-slate-300 sm:text-lg">
+			Estamos renovando nuestro sitio para presentar nuestras soluciones integrales en comercio
+			exterior y logística internacional. Mientras tanto, escríbenos y con gusto te atendemos.
+		</p>
+
+		<div class="uc-cta mt-4 flex flex-col items-center gap-4 sm:flex-row">
+			<a
+				href="mailto:gtmalliancesas@gmail.com"
+				class="rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105"
+			>
+				gtmalliancesas@gmail.com
+			</a>
+			<a
+				href="tel:+573007974993"
+				class="rounded-full border border-white/40 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+			>
+				+57 300 797 4993
+			</a>
+		</div>
+
+		<p class="uc-footer mt-6 text-xs text-slate-400">
+			Bogotá, Colombia &middot; &copy; {year} GTM Alliance
+		</p>
+	</div>
+</section>
+
+<script>
+	import { gsap } from '../scripts/gsap';
+
+	const mm = gsap.matchMedia();
+
+	mm.add('(prefers-reduced-motion: no-preference)', () => {
+		const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+		tl.fromTo('.uc-logo', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6 })
+			.fromTo('.uc-eyebrow', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.35')
+			.fromTo('.uc-title', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8 }, '-=0.35')
+			.fromTo('.uc-subtitle', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, '-=0.5')
+			.fromTo('.uc-cta', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, '-=0.5')
+			.fromTo('.uc-footer', { opacity: 0 }, { opacity: 1, duration: 0.6 }, '-=0.4');
+
+		return () => tl.kill();
+	});
+
+	mm.add('(prefers-reduced-motion: reduce)', () => {
+		gsap.set(['.uc-logo', '.uc-eyebrow', '.uc-title', '.uc-subtitle', '.uc-cta', '.uc-footer'], {
+			opacity: 1,
+			y: 0,
+		});
+	});
+</script>

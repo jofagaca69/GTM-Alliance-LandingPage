@@ -1,0 +1,11 @@
+# Modo "sitio en construcción": cualquier URL que no corresponda a un archivo
+# real se redirige a la home. Es TEMPORAL — hay que borrar este archivo al
+# publicar las secciones reales, o las rutas nuevas también caerán a la raíz.
+
+RewriteEngine On
+
+# La raíz no se redirige a sí misma (evita el bucle).
+RewriteCond %{REQUEST_URI} !^/$
+# Los archivos existentes se sirven normal: _astro, fonts, images, logos, favicons.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ / [R=302,L]

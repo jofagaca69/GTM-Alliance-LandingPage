@@ -4,7 +4,9 @@ This file provides guidance to Claude Code and other coding agents when working 
 
 ## Project status
 
-This is the GTM Alliance marketing landing page (a Colombian freight-forwarding / international logistics company), built with Astro. It is a single-page site (`src/pages/index.astro`) assembled from section components, styled with Tailwind CSS v4, and animated with GSAP + ScrollTrigger. Content and copy are in Spanish.
+This is the GTM Alliance marketing landing page (a Colombian freight-forwarding / international logistics company), built with Astro. It is a single-page site (`src/pages/index.astro`), styled with Tailwind CSS v4, and animated with GSAP + ScrollTrigger. Content and copy are in Spanish.
+
+**Currently in "under construction" mode** (branch `feature/site-in-construction`): `index.astro` renders only `UnderConstruction.astro` — a single full-screen section with the COBE globe (now centered, continuous drift) as its background. The five content sections (`Hero`, `ClientsCarousel`, `AboutUs`, `FrozenLine`, `DryCargoLine`) were deleted from `src/components/` — recoverable from git history when it's time to relaunch. `Navbar.astro` and `Footer.astro` still exist but are no longer rendered by `BaseLayout.astro`. The content brief below remains the target for the full relaunch.
 
 ## Commands
 
@@ -49,17 +51,17 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 ## Content & information architecture
 
-The client supplied a full content brief (`Pagina Web.docx`) laying out the site as 7 sections/pages. Build new sections following the existing pattern — a `<section id="...">` anchor wired into `Navbar.astro`/`Footer.astro` nav links — and keep copy in Spanish, matching the client's wording below.
+The client supplied a full content brief (`Pagina Web.docx`) laying out the site as 7 sections/pages. This is the target for the relaunch once the site exits "under construction" mode (see Project status above). Build new sections following the existing pattern — a `<section id="...">` anchor wired into `Navbar.astro`/`Footer.astro` nav links — and keep copy in Spanish, matching the client's wording below.
 
-1. **Inicio** (`#inicio` → `Hero.astro`, done)
+1. **Inicio** (`#inicio` → previously `Hero.astro`, deleted in `feature/site-in-construction`, recoverable from git history)
    Headline: "Soluciones Integrales en Comercio Exterior y Logística Internacional." Positioning: empresa especializada en procesamiento, comercialización y exportación de productos alimenticios, con operaciones logísticas en carga seca, congelados y mercancías especiales. 5 pilares: trazabilidad total, desarrollo de marca para clientes internacionales, exportación de carga seca multi-industria, logística internacional con cobertura global, cumplimiento aduanero y normativo.
 
-2. **Quiénes Somos** (`#quienes-somos` → `AboutUs.astro`, done — mission/vision/objetivos already match the brief verbatim).
+2. **Quiénes Somos** (`#quienes-somos` → previously `AboutUs.astro`, deleted in `feature/site-in-construction`, recoverable from git history — mission/vision/objetivos already matched the brief verbatim).
 
-3. **Línea de Congelados** (`#congelados` — not yet built)
+3. **Línea de Congelados** (`#congelados` — previously `FrozenLine.astro`, deleted in `feature/site-in-construction`, recoverable from git history)
    Alliance with **Coldfood** for processed/frozen food. 5-step traceability chain to present as a timeline/process: compra directa al agricultor → supervisión en cultivos → procesamiento y producción (Coldfood, plantas certificadas/BPM) → transporte refrigerado (monitoreo en tiempo real) → exportación y entrega final (seguimiento digital del contenedor). Also offers **brand development for clients** (diseño de marca, identidad visual, empaques y etiquetas, adaptación normativa del país destino) — tagline "Tu producto, tu marca, nuestra logística." Product line: frutas congeladas, verduras congeladas, mezclas vegetales, proteínas congeladas, productos agrícolas procesados, alimentos listos para exportación. Differentiators: trazabilidad total, plantas certificadas, cadena de frío monitoreada, desarrollo de marca, estándares internacionales, cumplimiento normativo/sanitario, capacidad de producción escalable.
 
-4. **Línea de Carga Seca** (`#carga-seca` — not yet built; note "Próximamente Medellín")
+4. **Línea de Carga Seca** (`#carga-seca` — previously `DryCargoLine.astro`, deleted in `feature/site-in-construction`, recoverable from git history; note "Próximamente Medellín")
    Products/client industries exported: Alimentec (alimenticios secos/procesados), Bocadillos (dulces típicos), Universal (consumo masivo), Aluminios Medellín (láminas/perfiles industriales), Barriles Ahumadores. Services: almacenaje especializado, picking/empaque/despacho, control de inventarios en tiempo real, procesamiento según especificaciones del cliente, coordinación logística y aduanera. Slogan: "Eficiencia y confianza para tu operación internacional."
 
 5. **Servicios** (`#servicios` — not yet built)
@@ -69,12 +71,11 @@ The client supplied a full content brief (`Pagina Web.docx`) laying out the site
    Authenticated client area: tracking de envíos en tiempo real, documentación digital, reportes y estadísticas, asistencia personalizada, historial de operaciones. This implies auth + backend data, unlike the rest of the static site — flag scope/architecture with the user before starting rather than assuming it belongs in this Astro project as-is.
 
 7. **Contacto** (`#contacto` — not yet built)
-   Bogotá, Colombia · info@gtmalliance.com · +57 310 000 0000
+   Bogotá, Colombia · gtmalliancesas@gmail.com · +57 300 797 4993
 
 ### Known content gaps to reconcile
 
-- `Footer.astro` currently has placeholder contact info (México, `+52 (999) 999-9999`) — should be updated to Bogotá, Colombia / `info@gtmalliance.com` / `+57 310 000 0000` per the brief.
-- `BaseLayout.astro`'s `orgSchema` JSON-LD has an empty `sameAs` and no `address` — update alongside the footer once contact/social data is finalized.
+- `Footer.astro` isn't currently rendered (see Project status above), but its placeholder contact info has already been updated to Bogotá, Colombia / `gtmalliancesas@gmail.com` / `+57 300 797 4993` ahead of relaunch.
 
 ## Documentation
 

@@ -1,8 +1,6 @@
 ---
 import '../styles/global.css';
 import Globe from '../components/Globe.astro';
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
 
 interface Props {
 	title: string;
@@ -22,13 +20,13 @@ interface Props {
 const {
 	title,
 	description,
-	image = '/og-image.png',
+	image = '/logo.webp',
 	type = 'website',
 	noindex = false,
 	keywords,
 } = Astro.props;
 
-const siteBase = Astro.site ?? new URL('https://gtmalliance.com');
+const siteBase = Astro.site ?? new URL('https://gtm-alliance.com');
 const canonicalURL = Astro.props.canonicalURL ?? new URL(Astro.url.pathname, siteBase).href;
 const ogImageURL = new URL(image, siteBase).href;
 const fullTitle = `${title} | GTM Alliance`;
@@ -43,10 +41,16 @@ const orgSchema = {
 	description: 'Logística internacional de carga seca y general por mar, tierra y aire.',
 	url: siteBase.href,
 	logo: new URL('/logo.webp', siteBase).href,
-	sameAs: [],
+	address: {
+		'@type': 'PostalAddress',
+		addressLocality: 'Bogotá',
+		addressCountry: 'CO',
+	},
 	contactPoint: {
 		'@type': 'ContactPoint',
 		contactType: 'customer service',
+		email: 'gtmalliancesas@gmail.com',
+		telephone: '+57-300-797-4993',
 		availableLanguage: ['Spanish'],
 	},
 	hasOfferCatalog: {
@@ -133,12 +137,9 @@ const orgSchema = {
 
 	<body class="bg-gtm-deep text-slate-200 antialiased">
 		<Globe />
-		<Navbar />
 
 		<main class="relative z-10">
 			<slot />
 		</main>
-
-		<Footer />
 	</body>
 </html>
