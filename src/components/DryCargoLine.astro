@@ -31,7 +31,7 @@ const servicios = [
 ];
 ---
 
-<section id="carga-seca" class="bg-slate-50 py-16 sm:py-24">
+<section id="carga-seca" class="bg-transparent py-16 sm:py-24">
 	<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 		<div class="flex flex-wrap items-center gap-3">
 			<span
@@ -40,37 +40,37 @@ const servicios = [
 				02 — Línea de carga seca
 			</span>
 			<span
-				class="carga-eyebrow rounded-full border border-gtm-navy/20 px-3 py-1 text-[11px] font-medium text-gtm-navy"
+				class="carga-eyebrow rounded-full border border-white/20 px-3 py-1 text-[11px] font-medium text-slate-200"
 			>
 				Próximamente Medellín
 			</span>
 		</div>
 
 		<h2
-			class="carga-title font-display mt-3 max-w-3xl text-3xl leading-tight font-bold text-gtm-navy sm:text-4xl lg:text-5xl"
+			class="carga-title font-display mt-3 max-w-3xl text-3xl leading-tight font-bold text-white sm:text-4xl lg:text-5xl"
 		>
 			Eficiencia y confianza para tu operación internacional
 		</h2>
 
-		<p class="carga-intro mt-4 max-w-3xl text-base leading-relaxed text-slate-600 lg:text-lg">
+		<p class="carga-intro mt-4 max-w-3xl text-base leading-relaxed text-slate-300 lg:text-lg">
 			Exportamos productos de múltiples industrias con almacenamiento, procesamiento y
 			distribución bajo estándares internacionales.
 		</p>
 
 		<div class="mt-10 grid grid-cols-1 gap-8 sm:mt-16 lg:grid-cols-2">
-			<div class="carga-table overflow-hidden rounded-2xl border border-gtm-navy/15 bg-white">
-				<div class="divide-y divide-gtm-navy/10 sm:hidden">
+			<div class="carga-table overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+				<div class="divide-y divide-white/10 sm:hidden">
 					{
 						aliados.map((aliado) => (
 							<div class="p-5">
 								<p class="font-display text-[11px] font-semibold tracking-widest text-slate-400 uppercase">
 									Aliado / línea
 								</p>
-								<p class="mt-1 text-sm font-bold text-gtm-navy">{aliado.nombre}</p>
+								<p class="mt-1 text-sm font-bold text-slate-100">{aliado.nombre}</p>
 								<p class="font-display mt-3 text-[11px] font-semibold tracking-widest text-slate-400 uppercase">
 									Productos
 								</p>
-								<p class="mt-1 text-sm leading-relaxed text-slate-600">{aliado.producto}</p>
+								<p class="mt-1 text-sm leading-relaxed text-slate-300">{aliado.producto}</p>
 							</div>
 						))
 					}
@@ -78,7 +78,7 @@ const servicios = [
 				<div class="hidden overflow-x-auto sm:block">
 					<table class="w-full min-w-[28rem] border-collapse text-left">
 						<thead>
-							<tr class="border-b border-gtm-navy/15">
+							<tr class="border-b border-white/10">
 								<th
 									class="font-display px-6 py-4 text-xs font-semibold tracking-widest text-slate-400 uppercase"
 								>
@@ -96,14 +96,14 @@ const servicios = [
 								aliados.map((aliado, i) => (
 									<tr
 										class:list={[
-											'transition-colors duration-300 hover:bg-slate-50',
-											i !== aliados.length - 1 && 'border-b border-gtm-navy/10',
+											'transition-colors duration-300 hover:bg-white/5',
+											i !== aliados.length - 1 && 'border-b border-white/10',
 										]}
 									>
-										<td class="px-6 py-4 align-top text-sm font-bold whitespace-nowrap text-gtm-navy">
+										<td class="px-6 py-4 align-top text-sm font-bold whitespace-nowrap text-slate-100">
 											{aliado.nombre}
 										</td>
-										<td class="px-6 py-4 align-top text-sm leading-relaxed text-slate-600">
+										<td class="px-6 py-4 align-top text-sm leading-relaxed text-slate-300">
 											{aliado.producto}
 										</td>
 									</tr>
@@ -124,7 +124,7 @@ const servicios = [
 					/>
 				</div>
 
-				<div class="carga-services rounded-2xl bg-gtm-navy p-8">
+				<div class="carga-services rounded-2xl bg-gtm-navy/60 p-8 ring-1 ring-gtm-gold/25 backdrop-blur-sm">
 					<span class="font-display text-xs font-semibold tracking-widest text-gtm-gold uppercase">
 						Servicios de la línea
 					</span>

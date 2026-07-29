@@ -38,7 +38,7 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 - **Animation**: `src/scripts/gsap.ts` is the single entry point for GSAP — it registers `ScrollTrigger` once and re-exports `gsap`/`ScrollTrigger`. Any component script must import from `'../scripts/gsap'` rather than importing `gsap` directly, so the plugin registration always happens.
   - Animation pattern used throughout: `gsap.matchMedia()` with two branches — `'(prefers-reduced-motion: no-preference)'` builds the real timeline/tween (and returns a cleanup function that kills the timeline/tween and any ScrollTrigger), and `'(prefers-reduced-motion: reduce)'` just `gsap.set(...)` elements to their final visible state. Follow this pattern for any new animated section.
   - Sections below the fold trigger their timeline off `ScrollTrigger` (`start: 'top 75%'` on the section element); above-the-fold content (Hero) animates immediately on load.
-- **Static assets**: images, videos, logos, and favicons live in `public/` and are referenced by absolute path (e.g. `/logo.svg`, `/videos/hero-cargo-ship.mp4`).
+- **Static assets**: images, logos, and favicons live in `public/` and are referenced by absolute path (e.g. `/logo.webp`, `/images/linea-congelados.jpg`).
 - **Interactive UI without a framework**: `Navbar.astro` implements the mobile menu toggle and desktop dropdown with a plain inline `<script>` (vanilla DOM APIs, no React/Vue/Svelte integration is installed). Follow this approach for simple interactivity rather than introducing a UI framework.
 
 ## Conventions

@@ -50,7 +50,7 @@ const productos = [
 ];
 ---
 
-<section id="congelados" class="bg-white py-16 sm:py-24">
+<section id="congelados" class="bg-transparent py-16 sm:py-24">
 	<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 		<div class="flex flex-wrap items-center gap-3">
 			<span
@@ -59,35 +59,35 @@ const productos = [
 				01 — Línea de congelados
 			</span>
 			<span
-				class="congelados-eyebrow rounded-full border border-gtm-navy/20 px-3 py-1 text-[11px] font-medium text-gtm-navy"
+				class="congelados-eyebrow rounded-full border border-white/20 px-3 py-1 text-[11px] font-medium text-slate-200"
 			>
 				En alianza con Coldfood
 			</span>
 		</div>
 
 		<h2
-			class="congelados-title font-display mt-3 max-w-3xl text-3xl leading-tight font-bold text-gtm-navy sm:text-4xl lg:text-5xl"
+			class="congelados-title font-display mt-3 max-w-3xl text-3xl leading-tight font-bold text-white sm:text-4xl lg:text-5xl"
 		>
 			Cadena de frío con trazabilidad total, del agricultor al destino final
 		</h2>
 
-		<p class="congelados-intro mt-4 max-w-3xl text-base leading-relaxed text-slate-600 lg:text-lg">
-			Junto a <span class="font-semibold text-gtm-navy">Coldfood</span> — especialista en procesamiento
+		<p class="congelados-intro mt-4 max-w-3xl text-base leading-relaxed text-slate-300 lg:text-lg">
+			Junto a <span class="font-semibold text-white">Coldfood</span> — especialista en procesamiento
 			y conservación de alimentos congelados — garantizamos calidad certificada y cumplimiento de
 			estándares internacionales en cada etapa.
 		</p>
 
 		<div
-			class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-gtm-navy/15 bg-gtm-navy/15 sm:mt-16 sm:grid-cols-2 lg:grid-cols-5"
+			class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/12 bg-white/12 sm:mt-16 sm:grid-cols-2 lg:grid-cols-5"
 		>
 			{
 				pasos.map((paso) => (
 					<div
 						class:list={[
-							'congelados-step group relative p-6 transition-colors duration-300',
+							'congelados-step group relative p-6 backdrop-blur-sm transition-colors duration-300',
 							paso.num === '03'
-								? 'bg-gtm-navy ring-0 ring-inset ring-gtm-gold transition-shadow hover:ring-2'
-								: 'bg-white hover:bg-gtm-navy',
+								? 'bg-gtm-navy/90 ring-0 ring-inset ring-gtm-gold transition-shadow hover:ring-2'
+								: 'bg-gtm-deep/85 hover:bg-gtm-navy/85',
 						]}
 					>
 						<span
@@ -101,7 +101,7 @@ const productos = [
 						<h3
 							class:list={[
 								'font-display mt-3 text-sm font-bold transition-colors duration-300',
-								paso.num === '03' ? 'text-white' : 'text-gtm-navy group-hover:text-white',
+								paso.num === '03' ? 'text-white' : 'text-slate-100 group-hover:text-white',
 							]}
 						>
 							{paso.titulo}
@@ -109,7 +109,7 @@ const productos = [
 						<p
 							class:list={[
 								'mt-2 text-xs leading-relaxed transition-colors duration-300',
-								paso.num === '03' ? 'text-slate-300' : 'text-slate-500 group-hover:text-slate-300',
+								paso.num === '03' ? 'text-slate-300' : 'text-slate-400 group-hover:text-slate-200',
 							]}
 						>
 							{paso.descripcion}
@@ -117,24 +117,27 @@ const productos = [
 					</div>
 				))
 			}
+			<!-- Relleno: a 640-1023px la grilla de 2 columnas deja una 6ª celda vacía para
+			     5 elementos; sin esto el globo se filtra crudo en ese hueco. -->
+			<div class="hidden bg-gtm-deep/85 backdrop-blur-sm sm:block lg:hidden" aria-hidden="true"></div>
 		</div>
 
 		<div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-			<div class="congelados-block rounded-2xl bg-slate-50 p-8">
+			<div class="congelados-block rounded-2xl bg-white/5 p-8 ring-1 ring-white/10 backdrop-blur-sm">
 				<span class="font-display text-xs font-semibold tracking-widest text-gtm-gold uppercase">
 					Desarrollo de marca
 				</span>
-				<h3 class="font-display mt-3 text-xl font-bold text-gtm-navy sm:text-2xl">
+				<h3 class="font-display mt-3 text-xl font-bold text-white sm:text-2xl">
 					Tu producto, tu marca, nuestra logística.
 				</h3>
-				<p class="mt-4 text-sm leading-relaxed text-slate-600">
+				<p class="mt-4 text-sm leading-relaxed text-slate-300">
 					Creamos marcas personalizadas para clientes internacionales, listas para su mercado
 					destino.
 				</p>
 				<div class="mt-5 flex flex-wrap gap-2">
 					{
 						tags.map((tag) => (
-							<span class="rounded-full border border-gtm-navy/15 px-3 py-1 text-xs text-slate-600">
+							<span class="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-300">
 								{tag}
 							</span>
 						))
@@ -142,7 +145,7 @@ const productos = [
 				</div>
 			</div>
 
-			<div class="congelados-block rounded-2xl bg-slate-50 p-8">
+			<div class="congelados-block rounded-2xl bg-white/5 p-8 ring-1 ring-white/10 backdrop-blur-sm">
 				<span class="font-display text-xs font-semibold tracking-widest text-gtm-gold uppercase">
 					Productos
 				</span>
@@ -150,7 +153,7 @@ const productos = [
 					<ul class="space-y-3">
 						{
 							productos.map((item) => (
-								<li class="flex gap-3 text-sm leading-relaxed text-slate-700">
+								<li class="flex gap-3 text-sm leading-relaxed text-slate-200">
 									<span class="text-gtm-gold" aria-hidden="true">
 										→
 									</span>
