@@ -2,8 +2,7 @@ import createGlobe from 'cobe';
 import type { COBEOptions, Globe as CobeGlobe } from 'cobe';
 import { gsap, ScrollTrigger } from './gsap';
 import { ARCS, KEYFRAMES, MARKERS, focusAngles, toCobeOffset, unwrapChain } from './globe-routes';
-
-const DPR_CAP = 2;
+import { debounce, getDpr } from './utils';
 
 type GlobeState = {
 	phi: number;
@@ -25,14 +24,6 @@ function hasWebGL(): boolean {
 	} catch {
 		return false;
 	}
-}
-
-function debounce<T extends (...args: never[]) => void>(fn: T, wait: number) {
-	let timer = 0;
-	return (...args: Parameters<T>) => {
-		window.clearTimeout(timer);
-		timer = window.setTimeout(() => fn(...args), wait);
-	};
 }
 
 /** Arranca el globo de fondo. Devuelve un disposer para limpiar todo. */
@@ -60,7 +51,7 @@ export function initGlobe(): () => void {
 
 	let cssW = layer.clientWidth;
 	let cssH = layer.clientHeight;
-	let dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
+	let dpr = getDpr();
 
 	// mapSamples se hornea en createGlobe y no se puede cambiar con update().
 	const mapSamples = smallQuery.matches || lowPower ? 8000 : 16000;
@@ -148,7 +139,7 @@ export function initGlobe(): () => void {
 	const onResize = () => {
 		cssW = layer.clientWidth;
 		cssH = layer.clientHeight;
-		dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
+		dpr = getDpr();
 		globe.update({ width: cssW, height: cssH, devicePixelRatio: dpr });
 		if (!raf) render();
 		ScrollTrigger.refresh();
