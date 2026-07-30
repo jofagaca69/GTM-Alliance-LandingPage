@@ -25,12 +25,12 @@ const objetivos = [
 			</div>
 			<p class="about-intro text-base leading-relaxed text-slate-300 lg:self-center lg:text-lg">
 				GTM Alliance S.A.S. es una compañía colombiana dedicada a la gestión integral del
-				comercio exterior: conectamos productores, industrias y mercados internacionales
+				comercio exterior, conectando productores, industrias y mercados internacionales
 				mediante soluciones logísticas confiables y estratégicas.
 			</p>
 		</div>
 
-		<div class="mt-12 grid grid-cols-1 gap-6 sm:mt-16 md:grid-cols-3">
+		<div class="mt-12 grid grid-cols-1 gap-6 sm:mt-16 md:grid-cols-2">
 			<div class="about-card rounded-2xl bg-white/5 p-8 ring-1 ring-white/10 backdrop-blur-sm">
 				<span class="font-display text-xs font-semibold tracking-widest text-gtm-gold uppercase">
 					Misión
@@ -54,24 +54,24 @@ const objetivos = [
 					oportunidades globales.
 				</p>
 			</div>
+		</div>
 
-			<div class="about-card rounded-2xl bg-gtm-navy/60 p-8 ring-1 ring-gtm-gold/25 backdrop-blur-sm">
-				<span class="font-display text-xs font-semibold tracking-widest text-gtm-gold uppercase">
-					Objetivos estratégicos
-				</span>
-				<ul class="mt-4 space-y-3">
-					{
-						objetivos.map((item) => (
-							<li class="flex gap-3 text-sm leading-relaxed text-slate-200">
-								<span class="text-gtm-gold" aria-hidden="true">
-									→
-								</span>
-								<span>{item}</span>
-							</li>
-						))
-					}
-				</ul>
-			</div>
+		<div class="about-card mt-6 rounded-2xl bg-gtm-navy/60 p-8 ring-1 ring-gtm-gold/25 backdrop-blur-sm">
+			<span class="font-display text-xs font-semibold tracking-widest text-gtm-gold uppercase">
+				Objetivos estratégicos
+			</span>
+			<ul class="mt-5 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
+				{
+					objetivos.map((item) => (
+						<li class="flex gap-3 text-sm leading-relaxed text-slate-200">
+							<span class="text-gtm-gold" aria-hidden="true">
+								→
+							</span>
+							<span>{item}</span>
+						</li>
+					))
+				}
+			</ul>
 		</div>
 	</div>
 </section>
