@@ -96,8 +96,8 @@ type GlobeKeyframe = {
 	offsetX: number;
 	offsetY: number;
 	scale: number;
-	/** rad/s de rotación de reposo (autorrotación). */
-	driftSpeed: number;
+	/** Amplitud (rad) del vaivén de rotación de reposo (autorrotación). 0 = quieto y centrado. */
+	driftAmp: number;
 	opacity: number;
 };
 
@@ -108,7 +108,7 @@ export const KEYFRAMES: GlobeKeyframe[] = [
 		offsetX: 0.24,
 		offsetY: 0,
 		scale: 1.0,
-		driftSpeed: 0.03,
+		driftAmp: 0.12,
 		opacity: 0.95,
 	},
 	{
@@ -117,7 +117,7 @@ export const KEYFRAMES: GlobeKeyframe[] = [
 		offsetX: -0.22,
 		offsetY: 0.03,
 		scale: 1.1,
-		driftSpeed: 0.006,
+		driftAmp: 0.03,
 		opacity: 0.85,
 	},
 	{
@@ -126,7 +126,7 @@ export const KEYFRAMES: GlobeKeyframe[] = [
 		offsetX: 0.24,
 		offsetY: 0,
 		scale: 1.18,
-		driftSpeed: 0,
+		driftAmp: 0,
 		opacity: 0.8,
 	},
 	{
@@ -135,7 +135,7 @@ export const KEYFRAMES: GlobeKeyframe[] = [
 		offsetX: -0.24,
 		offsetY: -0.03,
 		scale: 1.32,
-		driftSpeed: 0,
+		driftAmp: 0,
 		opacity: 0.72,
 	},
 	{
@@ -144,7 +144,7 @@ export const KEYFRAMES: GlobeKeyframe[] = [
 		offsetX: 0.24,
 		offsetY: 0,
 		scale: 1.45,
-		driftSpeed: 0,
+		driftAmp: 0,
 		opacity: 0.72,
 	},
 	{
@@ -153,7 +153,7 @@ export const KEYFRAMES: GlobeKeyframe[] = [
 		offsetX: 0,
 		offsetY: 0,
 		scale: 0.92,
-		driftSpeed: 0.05,
+		driftAmp: 0.16,
 		opacity: 0.9,
 	},
 ];

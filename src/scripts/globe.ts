@@ -11,11 +11,18 @@ type GlobeState = {
 	offsetX: number;
 	offsetY: number;
 	opacity: number;
-	/** Rotación idle acumulada (rad). Se integra en el rAF, nunca se tweenea. */
+	/** Rotación idle actual (rad), derivada de driftPhase/driftAmp. Nunca se tweenea directamente. */
 	drift: number;
-	/** rad/s — sí se tweenea por ScrollTrigger. */
-	driftSpeed: number;
+	/** Fase (rad) del vaivén idle. Se integra en el rAF, nunca se tweenea. */
+	driftPhase: number;
+	/** Amplitud (rad) del vaivén idle — sí se tweenea por ScrollTrigger. */
+	driftAmp: number;
 };
+
+/** Velocidad angular (rad/s) de la fase del vaivén idle. Periodo ≈ 25 s. */
+const DRIFT_OMEGA = 0.25;
+
+type GlobeFrame = Omit<GlobeState, 'drift' | 'driftPhase'>;
 
 function hasWebGL(): boolean {
 	try {
@@ -60,15 +67,29 @@ export function initGlobe(): () => void {
 	const angles = KEYFRAMES.map((k) => focusAngles(k.focus.lat, k.focus.lon));
 	const phis = unwrapChain(angles.map((a) => a.phi));
 
+	/** Resuelve los keyframes a valores absolutos con el damping móvil ya
+	 * aplicado, para que cada tramo tenga un `from`/`to` explícito (nunca
+	 * dependiente del estado vivo) y el keyframe inicial use el mismo damping
+	 * que el resto. */
+	function resolveKeyframes(desktop: boolean): GlobeFrame[] {
+		const amp = desktop ? 1 : 0.35;
+		return KEYFRAMES.map((kf, i) => ({
+			phi: phis[i],
+			theta: angles[i].theta,
+			scale: desktop ? kf.scale : 1 + (kf.scale - 1) * 0.4,
+			offsetX: kf.offsetX * amp,
+			offsetY: kf.offsetY * amp,
+			opacity: desktop ? kf.opacity : kf.opacity * 0.7,
+			driftAmp: kf.driftAmp,
+		}));
+	}
+
+	const initialFrames = resolveKeyframes(!smallQuery.matches);
 	const state: GlobeState = {
-		phi: phis[0],
-		theta: angles[0].theta,
-		scale: KEYFRAMES[0].scale,
-		offsetX: KEYFRAMES[0].offsetX,
-		offsetY: KEYFRAMES[0].offsetY,
-		opacity: KEYFRAMES[0].opacity,
+		...initialFrames[0],
 		drift: 0,
-		driftSpeed: reduceMotionQuery.matches ? 0 : KEYFRAMES[0].driftSpeed,
+		driftPhase: 0,
+		driftAmp: reduceMotionQuery.matches ? 0 : initialFrames[0].driftAmp,
 	};
 
 	const options: COBEOptions = {
@@ -121,7 +142,8 @@ export function initGlobe(): () => void {
 		raf = requestAnimationFrame(frame);
 		const dt = Math.min((now - last) / 1000, 0.05);
 		last = now;
-		state.drift += state.driftSpeed * dt;
+		state.driftPhase += DRIFT_OMEGA * dt;
+		state.drift = state.driftAmp * Math.sin(state.driftPhase);
 		render();
 	}
 
@@ -142,7 +164,6 @@ export function initGlobe(): () => void {
 		dpr = getDpr();
 		globe.update({ width: cssW, height: cssH, devicePixelRatio: dpr });
 		if (!raf) render();
-		ScrollTrigger.refresh();
 	};
 	const debouncedResize = debounce(onResize, 200);
 	window.addEventListener('resize', debouncedResize, { passive: true });
@@ -166,31 +187,29 @@ export function initGlobe(): () => void {
 			if (!conditions.motion) return;
 
 			start();
-			const amp = conditions.desktop ? 1 : 0.35;
+			const frames = resolveKeyframes(conditions.desktop);
+			Object.assign(state, frames[0]);
 			const tweens = KEYFRAMES.slice(1)
 				.map((kf, i) => {
 					if (!kf.trigger) return null;
 					const el = document.querySelector(kf.trigger);
 					if (!el) return null;
-					return gsap.to(state, {
-						phi: phis[i + 1],
-						theta: angles[i + 1].theta,
-						scale: conditions.desktop ? kf.scale : 1 + (kf.scale - 1) * 0.4,
-						offsetX: kf.offsetX * amp,
-						offsetY: kf.offsetY * amp,
-						opacity: conditions.desktop ? kf.opacity : kf.opacity * 0.7,
-						driftSpeed: kf.driftSpeed,
-						ease: 'none',
-						immediateRender: false,
-						overwrite: 'auto',
-						scrollTrigger: {
-							trigger: el,
-							start: 'top 85%',
-							end: 'top 25%',
-							scrub: 0.8,
-							invalidateOnRefresh: true,
+					return gsap.fromTo(
+						state,
+						{ ...frames[i] },
+						{
+							...frames[i + 1],
+							ease: 'none',
+							immediateRender: false,
+							scrollTrigger: {
+								trigger: el,
+								start: 'top 75%',
+								end: 'top 45%',
+								scrub: 0.8,
+								invalidateOnRefresh: true,
+							},
 						},
-					});
+					);
 				})
 				.filter((t): t is gsap.core.Tween => t !== null);
 
@@ -204,7 +223,8 @@ export function initGlobe(): () => void {
 	);
 
 	mm.add('(prefers-reduced-motion: reduce)', () => {
-		state.driftSpeed = 0;
+		state.driftAmp = 0;
+		state.drift = 0;
 		requestAnimationFrame(render);
 	});
 
