@@ -1,57 +1,51 @@
 ---
 ---
 
-<section
-	id="inicio"
-	class="relative flex min-h-dvh items-center overflow-hidden bg-gtm-navy"
->
-	<div class="hero-media absolute inset-0">
-		<video
-			class="h-full w-full object-cover"
-			autoplay
-			muted
-			loop
-			playsinline
-			preload="auto"
-			aria-hidden="true"
-		>
-			<source src="/videos/hero-cargo-ship.mp4" type="video/mp4" />
-		</video>
-		<div
-			class="absolute inset-0 bg-gradient-to-t from-gtm-navy via-gtm-navy/70 to-gtm-navy/40"
-		>
-		</div>
+<section id="inicio" class="relative flex min-h-dvh items-center">
+	<!-- Scrim de legibilidad: fundido completo en móvil (texto sobre el globo),
+	     izquierda-a-derecha en desktop (el globo respira en la columna derecha) -->
+	<div
+		class="pointer-events-none absolute inset-0 "
+	>
 	</div>
 
-	<div class="relative mx-auto max-w-4xl px-4 py-32 text-center sm:px-6 sm:py-40 lg:px-8">
-		<span
-			class="hero-eyebrow font-display inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1 text-xs font-semibold tracking-widest text-gtm-gold uppercase backdrop-blur"
-		>
-			Logística Internacional
-		</span>
-		<h1
-			class="hero-title font-display mt-6 text-4xl leading-tight font-bold text-white sm:text-5xl lg:text-6xl"
-		>
-			Conectamos tu carga <span class="text-gtm-gold">con el mundo</span>
-		</h1>
-		<p class="hero-subtitle mx-auto mt-6 max-w-2xl text-base text-slate-200 sm:text-lg">
-			En GTM Alliance movemos tu carga seca y general por mar, tierra y aire con soluciones
-			logísticas confiables, seguras y a tiempo.
-		</p>
-		<div class="hero-cta mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-			<a
-				href="#contacto"
-				class="rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105"
+	<div
+		class="relative mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 px-4 py-32 sm:px-6 sm:py-40 lg:grid-cols-2 lg:gap-8 lg:px-8"
+	>
+		<div class="text-center lg:text-left">
+			<h1
+				class="hero-eyebrow font-display inline-block rounded-3xl border border-white/15 bg-white/10 px-4 py-1 text-sm font-semibold tracking-widest text-gtm-gold uppercase backdrop-blur"
 			>
-				Solicita una cotización
-			</a>
-			<a
-				href="#servicios"
-				class="rounded-full border border-white/40 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+				Soluciones Integrales en Comercio Exterior y Logística Internacional
+			</h1>
+			<h2
+				class="hero-title font-display mt-6 text-4xl leading-tight font-bold text-white sm:text-5xl lg:text-6xl"
 			>
-				Conoce nuestros servicios
-			</a>
+				Conectamos tu carga <span class="text-gtm-gold">con el mundo</span>
+			</h2>
+			<p class="hero-subtitle mt-6 max-w-2xl text-base text-slate-300 sm:text-lg lg:mx-0 mx-auto">
+				Ayudamos a productores, industrias y empresas a expandirse hacia mercados internacionales mediante soluciones de comercio exterior, exportación, logística internacional, cadena de frío y carga seca, garantizando trazabilidad y cumplimiento en cada operación.
+			</p>
+			<div
+				class="hero-cta mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start"
+			>
+				<a
+					href="#contacto"
+					class="rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105"
+				>
+					Solicitar Asesoría
+				</a>
+				<a
+					href="#servicios"
+					class="rounded-full border border-white/40 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+				>
+					Explorar Soluciones
+				</a>
+			</div>
 		</div>
+
+		<!-- Columna reservada para el globo de fondo, que es fixed y vive detrás -->
+		<div class="hidden lg:block" aria-hidden="true"></div>
 	</div>
 </section>
 
@@ -63,12 +57,7 @@
 	mm.add('(prefers-reduced-motion: no-preference)', () => {
 		const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-		tl.fromTo(
-			'.hero-media video',
-			{ scale: 1.25, opacity: 0 },
-			{ scale: 1, opacity: 1, duration: 1.8 },
-		)
-			.fromTo('.hero-eyebrow', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6 }, '-=1')
+		tl.fromTo('.hero-eyebrow', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6 })
 			.fromTo('.hero-title', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8 }, '-=0.4')
 			.fromTo(
 				'.hero-subtitle',
@@ -82,9 +71,10 @@
 	});
 
 	mm.add('(prefers-reduced-motion: reduce)', () => {
-		gsap.set(
-			['.hero-media video', '.hero-eyebrow', '.hero-title', '.hero-subtitle', '.hero-cta'],
-			{ opacity: 1, scale: 1, y: 0 },
-		);
+		gsap.set(['.hero-eyebrow', '.hero-title', '.hero-subtitle', '.hero-cta'], {
+			opacity: 1,
+			scale: 1,
+			y: 0,
+		});
 	});
 </script>

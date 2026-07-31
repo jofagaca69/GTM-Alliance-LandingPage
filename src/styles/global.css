@@ -25,6 +25,7 @@
 @theme {
 	--color-gtm-navy: #1c2f4a;
 	--color-gtm-gold: #d4a537;
+	--color-gtm-deep: #0a1220;
 
 	--font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 	--font-display: "Zodiak", ui-serif, Georgia, serif;
@@ -36,4 +37,26 @@ body {
 
 html {
 	scroll-padding-top: 6rem;
+	background-color: var(--color-gtm-deep);
+	color-scheme: dark;
+}
+
+/* Fallback cuando no hay WebGL disponible: esfera estática en CSS */
+.globe-fallback {
+	position: relative;
+}
+
+.globe-fallback::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: min(70vw, 70vh);
+	aspect-ratio: 1;
+	transform: translate(-50%, -50%);
+	border-radius: 9999px;
+	background:
+		radial-gradient(circle at 34% 30%, rgba(56, 92, 140, 0.55), rgba(12, 24, 42, 0.9) 62%),
+		radial-gradient(circle at 50% 50%, rgba(212, 165, 55, 0.1), transparent 70%);
+	box-shadow: 0 0 140px 40px rgba(28, 47, 74, 0.55);
 }
