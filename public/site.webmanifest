@@ -1,0 +1,16 @@
+{
+  "name": "GTM Alliance",
+  "short_name": "GTM Alliance",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a1220",
+  "theme_color": "#0a1220",
+  "icons": [
+    {
+      "src": "/android-icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
