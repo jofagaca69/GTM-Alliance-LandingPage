@@ -9,6 +9,7 @@ type NavItem = SimpleLink | DropdownLink;
 const navItems: NavItem[] = [
 	{ label: 'Inicio', href: '#inicio', active: true },
 	{ label: 'Quiénes Somos', href: '#quienes-somos' },
+	{ label: 'Servicios', href: '#servicios' },
 	{
 		label: 'Líneas de Negocio',
 		dropdown: [
@@ -26,7 +27,6 @@ const navItems: NavItem[] = [
 			},
 		],
 	},
-	{ label: 'Servicios', href: '#servicios' },
 	{ label: 'Contacto', href: '#contacto' },
 ];
 ---
@@ -160,6 +160,12 @@ const navItems: NavItem[] = [
 		>
 			Quiénes Somos
 		</a>
+		<a
+			href="#servicios"
+			class="rounded-full px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+		>
+			Servicios
+		</a>
 
 		<!-- Líneas de Negocio (expanded inline) -->
 		<span class="font-display mt-1 px-4 text-[10px] font-semibold tracking-widest text-gtm-gold uppercase">
@@ -179,14 +185,8 @@ const navItems: NavItem[] = [
 		</a>
 
 		<a
-			href="#servicios"
-			class="mt-1 rounded-full px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
-		>
-			Servicios
-		</a>
-		<a
 			href="#contacto"
-			class="rounded-full px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+			class="mt-1 rounded-full px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
 		>
 			Contacto
 		</a>

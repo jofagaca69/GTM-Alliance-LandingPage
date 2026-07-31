@@ -1,0 +1,242 @@
+---
+const ICONS = {
+	transporte: '<circle cx="5" cy="18" r="1.75"/><circle cx="12" cy="6" r="1.75"/><circle cx="19" cy="18" r="1.75"/><path d="M6.4 16.5L10.8 7.7M13.2 7.7l5.4 8.8"/>',
+	aduana:
+		'<path d="M7 3.5h7l4 4V20a.75.75 0 01-.75.75H7A.75.75 0 016.25 20V4.25A.75.75 0 017 3.5z"/><path d="M14 3.5v4h4"/><path d="M9.25 13l1.85 1.85L15 10.75"/>',
+	almacenaje:
+		'<path d="M3.5 10.5L12 4l8.5 6.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M9.75 20v-6.25h4.5V20"/>',
+	consolidacion:
+		'<rect x="3.75" y="12.75" width="6.5" height="6.5" rx="1"/><rect x="13.75" y="12.75" width="6.5" height="6.5" rx="1"/><rect x="8.75" y="4.25" width="6.5" height="6.5" rx="1"/>',
+	seguro:
+		'<path d="M12 3.25l7 2.75v5.5c0 4.6-3 7.85-7 9.25-4-1.4-7-4.65-7-9.25V6l7-2.75z"/><path d="M8.75 12.25l2.25 2.25 4.25-4.5"/>',
+	asesoria: '<path d="M4.25 5.5h15.5v10.75H8.75l-4.5 3.75V5.5z"/><path d="M8 9.5h8M8 12.75h5"/>',
+};
+
+const servicios = [
+	{
+		num: '01',
+		title: 'Transporte Internacional',
+		description: 'Marítimo, aéreo y terrestre.',
+		slug: 'transporte-internacional',
+		icon: ICONS.transporte,
+	},
+	{
+		num: '02',
+		title: 'Agenciamiento Aduanero',
+		description: 'Trámites, normativas y cumplimiento.',
+		slug: 'agenciamiento-aduanero',
+		icon: ICONS.aduana,
+	},
+	{
+		num: '03',
+		title: 'Almacenaje y Distribución',
+		description: 'Frío y carga seca.',
+		slug: 'almacenaje-distribucion',
+		icon: ICONS.almacenaje,
+	},
+	{
+		num: '04',
+		title: 'Consolidación de Carga',
+		description: 'Agrupación y manejo especializado.',
+		slug: 'consolidacion-carga',
+		icon: ICONS.consolidacion,
+	},
+	{
+		num: '05',
+		title: 'Seguro de Mercancías',
+		description: 'Cobertura total.',
+		slug: 'seguro-mercancias',
+		icon: ICONS.seguro,
+	},
+	{
+		num: '06',
+		title: 'Asesoría en Comercio Exterior',
+		description: 'Acompañamiento estratégico.',
+		slug: 'asesoria-comercio-exterior',
+		icon: ICONS.asesoria,
+	},
+];
+---
+
+<section id="servicios" class="bg-transparent py-16 sm:py-24">
+	<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+		<span
+			class="servicios-eyebrow font-display inline-block text-xs font-semibold tracking-widest text-gtm-gold uppercase"
+		>
+			Servicios
+		</span>
+		<h2
+			class="servicios-title font-display mt-3 max-w-3xl text-3xl leading-tight font-bold text-white sm:text-4xl lg:text-5xl"
+		>
+			Soluciones Integrales en Comercio Exterior
+		</h2>
+		<p class="servicios-intro mt-4 max-w-3xl text-base leading-relaxed text-slate-300 lg:text-lg">
+			Cobertura integral para cada etapa de tu operación de comercio exterior, desde el transporte
+			hasta la asesoría normativa.
+		</p>
+
+		<!-- Acordeón: en desktop crece en ancho (fila), en móvil crece en alto (columna).
+		     Un único par de utilidades (flex-1 / aria-expanded:flex-[5_1_0%]) gobierna el
+		     eje activo en cada breakpoint; overflow-hidden + min-h-0/min-w-0 recortan el
+		     contenido del panel colapsado sin que el texto lo desborde ni lo aplaste. -->
+		<div class="servicios-accordion mt-10 flex h-[43rem] flex-col gap-2 sm:mt-16 md:h-[26rem] md:flex-row md:gap-3">
+			{
+				servicios.map((servicio, i) => (
+					<button
+						type="button"
+						aria-expanded={i === 0 ? 'true' : 'false'}
+						class="servicio-panel group relative m-0 min-h-[5rem] flex-1 cursor-pointer appearance-none border-0 bg-transparent p-0 text-left transition-[flex-grow] duration-500 ease-out aria-expanded:flex-[5_1_0%] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gtm-gold md:min-h-0 md:min-w-[4.5rem]"
+					>
+						<div class="relative h-full w-full overflow-hidden rounded-[2rem]">
+							{/* Fondo de respaldo: gradiente de marca, visible mientras carga la foto o si falla */}
+							<div class="absolute inset-0 bg-[linear-gradient(160deg,#1c2f4a_0%,#0a1220_100%)]" />
+							<img
+								src={`/images/servicios/${servicio.slug}.webp`}
+								alt=""
+								loading="lazy"
+								decoding="async"
+								width="1440"
+								height="900"
+								class="absolute inset-0 h-full w-full object-cover"
+							/>
+							<div class="absolute inset-0 bg-gradient-to-t from-gtm-deep/95 via-gtm-deep/25 to-transparent" />
+
+							<div class="relative flex h-full flex-col justify-end p-4 sm:p-5 md:p-6">
+								{/* Móvil: badge + título siempre visibles en fila; la descripción
+								    colapsa a 0 de alto (grid-rows[0fr-1fr]), igual que en desktop,
+								    para no sumar alto oculto dentro del min-h-[5rem] del panel. */}
+								<div class="flex items-center gap-3 md:hidden">
+									<span
+										set:html={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">${servicio.icon}</svg>`}
+										class="servicio-badge flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gtm-deep/80 text-gtm-gold ring-1 ring-white/25 transition-colors duration-300 group-aria-expanded:bg-gtm-gold group-aria-expanded:text-gtm-navy"
+									/>
+									<h3 class="font-display text-sm font-bold text-white sm:text-base">
+										{servicio.title}
+									</h3>
+								</div>
+								<div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-aria-expanded:grid-rows-[1fr] md:hidden">
+									<div class="overflow-hidden">
+										<p class="mt-2 max-w-xs text-xs leading-relaxed text-slate-200 sm:text-sm">
+											{servicio.description}
+										</p>
+									</div>
+								</div>
+
+								{/* Desktop: el badge queda fijo abajo; título y descripción colapsan
+								    a 0 de alto (grid-rows[0fr→1fr]) en vez de solo opacidad, para que
+								    no reserven espacio invisible que empuje el badge hacia arriba. */}
+								<span
+									set:html={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">${servicio.icon}</svg>`}
+									class="servicio-badge hidden h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gtm-deep/80 text-gtm-gold ring-1 ring-white/25 transition-colors duration-300 group-aria-expanded:bg-gtm-gold group-aria-expanded:text-gtm-navy md:flex"
+								/>
+								<div class="hidden grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-aria-expanded:grid-rows-[1fr] md:grid">
+									<div class="overflow-hidden">
+										<h3 class="font-display mt-4 text-lg font-bold text-white">{servicio.title}</h3>
+										<p class="mt-2 max-w-xs text-sm leading-relaxed text-slate-200">
+											{servicio.description}
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</button>
+				))
+			}
+		</div>
+
+		<div
+			class="servicios-commitment mt-6 rounded-2xl bg-gtm-navy/60 p-8 ring-1 ring-gtm-gold/25 backdrop-blur-sm"
+		>
+			<span class="font-display text-xs font-semibold tracking-widest text-gtm-gold uppercase">
+				Nuestro compromiso
+			</span>
+			<h3 class="font-display mt-3 text-xl font-bold text-white sm:text-2xl">
+				Excelencia, puntualidad y transparencia en cada operación.
+			</h3>
+		</div>
+	</div>
+</section>
+
+<script>
+	const panels = document.querySelectorAll<HTMLButtonElement>('.servicio-panel');
+
+	function activate(target: HTMLButtonElement) {
+		if (target.getAttribute('aria-expanded') === 'true') return;
+		panels.forEach((panel) => {
+			panel.setAttribute('aria-expanded', String(panel === target));
+		});
+	}
+
+	panels.forEach((panel) => {
+		panel.addEventListener('click', () => activate(panel));
+		panel.addEventListener('focus', () => activate(panel));
+	});
+</script>
+
+<script>
+	import { gsap } from '../scripts/gsap';
+
+	const section = document.querySelector('#servicios');
+
+	if (section) {
+		const mm = gsap.matchMedia();
+
+		mm.add('(prefers-reduced-motion: no-preference)', () => {
+			const tl = gsap.timeline({
+				defaults: { ease: 'power3.out' },
+				scrollTrigger: {
+					trigger: section,
+					start: 'top 75%',
+				},
+			});
+
+			tl.fromTo('.servicios-eyebrow', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 })
+				.fromTo(
+					'.servicios-title',
+					{ opacity: 0, y: 24 },
+					{ opacity: 1, y: 0, duration: 0.7 },
+					'-=0.3',
+				)
+				.fromTo(
+					'.servicios-intro',
+					{ opacity: 0, y: 24 },
+					{ opacity: 1, y: 0, duration: 0.7 },
+					'-=0.5',
+				)
+				.fromTo(
+					// Sin animar opacity: la sección es bg-transparent y el globo (#globe-layer)
+					// es un canvas fixed detrás de toda la página. Un panel semitransparente se
+					// mezcla con el globo animado y se ve como manchas doradas/azules superpuestas.
+					// scale mantiene el panel siempre opaco.
+					'.servicio-panel',
+					{ scale: 0.94 },
+					{ scale: 1, duration: 0.6, stagger: 0.1 },
+					'-=0.3',
+				)
+				.fromTo(
+					'.servicios-commitment',
+					{ opacity: 0, y: 32 },
+					{ opacity: 1, y: 0, duration: 0.6 },
+					'-=0.2',
+				);
+
+			return () => {
+				tl.scrollTrigger?.kill();
+				tl.kill();
+			};
+		});
+
+		mm.add('(prefers-reduced-motion: reduce)', () => {
+			gsap.set(
+				[
+					'.servicios-eyebrow',
+					'.servicios-title',
+					'.servicios-intro',
+					'.servicio-panel',
+					'.servicios-commitment',
+				],
+				{ opacity: 1, y: 0 },
+			);
+		});
+	}
+</script>
