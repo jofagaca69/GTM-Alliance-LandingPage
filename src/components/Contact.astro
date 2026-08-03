@@ -81,8 +81,103 @@ const contactos = [
 			</a>
 		</div>
 
-		<!-- Cuando haya un endpoint de formulario (Formspree, Web3Forms, etc.) va aquí,
-		     reemplazando o acompañando los CTAs de arriba. -->
+		<div class="contacto-form mt-10 rounded-3xl border border-white/10 bg-slate-950/50 p-6 shadow-2xl shadow-black/20 backdrop-blur-sm sm:p-8 lg:p-10">
+			<div class="max-w-2xl">
+				<h3 class="font-display text-2xl font-semibold text-white sm:text-3xl">
+					Envíanos un mensaje
+				</h3>
+				<p class="mt-3 text-base leading-relaxed text-slate-300">
+					Completa este formulario y te responderemos con una solución a medida para tu operación.
+				</p>
+			</div>
+
+			<form id="contact-form" class="mt-8 grid gap-5 sm:grid-cols-2" action="#" method="post">
+				<div class="sm:col-span-2">
+					<label for="nombre" class="mb-2 block text-sm font-medium text-slate-200">
+						Nombre Completo*
+					</label>
+					<input
+						id="nombre"
+						name="nombre"
+						type="text"
+						required
+						class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+						placeholder="Tu nombre"
+					/>
+				</div>
+
+				<div>
+					<label for="email" class="mb-2 block text-sm font-medium text-slate-200">
+						Email*
+					</label>
+					<input
+						id="email"
+						name="email"
+						type="email"
+						required
+						class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+						placeholder="tu@email.com"
+					/>
+				</div>
+
+				<div>
+					<label for="telefono" class="mb-2 block text-sm font-medium text-slate-200">
+						Teléfono*
+					</label>
+					<input
+						id="telefono"
+						name="telefono"
+						type="tel"
+						class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+						placeholder="+57 300 000 0000"
+					/>
+				</div>
+
+				<div class="sm:col-span-2">
+					<label for="mensaje" class="mb-2 block text-sm font-medium text-slate-200">
+						Mensaje
+					</label>
+					<textarea
+						id="mensaje"
+						name="mensaje"
+						rows="5"
+						class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+						placeholder="Cuéntanos sobre tu proyecto, carga o destino..."
+					></textarea>
+				</div>
+
+				<div class="sm:col-span-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+					<button
+						type="submit"
+						class="inline-flex items-center justify-center rounded-full bg-gtm-gold px-7 py-3 text-sm font-semibold text-gtm-navy transition-transform hover:scale-[1.02]"
+					>
+						Enviar mensaje
+					</button>
+					<p class="text-sm text-slate-400">
+						Responderemos en menos de 24 horas.
+					</p>
+				</div>
+				
+			</form>
+		</div>
+	</div>
+
+	<div id="contact-privacy-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 px-4 backdrop-blur-sm">
+		<div class="w-full max-w-lg rounded-3xl border border-white/10 bg-slate-900 p-6 shadow-2xl shadow-black/30 sm:p-8">
+			<p class="text-sm font-semibold uppercase tracking-[0.2em] text-gtm-gold">Tratamiento de datos</p>
+			<h3 class="mt-3 font-display text-2xl font-semibold text-white">Confirmar envío del mensaje</h3>
+			<p class="mt-3 text-sm leading-relaxed text-slate-300">
+				Al enviar este formulario autorizas que GTM Alliance procese tus datos para responder tu solicitud, gestionar la información de contacto y atender tu consulta. Tus datos no serán compartidos con terceros sin tu autorización, salvo obligación legal.
+			</p>
+			<div class="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+				<button id="contact-cancel-policy" type="button" class="rounded-full border border-white/20 px-5 py-2.5 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/10">
+					Cancelar
+				</button>
+				<button id="contact-accept-policy" type="button" class="rounded-full bg-gtm-gold px-5 py-2.5 text-sm font-semibold text-gtm-navy transition-transform hover:scale-[1.02]">
+					Aceptar y enviar
+				</button>
+			</div>
+		</div>
 	</div>
 </section>
 
@@ -90,6 +185,31 @@ const contactos = [
 	import { gsap } from '../scripts/gsap';
 
 	const section = document.querySelector('#contacto');
+	const form = document.querySelector('#contact-form') as HTMLFormElement | null;
+	const modal = document.getElementById('contact-privacy-modal');
+	const cancelButton = document.getElementById('contact-cancel-policy');
+	const acceptButton = document.getElementById('contact-accept-policy');
+	let formReadyToSubmit = false;
+
+	form?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		modal?.classList.remove('hidden');
+		modal?.classList.add('flex');
+	});
+
+	cancelButton?.addEventListener('click', () => {
+		modal?.classList.add('hidden');
+		modal?.classList.remove('flex');
+	});
+
+	acceptButton?.addEventListener('click', () => {
+		formReadyToSubmit = true;
+		modal?.classList.add('hidden');
+		modal?.classList.remove('flex');
+		if (form && formReadyToSubmit) {
+			form.submit();
+		}
+	});
 
 	if (section) {
 		const mm = gsap.matchMedia();
@@ -127,6 +247,12 @@ const contactos = [
 					{ opacity: 0, y: 20 },
 					{ opacity: 1, y: 0, duration: 0.6 },
 					'-=0.2',
+				)
+				.fromTo(
+					'.contacto-form',
+					{ opacity: 0, y: 24 },
+					{ opacity: 1, y: 0, duration: 0.7 },
+					'-=0.2',
 				);
 
 			return () => {
@@ -137,7 +263,7 @@ const contactos = [
 
 		mm.add('(prefers-reduced-motion: reduce)', () => {
 			gsap.set(
-				['.contacto-eyebrow', '.contacto-title', '.contacto-intro', '.contacto-card', '.contacto-cta'],
+				['.contacto-eyebrow', '.contacto-title', '.contacto-intro', '.contacto-card', '.contacto-cta', '.contacto-form'],
 				{ opacity: 1, y: 0 },
 			);
 		});

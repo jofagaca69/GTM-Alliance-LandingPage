@@ -7,22 +7,22 @@ type DropdownLink = {
 type NavItem = SimpleLink | DropdownLink;
 
 const navItems: NavItem[] = [
-	{ label: 'Inicio', href: '#inicio', active: true },
-	{ label: 'Quiénes Somos', href: '#quienes-somos' },
-	{ label: 'Servicios', href: '#servicios' },
+	{ label: 'Inicio', href: '/#inicio', active: true },
+	{ label: 'Quiénes Somos', href: '/#quienes-somos' },
+	{ label: 'Servicios', href: '/#servicios' },
 	{
 		label: 'Líneas de Negocio',
 		dropdown: [
 			{
 				tag: 'Línea de Frío',
 				title: 'Congelados',
-				href: '#congelados',
+				href: '/#congelados',
 				description: 'Cadena de frío con trazabilidad total, en alianza con Coldfood.',
 			},
 			{
 				tag: 'Línea Seca',
 				title: 'Carga Seca',
-				href: '#carga-seca',
+				href: '/#carga-seca',
 				description: 'Exportación multi-industria. Próximamente Medellín.',
 			},
 		],

@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="PQRSD"
+	description="Formulario de PQRSD de GTM Alliance para peticiones, quejas, reclamos, sugerencias y solicitudes de información."
+	keywords="pqr, pqrsd, reclamos, quejas, sugerencias, formulario de contacto"
+>
+	<section id="pqrsd" class="relative overflow-hidden py-20 sm:py-28">
+		<div class="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
+			<div class="max-w-3xl">
+				<span class="font-display inline-block text-xs font-semibold tracking-[0.35em] text-gtm-gold uppercase">
+					PQRSD
+				</span>
+				<h1 class="font-display mt-4 text-4xl leading-tight font-bold text-white sm:text-5xl lg:text-6xl">
+					Tu voz importa en cada operación
+				</h1>
+				<p class="mt-5 text-lg leading-relaxed text-slate-300">
+					En GTM Alliance valoramos tus comentarios, solicitudes y reclamos. Completa este formulario
+					y nos pondremos en contacto contigo para atender tu caso con la mayor celeridad.
+				</p>
+			</div>
+
+			<div class="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+				<div class="rounded-3xl border border-white/10 bg-slate-950/60 p-8 shadow-2xl shadow-black/20 backdrop-blur-sm">
+					<h2 class="font-display text-2xl font-semibold text-white">¿Qué puedes reportar?</h2>
+					<ul class="mt-6 space-y-4 text-sm leading-relaxed text-slate-300">
+						<li class="flex gap-3">
+							<span class="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-gtm-gold"></span>
+							<span>Petición de información sobre servicios, tiempos o costos.</span>
+						</li>
+						<li class="flex gap-3">
+							<span class="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-gtm-gold"></span>
+							<span>Quejas o reclamos relacionados con una operación o servicio.</span>
+						</li>
+						<li class="flex gap-3">
+							<span class="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-gtm-gold"></span>
+							<span>Sugerencias para mejorar la experiencia de nuestros clientes.</span>
+						</li>
+					</ul>
+
+					<div class="mt-8 rounded-2xl border border-gtm-gold/20 bg-gtm-gold/10 p-5">
+						<p class="text-sm font-semibold text-gtm-gold">Respuesta estimada</p>
+						<p class="mt-2 text-sm leading-relaxed text-slate-300">
+							Responderemos tu solicitud dentro de los tiempos establecidos por nuestra política de atención al cliente.
+						</p>
+					</div>
+				</div>
+
+				<div class="rounded-3xl border border-white/10 bg-slate-950/60 p-8 shadow-2xl shadow-black/20 backdrop-blur-sm">
+					<h2 class="font-display text-2xl font-semibold text-white">Formulario de PQRSD</h2>
+					<form class="mt-6 grid gap-5 sm:grid-cols-2" action="#" method="post">
+						<div class="sm:col-span-2">
+							<label for="nombre" class="mb-2 block text-sm font-medium text-slate-200">Nombre completo</label>
+							<input
+								id="nombre"
+								name="nombre"
+								type="text"
+								required
+								class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+								placeholder="Tu nombre"
+							/>
+						</div>
+
+						<div>
+							<label for="email" class="mb-2 block text-sm font-medium text-slate-200">Email</label>
+							<input
+								id="email"
+								name="email"
+								type="email"
+								required
+								class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+								placeholder="tu@email.com"
+							/>
+						</div>
+
+						<div>
+							<label for="telefono" class="mb-2 block text-sm font-medium text-slate-200">Teléfono</label>
+							<input
+								id="telefono"
+								name="telefono"
+								type="tel"
+								required
+								class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+								placeholder="+57 300 000 0000"
+							/>
+						</div>
+
+						<div class="sm:col-span-2">
+							<label for="tipo" class="mb-2 block text-sm font-medium text-slate-200">Tipo de solicitud</label>
+							<select
+								id="tipo"
+								name="tipo"
+								required
+								class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+							>
+								<option value="" disabled selected>Selecciona una opción</option>
+								<option value="peticion">Petición</option>
+								<option value="queja">Queja</option>
+								<option value="reclamo">Reclamo</option>
+								<option value="sugerencia">Sugerencia</option>
+								<option value="solicitud-informacion">Solicitud de información</option>
+								<option value="incidencia-operativa">Incidencia operativa</option>
+								<option value="otro">Otro</option>
+							</select>
+						</div>
+
+						<div class="sm:col-span-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+							<button
+								type="submit"
+								class="inline-flex items-center justify-center rounded-full bg-gtm-gold px-7 py-3 text-sm font-semibold text-gtm-navy transition-transform hover:scale-[1.02]"
+							>
+								Enviar solicitud
+							</button>
+							<p class="text-sm text-slate-400">Tu información está segura con nosotros.</p>
+						</div>
+
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div id="privacy-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
+		<div class="w-full max-w-lg rounded-3xl border border-white/10 bg-slate-950 p-8 shadow-2xl shadow-black/30">
+			<h3 class="font-display text-2xl font-semibold text-white">Política de tratamiento de datos</h3>
+			<p class="mt-4 text-sm leading-relaxed text-slate-300">
+				Tus datos serán utilizados únicamente para identificarte, atender tu solicitud y dar seguimiento a tu caso. Puedes solicitar la actualización o eliminación de tus datos en cualquier momento.
+			</p>
+			<div class="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+				<button id="cancel-policy" type="button" class="rounded-full border border-white/20 px-5 py-2.5 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/10">
+					Cancelar
+				</button>
+				<button id="accept-policy" type="button" class="rounded-full bg-gtm-gold px-5 py-2.5 text-sm font-semibold text-gtm-navy transition-transform hover:scale-[1.02]">
+					Aceptar
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const form = document.querySelector('#pqrsd form') as HTMLFormElement | null;
+		const modal = document.getElementById('privacy-modal');
+		const cancelButton = document.getElementById('cancel-policy');
+		const acceptButton = document.getElementById('accept-policy');
+		let formReadyToSubmit = false;
+
+		form?.addEventListener('submit', (event) => {
+			event.preventDefault();
+			modal?.classList.remove('hidden');
+			modal?.classList.add('flex');
+		});
+
+		cancelButton?.addEventListener('click', () => {
+			modal?.classList.add('hidden');
+			modal?.classList.remove('flex');
+		});
+
+		acceptButton?.addEventListener('click', () => {
+			formReadyToSubmit = true;
+			modal?.classList.add('hidden');
+			modal?.classList.remove('flex');
+			if (form && formReadyToSubmit) {
+				form.submit();
+			}
+		});
+	</script>
+</BaseLayout>
