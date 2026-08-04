@@ -1,5 +1,6 @@
 ---
 import ComingSoonCover from './ComingSoonCover.astro';
+import { CORREOS } from '../data/contact';
 
 const aliados = [
 	{
@@ -39,7 +40,7 @@ const servicios = [
 		titulo="Próximamente en Medellín"
 		descripcion="Estamos preparando esta línea de operación. Muy pronto podrás exportar tu carga seca con nosotros desde Medellín."
 		ctaLabel="Quiero saber más"
-		ctaHref="mailto:info@gtmalliance.com?subject=Interés%20en%20la%20línea%20de%20carga%20seca%20—%20Medellín"
+		ctaHref={`mailto:${CORREOS.gerencia}?subject=Interés%20en%20la%20línea%20de%20carga%20seca%20—%20Medellín`}
 	>
 		<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 			<span

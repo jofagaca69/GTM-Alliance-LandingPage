@@ -69,13 +69,14 @@ The client supplied a full content brief (`Pagina Web.docx`) laying out the site
 6. **Portal de Clientes** (not yet built — likely out of scope for this static marketing site)
    Authenticated client area: tracking de envíos en tiempo real, documentación digital, reportes y estadísticas, asistencia personalizada, historial de operaciones. This implies auth + backend data, unlike the rest of the static site — flag scope/architecture with the user before starting rather than assuming it belongs in this Astro project as-is.
 
-7. **Contacto** (`#contacto` — not yet built)
-   Bogotá, Colombia · info@gtmalliance.com · +57 310 000 0000
+7. **Contacto** (`#contacto`, done)
+   Carrera 110 # 70G-17, Piso 2, Bogotá D.C. · gerencia@gtm-alliance.com · administracion@gtm-alliance.com · +57 300 797 4993
 
 ### Known content gaps to reconcile
 
-- `Footer.astro` has several `placeholder: true` entries in its frontmatter data arrays (`lineasContacto`, `oficinas`, `horarios`, `redes`, `legales`) — additional phone lines, street addresses, attention hours, and social media URLs are all filler pending the client's final data. `grep "placeholder: true"` in that file lists every one.
-- `BaseLayout.astro`'s `orgSchema` JSON-LD has an empty `sameAs` and no `address` — once the footer placeholders above are replaced with real data, mirror it here too (consider moving both into a shared module under `src/data/`).
+- Real contact data (phone, address, gerencia/administración emails) lives in `src/data/contact.ts`, consumed by `Contact.astro`, `Footer.astro`, `DryCargoLine.astro`, and `BaseLayout.astro`'s `orgSchema` JSON-LD (`address`, `contactPoint.telephone`/`.email`). Do not hardcode contact values elsewhere — import from that module.
+- `Footer.astro` still has `placeholder: true` entries for `horarios`, `redes`, and `legales` — attention hours, social media URLs, and legal/policy pages are filler pending the client's final data. `grep "placeholder: true"` in that file lists every one.
+- `BaseLayout.astro`'s `orgSchema` JSON-LD still has an empty `sameAs` — fill it in once social media URLs arrive.
 
 ## Documentation
 

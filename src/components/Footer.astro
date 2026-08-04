@@ -1,5 +1,6 @@
 ---
 import { NAV_ITEMS } from '../data/nav';
+import { TELEFONO, CORREOS, SEDE_PRINCIPAL } from '../data/contact';
 
 const year = new Date().getFullYear();
 const initialActive = Astro.url.pathname === '/' ? 'inicio' : 'pqrsd';
@@ -7,52 +8,33 @@ const initialActive = Astro.url.pathname === '/' ? 'inicio' : 'pqrsd';
 /* -------------------------------------------------------------------------
  * Contenido del footer.
  *
- * Las entradas marcadas con `placeholder: true` llevan datos de relleno y
- * hay que reemplazarlas cuando el cliente entregue la información
- * definitiva (líneas telefónicas adicionales, direcciones, horarios y URLs
- * de redes). `grep "placeholder: true"` las lista todas.
+ * Teléfono y correos vienen de `src/data/contact.ts`. Las entradas marcadas
+ * con `placeholder: true` (horarios, redes sociales, páginas legales) siguen
+ * pendientes de que el cliente entregue la información definitiva.
+ * `grep "placeholder: true"` las lista todas.
  * ---------------------------------------------------------------------- */
 
 type FooterValue = { label: string; href?: string; placeholder?: true };
 
 const lineasContacto: { titulo: string; valores: FooterValue[] }[] = [
 	{
-		titulo: 'Oficina principal — Bogotá',
+		titulo: 'Gerencia',
 		valores: [
-			{ label: '+57 310 000 0000', href: 'tel:+573100000000' },
-			{ label: 'info@gtmalliance.com', href: 'mailto:info@gtmalliance.com' },
+			{ label: TELEFONO.label, href: TELEFONO.href },
+			{ label: CORREOS.gerencia, href: `mailto:${CORREOS.gerencia}` },
 		],
 	},
 	{
-		titulo: 'Comercial y cotizaciones',
+		titulo: 'Administración',
 		valores: [
-			{ label: '+57 310 000 0001', href: 'tel:+573100000001', placeholder: true },
-			{
-				label: 'comercial@gtmalliance.com',
-				href: 'mailto:comercial@gtmalliance.com',
-				placeholder: true,
-			},
-		],
-	},
-	{
-		titulo: 'Servicio al cliente',
-		valores: [
-			{ label: '+57 310 000 0002', href: 'tel:+573100000002', placeholder: true },
-			{
-				label: 'servicioalcliente@gtmalliance.com',
-				href: 'mailto:servicioalcliente@gtmalliance.com',
-				placeholder: true,
-			},
+			{ label: TELEFONO.label, href: TELEFONO.href },
+			{ label: CORREOS.administracion, href: `mailto:${CORREOS.administracion}` },
 		],
 	},
 ];
 
 const oficinas: { ciudad: string; direccion: string; placeholder?: true }[] = [
-	{
-		ciudad: 'Bogotá D.C., Colombia',
-		direccion: 'Calle 00 # 00 - 00, Oficina 000',
-		placeholder: true,
-	},
+	{ ciudad: SEDE_PRINCIPAL.ciudad, direccion: SEDE_PRINCIPAL.direccion },
 	{ ciudad: 'Medellín, Colombia', direccion: 'Próximamente', placeholder: true },
 ];
 

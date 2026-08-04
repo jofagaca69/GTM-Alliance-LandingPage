@@ -4,6 +4,7 @@ import DotGrid from '../components/DotGrid.astro';
 import Globe from '../components/Globe.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import { TELEFONO, CORREOS, SEDE_PRINCIPAL } from '../data/contact';
 
 interface Props {
 	title: string;
@@ -29,7 +30,7 @@ const {
 	keywords,
 } = Astro.props;
 
-const siteBase = Astro.site ?? new URL('https://gtmalliance.com');
+const siteBase = Astro.site ?? new URL('https://gtm-alliance.com');
 const canonicalURL = Astro.props.canonicalURL ?? new URL(Astro.url.pathname, siteBase).href;
 const ogImageURL = new URL(image, siteBase).href;
 const fullTitle = `${title} | GTM Alliance`;
@@ -45,9 +46,18 @@ const orgSchema = {
 	url: siteBase.href,
 	logo: new URL('/logo.webp', siteBase).href,
 	sameAs: [],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: SEDE_PRINCIPAL.streetAddress,
+		addressLocality: SEDE_PRINCIPAL.addressLocality,
+		addressRegion: SEDE_PRINCIPAL.addressRegion,
+		addressCountry: SEDE_PRINCIPAL.addressCountry,
+	},
 	contactPoint: {
 		'@type': 'ContactPoint',
 		contactType: 'customer service',
+		telephone: TELEFONO.href.replace('tel:', ''),
+		email: CORREOS.gerencia,
 		availableLanguage: ['Spanish'],
 	},
 	hasOfferCatalog: {
