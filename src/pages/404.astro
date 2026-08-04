@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="Página no encontrada"
+	description="La página que buscas no existe o fue movida."
+	noindex
+>
+	<section class="flex min-h-dvh flex-col items-center justify-center px-4 py-24 text-center">
+		<span
+			class="font-display inline-block text-xs font-semibold tracking-widest text-gtm-gold uppercase"
+		>
+			Error 404
+		</span>
+		<h1 class="font-display mt-4 text-4xl leading-tight font-bold text-white sm:text-5xl">
+			No encontramos esta página
+		</h1>
+		<p class="mt-5 max-w-xl text-lg leading-relaxed text-slate-300">
+			El enlace que seguiste puede estar desactualizado o la página fue movida. Vuelve al inicio
+			para encontrar lo que buscas.
+		</p>
+		<a
+			href="/"
+			class="mt-8 rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105"
+		>
+			Volver al inicio
+		</a>
+	</section>
+</BaseLayout>

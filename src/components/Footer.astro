@@ -1,6 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import { NAV_ITEMS } from '../data/nav';
 import { TELEFONO, CORREOS, SEDE_PRINCIPAL } from '../data/contact';
+import logo from '../assets/logo.webp';
 
 const year = new Date().getFullYear();
 const initialActive = Astro.url.pathname === '/' ? 'inicio' : 'pqrsd';
@@ -73,9 +75,9 @@ const redes: { nombre: string; href: string; icon: string; placeholder?: true }[
 ];
 
 const legales: FooterValue[] = [
-	{ label: 'Formulario PQRSD', href: '/pqrsd' },
-	{ label: 'Política de tratamiento de datos', href: '/pqrsd', placeholder: true },
-	{ label: 'Términos y condiciones', href: '/pqrsd', placeholder: true },
+	{ label: 'Formulario PQRSD', href: '/pqrsd/' },
+	{ label: 'Política de tratamiento de datos', href: '/pqrsd/', placeholder: true },
+	{ label: 'Términos y condiciones', href: '/pqrsd/', placeholder: true },
 ];
 
 /* Enlace de navegación del footer: punto dorado a la izquierda que aparece
@@ -92,7 +94,13 @@ const navLinkClass =
 			class="flex flex-col gap-6 border-b border-white/10 pb-10 sm:flex-row sm:items-center sm:justify-between sm:gap-10"
 		>
 			<a href="/#inicio" class="inline-flex items-center self-start rounded-2xl bg-white px-4 py-3">
-				<img src="/logo.webp" alt="GTM Alliance - Global Team Work" class="h-20 w-auto" />
+				<Image
+					src={logo}
+					alt="GTM Alliance - Global Team Work"
+					width={320}
+					class="h-20 w-auto"
+					loading="lazy"
+				/>
 			</a>
 			<p class="max-w-md text-sm leading-relaxed text-slate-400">
 				Conectamos tu carga con el mundo. Soluciones integrales en comercio exterior y logística
@@ -199,7 +207,7 @@ const navLinkClass =
 				<div class="flex flex-col gap-1">
 					<p class="text-sm font-semibold text-white">Deja tus PQRSD</p>
 					<a
-						href="/pqrsd"
+						href="/pqrsd/"
 						data-nav-link="pqrsd"
 						data-active={initialActive === 'pqrsd' ? '' : undefined}
 						aria-current={initialActive === 'pqrsd' ? 'page' : undefined}

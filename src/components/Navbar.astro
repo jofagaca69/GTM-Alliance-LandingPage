@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { NAV_ITEMS, groupTargets } from '../data/nav';
+import logo from '../assets/logo.webp';
 
 // Estado activo inicial (antes de que el scrollspy tome el control), para
 // que el HTML servido ya llegue correcto y no haya flash en la primera
@@ -12,7 +14,12 @@ const initialActive = Astro.url.pathname === '/' ? 'inicio' : '';
 		class="mx-auto flex max-w-4xl items-center justify-between gap-4 rounded-full border border-white/10 bg-gtm-navy/70 px-4 py-2.5 shadow-lg shadow-black/40 backdrop-blur-md md:px-6"
 	>
 		<a href="/#inicio" class="flex shrink-0 items-center rounded-full bg-white px-2.5 py-1">
-			<img src="/logo.webp" alt="GTM Alliance - Global Team Work" class="h-7 w-auto sm:h-8" />
+			<Image
+				src={logo}
+				alt="GTM Alliance - Global Team Work"
+				width={128}
+				class="h-7 w-auto sm:h-8"
+			/>
 		</a>
 
 		<nav class="hidden items-center gap-6 md:flex" aria-label="Principal">

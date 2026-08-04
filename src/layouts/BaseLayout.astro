@@ -17,8 +17,12 @@ interface Props {
 	type?: 'website' | 'article';
 	/** Excluye la página de los índices de búsqueda */
 	noindex?: boolean;
-	/** Palabras clave adicionales */
-	keywords?: string;
+	/**
+	 * Nodos JSON-LD adicionales, específicos de la página, que se fusionan en
+	 * el `@graph` compartido (p. ej. `ContactPage` + `BreadcrumbList` en
+	 * `/pqrsd`). El nodo `Organization` y sus `Service` siempre se incluyen.
+	 */
+	schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
@@ -27,7 +31,7 @@ const {
 	image = '/og-image.png',
 	type = 'website',
 	noindex = false,
-	keywords,
+	schema,
 } = Astro.props;
 
 const siteBase = Astro.site ?? new URL('https://gtm-alliance.com');
@@ -35,17 +39,117 @@ const canonicalURL = Astro.props.canonicalURL ?? new URL(Astro.url.pathname, sit
 const ogImageURL = new URL(image, siteBase).href;
 const fullTitle = `${title} | GTM Alliance`;
 
-const defaultKeywords =
-	'logística internacional, carga seca, carga general, flete marítimo, transporte de carga, freight forwarder, GTM Alliance';
+/* -------------------------------------------------------------------------
+ * JSON-LD: un único @graph compartido por todas las páginas.
+ *
+ * `organizationId`/`websiteId` anclan la Organización y el WebSite con `@id`
+ * para que `/` y `/pqrsd/` referencien la misma entidad en vez de emitir dos
+ * nodos Organization sin relación entre sí.
+ *
+ * Deliberadamente NO se incluyen (hasta confirmación del cliente):
+ * `openingHoursSpecification` (horarios del footer son `placeholder: true`),
+ * `geo`/`hasMap` (sin coordenadas verificadas), `foundingDate`, ni una
+ * sucursal Medellín (aún no opera). Publicar NAP no verificado es un riesgo
+ * de política de datos estructurados, no solo un problema de precisión.
+ * ---------------------------------------------------------------------- */
 
-const orgSchema = {
-	'@context': 'https://schema.org',
-	'@type': 'Organization',
+const organizationId = `${siteBase.href}#organization`;
+const websiteId = `${siteBase.href}#website`;
+const logoId = `${siteBase.href}#logo`;
+
+const servicios = [
+	{
+		slug: 'transporte-internacional',
+		name: 'Transporte Internacional',
+		description: 'Transporte internacional de carga marítimo, aéreo y terrestre para operaciones de importación y exportación.',
+		image: '/images/servicios/transporte-internacional.webp',
+	},
+	{
+		slug: 'agenciamiento-aduanero',
+		name: 'Agenciamiento Aduanero',
+		description: 'Trámites, normativas y cumplimiento aduanero para operaciones de comercio exterior en Colombia.',
+		image: '/images/servicios/agenciamiento-aduanero.webp',
+	},
+	{
+		slug: 'almacenaje-distribucion',
+		name: 'Almacenaje y Distribución',
+		description: 'Almacenaje y distribución especializados para carga refrigerada y carga seca.',
+		image: '/images/servicios/almacenaje-distribucion.webp',
+	},
+	{
+		slug: 'consolidacion-carga',
+		name: 'Consolidación de Carga',
+		description: 'Agrupación y manejo especializado de carga para optimizar costos y tiempos de exportación.',
+		image: '/images/servicios/consolidacion-carga.webp',
+	},
+	{
+		slug: 'seguro-mercancias',
+		name: 'Seguro de Mercancías',
+		description: 'Cobertura total de seguro para mercancías durante el transporte internacional.',
+		image: '/images/servicios/seguro-mercancias.webp',
+	},
+	{
+		slug: 'asesoria-comercio-exterior',
+		name: 'Asesoría en Comercio Exterior',
+		description: 'Acompañamiento estratégico y normativo en operaciones de comercio exterior.',
+		image: '/images/servicios/asesoria-comercio-exterior.webp',
+	},
+	{
+		slug: 'linea-congelados',
+		name: 'Línea de Congelados',
+		description: 'Cadena de frío con trazabilidad total del agricultor al destino final, en alianza con Coldfood: compra directa, supervisión en cultivos, procesamiento en plantas certificadas, transporte refrigerado monitoreado y exportación con seguimiento digital.',
+		image: '/images/linea-congelados.jpg',
+		anchor: '#congelados',
+	},
+	{
+		slug: 'linea-carga-seca',
+		name: 'Línea de Carga Seca',
+		description: 'Exportación multi-industria de carga seca: almacenaje, picking, empaque, control de inventarios y coordinación logística y aduanera.',
+		image: '/images/linea-carga-seca.jpg',
+		anchor: '#carga-seca',
+	},
+];
+
+const serviceNodes = servicios.map((servicio) => ({
+	'@type': 'Service',
+	'@id': `${siteBase.href}#servicio-${servicio.slug}`,
+	name: servicio.name,
+	serviceType: servicio.name,
+	description: servicio.description,
+	provider: { '@id': organizationId },
+	areaServed: { '@type': 'Country', name: 'Colombia' },
+	url: `${siteBase.href}${servicio.anchor ?? '#servicios'}`,
+	image: new URL(servicio.image, siteBase).href,
+	inLanguage: 'es-CO',
+}));
+
+const organizationNode = {
+	'@type': ['Organization', 'LocalBusiness'],
+	'@id': organizationId,
 	name: 'GTM Alliance',
-	description: 'Logística internacional de carga seca y general por mar, tierra y aire.',
+	legalName: 'GTM Alliance S.A.S.',
+	description:
+		'Agencia colombiana de comercio exterior y logística internacional: agenciamiento aduanero, transporte marítimo, aéreo y terrestre, almacenaje en frío y carga seca, consolidación de carga, seguro de mercancías y asesoría en comercio exterior.',
 	url: siteBase.href,
-	logo: new URL('/logo.webp', siteBase).href,
-	sameAs: [],
+	logo: {
+		'@type': 'ImageObject',
+		'@id': logoId,
+		url: new URL('/logo.webp', siteBase).href,
+		width: 1024,
+		height: 535,
+		caption: 'GTM Alliance',
+	},
+	image: { '@id': logoId },
+	telephone: TELEFONO.href.replace('tel:', ''),
+	email: CORREOS.gerencia,
+	identifier: {
+		'@type': 'PropertyValue',
+		name: 'NIT',
+		value: '902028580',
+	},
+	naics: '488510',
+	isicV4: '5229',
+	knowsLanguage: ['es'],
 	address: {
 		'@type': 'PostalAddress',
 		streetAddress: SEDE_PRINCIPAL.streetAddress,
@@ -53,35 +157,50 @@ const orgSchema = {
 		addressRegion: SEDE_PRINCIPAL.addressRegion,
 		addressCountry: SEDE_PRINCIPAL.addressCountry,
 	},
-	contactPoint: {
-		'@type': 'ContactPoint',
-		contactType: 'customer service',
-		telephone: TELEFONO.href.replace('tel:', ''),
-		email: CORREOS.gerencia,
-		availableLanguage: ['Spanish'],
-	},
+	areaServed: { '@type': 'Country', name: 'Colombia' },
+	sameAs: ['https://www.linkedin.com/company/gtm-alliance'],
+	contactPoint: [
+		{
+			'@type': 'ContactPoint',
+			contactType: 'customer service',
+			telephone: TELEFONO.href.replace('tel:', ''),
+			email: CORREOS.gerencia,
+			areaServed: 'CO',
+			availableLanguage: { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
+		},
+		{
+			'@type': 'ContactPoint',
+			contactType: 'billing support',
+			telephone: TELEFONO.href.replace('tel:', ''),
+			email: CORREOS.administracion,
+			areaServed: 'CO',
+			availableLanguage: { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
+		},
+	],
 	hasOfferCatalog: {
 		'@type': 'OfferCatalog',
-		name: 'Servicios Logísticos',
-		itemListElement: [
-			{
-				'@type': 'Offer',
-				itemOffered: {
-					'@type': 'Service',
-					name: 'Carga Seca',
-					description: 'Transporte y gestión de carga seca por mar, tierra y aire.',
-				},
-			},
-			{
-				'@type': 'Offer',
-				itemOffered: {
-					'@type': 'Service',
-					name: 'Logística Internacional',
-					description: 'Soluciones logísticas integrales para comercio exterior.',
-				},
-			},
-		],
+		name: 'Servicios de comercio exterior y logística internacional',
+		itemListElement: servicios.map((servicio) => ({
+			'@type': 'Offer',
+			itemOffered: { '@id': `${siteBase.href}#servicio-${servicio.slug}` },
+		})),
 	},
+};
+
+const websiteNode = {
+	'@type': 'WebSite',
+	'@id': websiteId,
+	url: siteBase.href,
+	name: 'GTM Alliance',
+	inLanguage: 'es-CO',
+	publisher: { '@id': organizationId },
+};
+
+const pageSchemaNodes = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+
+const graphSchema = {
+	'@context': 'https://schema.org',
+	'@graph': [organizationNode, websiteNode, ...serviceNodes, ...pageSchemaNodes],
 };
 ---
 
@@ -118,11 +237,19 @@ const orgSchema = {
 			crossorigin
 		/>
 
+		<!-- Cada sección importa GSAP por su cuenta (Hero, Services, Contact, ...),
+		     así que el navegador solo lo descubre al parsear cada script de body,
+		     muy adentro del árbol de módulos. Importarlo aquí, en el head, hace
+		     que arranque su descarga en cuanto el navegador llega a esta etiqueta,
+		     en vez de esperar al primer componente que lo use. -->
+		<script>
+			import '../scripts/gsap';
+		</script>
+
 		<!-- SEO Primario -->
 		<title>{fullTitle}</title>
 		<meta name="description" content={description} />
-		<meta name="keywords" content={keywords ? `${keywords}, ${defaultKeywords}` : defaultKeywords} />
-		<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
 		<link rel="canonical" href={canonicalURL} />
 
 		<!-- Open Graph -->
@@ -134,7 +261,7 @@ const orgSchema = {
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
 		<meta property="og:site_name" content="GTM Alliance" />
-		<meta property="og:locale" content="es_MX" />
+		<meta property="og:locale" content="es_CO" />
 
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image" />
@@ -142,8 +269,8 @@ const orgSchema = {
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImageURL} />
 
-		<!-- JSON-LD: Organización -->
-		<script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+		<!-- JSON-LD: Organización, sitio y catálogo de servicios -->
+		<script type="application/ld+json" set:html={JSON.stringify(graphSchema)} />
 	</head>
 
 	<body class="bg-gtm-deep text-slate-200 antialiased">

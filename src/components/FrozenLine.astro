@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import lineaCongelados from '../assets/linea-congelados.jpg';
+
 const pasos = [
 	{
 		num: '01',
@@ -132,7 +135,8 @@ const productos = [
 				</h3>
 				<p class="mt-4 text-sm leading-relaxed text-slate-300">
 					Creamos marcas personalizadas para clientes internacionales, listas para su mercado
-					destino.
+					destino: diseñamos identidad visual, empaques y etiquetas conforme a la normativa del
+					país de llegada, para que tu producto llegue listo para el anaquel.
 				</p>
 				<div class="mt-5 flex flex-wrap gap-2">
 					{
@@ -149,6 +153,10 @@ const productos = [
 				<span class="font-display text-xs font-semibold tracking-widest text-gtm-gold uppercase">
 					Productos
 				</span>
+				<p class="mt-3 text-sm leading-relaxed text-slate-300">
+					Estos son los productos congelados que exportamos junto a Coldfood, siguiendo la misma
+					cadena de frío con trazabilidad total:
+				</p>
 				<div class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
 					<ul class="space-y-3">
 						{
@@ -162,10 +170,12 @@ const productos = [
 							))
 						}
 					</ul>
-					<div class="min-h-[10rem] overflow-hidden rounded-xl">
-						<img
-							src="/images/linea-congelados.jpg"
+					<div class="aspect-[4/3] overflow-hidden rounded-xl">
+						<Image
+							src={lineaCongelados}
 							alt="Productos congelados de la línea Coldfood + GTM Alliance: carnes, pescado, mariscos y vegetales"
+							widths={[300, 600, 900]}
+							sizes="(min-width: 640px) 260px, 100vw"
 							loading="lazy"
 							class="h-full w-full object-cover"
 						/>
