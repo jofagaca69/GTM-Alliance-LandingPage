@@ -20,10 +20,16 @@ const aliados = [
 	},
 ];
 
-// El track se duplica en el DOM (más abajo) para que el loop GSAP
-// (xPercent: -50) empalme sin salto; aquí repetimos la lista de aliados
-// para que cada mitad del track supere el ancho del contenedor (max-w-4xl).
-const mitad = [...aliados, ...aliados];
+// Pista del marquee: 4 copias de `aliados` en un único array plano, para que
+// el loop GSAP (xPercent: -50) empalme exacto. Con un `flex` de N ítems solo
+// hay N-1 huecos de `gap`, así que trasladar el 50% del ancho queda medio
+// hueco corto del punto de empalme real (imperceptible con logos idénticos,
+// visible ahora que son distintos) — por eso el espaciado va como margen por
+// ítem (`mr-*` más abajo) en vez de `gap` en el contenedor.
+// Solo la primera copia (índices 0..aliados.length) es contenido accesible;
+// el resto son repeticiones puramente visuales para cubrir el ancho del
+// contenedor (max-w-4xl) y decorativas para el lector de pantalla.
+const pista = [...aliados, ...aliados, ...aliados, ...aliados];
 ---
 
 <section id="clientes" class="bg-transparent py-24 sm:py-32">
@@ -40,34 +46,26 @@ const mitad = [...aliados, ...aliados];
 		<div
 			class="marquee group relative mt-10 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
 		>
-			<div class="marquee-track flex w-max items-center gap-8 sm:gap-10">
+			<div class="marquee-track flex w-max items-center">
 				{
-					mitad.map((item) => (
-						<span class="flex shrink-0 items-center rounded-2xl bg-white/90 p-4">
-							<Image
-								src={item.src}
-								alt={item.alt}
-								height={64}
-								densities={[1, 2]}
-								loading="lazy"
-								class="h-12 w-auto max-w-[10rem] object-contain opacity-80 transition duration-300 hover:opacity-100 sm:h-16"
-							/>
-						</span>
-					))
-				}
-				{
-					mitad.map((item) => (
-						<span class="flex shrink-0 items-center rounded-2xl bg-white/90 p-4" aria-hidden="true">
-							<Image
-								src={item.src}
-								alt=""
-								height={64}
-								densities={[1, 2]}
-								loading="lazy"
-								class="h-12 w-auto max-w-[10rem] object-contain opacity-80 transition duration-300 hover:opacity-100 sm:h-16"
-							/>
-						</span>
-					))
+					pista.map((item, i) => {
+						const decorativo = i >= aliados.length;
+						return (
+							<span
+								class="mr-8 flex shrink-0 items-center rounded-2xl bg-white/90 p-4 sm:mr-10"
+								aria-hidden={decorativo ? 'true' : undefined}
+							>
+								<Image
+									src={item.src}
+									alt={decorativo ? '' : item.alt}
+									height={64}
+									densities={[1, 2]}
+									loading="lazy"
+									class="h-12 w-auto max-w-[10rem] object-contain opacity-80 transition duration-300 hover:opacity-100 sm:h-16"
+								/>
+							</span>
+						);
+					})
 				}
 			</div>
 		</div>

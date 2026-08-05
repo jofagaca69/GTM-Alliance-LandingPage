@@ -47,9 +47,20 @@ const canonicalURL = Astro.props.canonicalURL ?? new URL(Astro.url.pathname, sit
 
 // Imagen OG: si la página pasa una ruta de string, se respeta tal cual (caso
 // legado). En cualquier otro caso —sin prop o con un asset importado— se
-// genera una tarjeta 1200x630 a partir del logo con getImage(), para que
+// genera una tarjeta a partir del logo con getImage(), para que
 // og:image/twitter:image nunca apunten a un archivo inexistente mientras el
 // cliente no entregue un diseño OG dedicado.
+//
+// El servicio sharp de Astro nunca amplía más allá del tamaño de origen
+// (`withoutEnlargement: true`), así que pedir 1200x630 sobre un logo de
+// 1024x535 no lo agranda — sharp lo deja en 1024x535 pero `getImage()` sigue
+// reportando el ancho/alto *solicitados* en `.attributes`, desincronizando
+// el archivo real de los meta `og:image:width/height`. Por eso aquí se pide
+// exactamente el tamaño nativo del logo (1024x535, relación ~1.91:1, casi
+// idéntica a la recomendada 1200x630) en vez de forzar un tamaño mayor.
+// El fondo blanco es necesario porque el logo es tinta oscura sobre
+// transparente (igual que en Navbar/Footer, que también lo montan sobre
+// blanco); un fondo oscuro lo dejaría prácticamente invisible.
 let ogImageURL: string;
 let ogImageWidth: number;
 let ogImageHeight: number;
@@ -59,17 +70,17 @@ if (typeof image === 'string') {
 	ogImageWidth = 1200;
 	ogImageHeight = 630;
 } else {
+	const sourceImage = image ?? logoImg;
 	const ogAsset = await getImage({
-		src: image ?? logoImg,
-		width: 1200,
-		height: 630,
-		fit: 'contain',
-		background: '#0a1220',
+		src: sourceImage,
+		width: sourceImage.width,
+		height: sourceImage.height,
+		background: '#ffffff',
 		format: 'png',
 	});
 	ogImageURL = new URL(ogAsset.src, siteBase).href;
-	ogImageWidth = ogAsset.attributes.width ?? 1200;
-	ogImageHeight = ogAsset.attributes.height ?? 630;
+	ogImageWidth = ogAsset.attributes.width ?? sourceImage.width;
+	ogImageHeight = ogAsset.attributes.height ?? sourceImage.height;
 }
 const fullTitle = `${title} | GTM Alliance`;
 
