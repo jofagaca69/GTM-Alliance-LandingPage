@@ -1,11 +1,36 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const pageURL = new URL('/pqrsd/', 'https://gtm-alliance.com').href;
+
+const pqrsdSchema = [
+	{
+		'@type': 'ContactPage',
+		'@id': `${pageURL}#webpage`,
+		url: pageURL,
+		name: 'PQRSD | GTM Alliance',
+		description:
+			'Formulario de PQRSD de GTM Alliance para peticiones, quejas, reclamos, sugerencias y solicitudes de información.',
+		inLanguage: 'es-CO',
+		isPartOf: { '@id': 'https://gtm-alliance.com/#website' },
+		about: { '@id': 'https://gtm-alliance.com/#organization' },
+		breadcrumb: { '@id': `${pageURL}#breadcrumb` },
+	},
+	{
+		'@type': 'BreadcrumbList',
+		'@id': `${pageURL}#breadcrumb`,
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://gtm-alliance.com/' },
+			{ '@type': 'ListItem', position: 2, name: 'PQRSD' },
+		],
+	},
+];
 ---
 
 <BaseLayout
 	title="PQRSD"
 	description="Formulario de PQRSD de GTM Alliance para peticiones, quejas, reclamos, sugerencias y solicitudes de información."
-	keywords="pqr, pqrsd, reclamos, quejas, sugerencias, formulario de contacto"
+	schema={pqrsdSchema}
 >
 	<section id="pqrsd" class="relative overflow-hidden py-20 sm:py-28">
 		<div class="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
@@ -50,7 +75,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 				<div class="rounded-3xl border border-white/10 bg-slate-950/60 p-8 shadow-2xl shadow-black/20 backdrop-blur-sm">
 					<h2 class="font-display text-2xl font-semibold text-white">Formulario de PQRSD</h2>
-					<form class="mt-6 grid gap-5 sm:grid-cols-2" action="#" method="post">
+					<form id="pqrsd-form" class="mt-6 grid gap-5 sm:grid-cols-2" action="https://api.web3forms.com/submit" method="post">
+						<input type="hidden" name="subject" value="Nueva solicitud PQRSD — gtm-alliance.com" />
+						<input type="hidden" name="from_name" value="Formulario PQRSD — GTM Alliance" />
+						<input
+							type="checkbox"
+							name="botcheck"
+							class="hidden"
+							style="display: none;"
+							tabindex="-1"
+							autocomplete="off"
+						/>
+
 						<div class="sm:col-span-2">
 							<label for="nombre" class="mb-2 block text-sm font-medium text-slate-200">Nombre completo</label>
 							<input
@@ -120,15 +156,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 						<div class="sm:col-span-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 							<button
+								id="pqrsd-submit"
 								type="submit"
-								class="inline-flex items-center justify-center rounded-full bg-gtm-gold px-7 py-3 text-sm font-semibold text-gtm-navy transition-transform hover:scale-[1.02]"
+								class="inline-flex items-center justify-center rounded-full bg-gtm-gold px-7 py-3 text-sm font-semibold text-gtm-navy transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
 							>
 								Enviar solicitud
 							</button>
-							<p class="text-sm text-slate-400">Tu información está segura con nosotros.</p>
+							<p id="pqrsd-form-status" class="text-sm text-slate-400" role="status" aria-live="polite">
+								Tu información está segura con nosotros.
+							</p>
 						</div>
-
-						
 					</form>
 				</div>
 			</div>
@@ -153,11 +190,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 	</div>
 
 	<script>
-		const form = document.querySelector('#pqrsd form') as HTMLFormElement | null;
+		const form = document.getElementById('pqrsd-form') as HTMLFormElement | null;
 		const modal = document.getElementById('privacy-modal');
 		const cancelButton = document.getElementById('cancel-policy');
 		const acceptButton = document.getElementById('accept-policy');
-		let formReadyToSubmit = false;
+		const submitButton = document.getElementById('pqrsd-submit') as HTMLButtonElement | null;
+		const statusEl = document.getElementById('pqrsd-form-status');
 
 		form?.addEventListener('submit', (event) => {
 			event.preventDefault();
@@ -170,13 +208,55 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 			modal?.classList.remove('flex');
 		});
 
-		acceptButton?.addEventListener('click', () => {
-			formReadyToSubmit = true;
+		acceptButton?.addEventListener('click', async () => {
 			modal?.classList.add('hidden');
 			modal?.classList.remove('flex');
-			if (form && formReadyToSubmit) {
-				form.submit();
+			if (form) {
+				await submitForm(form);
 			}
 		});
+
+		async function submitForm(target: HTMLFormElement) {
+			const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
+
+			if (submitButton) submitButton.disabled = true;
+			if (statusEl) {
+				statusEl.textContent = 'Enviando...';
+				statusEl.classList.remove('text-red-400');
+				statusEl.classList.add('text-slate-400');
+			}
+
+			try {
+				const formData = new FormData(target);
+				formData.append('access_key', accessKey ?? '');
+
+				const response = await fetch('https://api.web3forms.com/submit', {
+					method: 'POST',
+					headers: { Accept: 'application/json' },
+					body: formData,
+				});
+				const result = await response.json();
+
+				if (response.ok && result.success) {
+					target.reset();
+					if (statusEl) {
+						statusEl.textContent = '¡Solicitud enviada! Tu información está segura con nosotros.';
+						statusEl.classList.remove('text-red-400');
+						statusEl.classList.add('text-emerald-400');
+					}
+				} else {
+					throw new Error(result.message ?? 'No se pudo enviar la solicitud.');
+				}
+			} catch {
+				if (statusEl) {
+					statusEl.textContent =
+						'No pudimos enviar tu solicitud. Escríbenos por WhatsApp o inténtalo de nuevo en unos minutos.';
+					statusEl.classList.remove('text-slate-400', 'text-emerald-400');
+					statusEl.classList.add('text-red-400');
+				}
+			} finally {
+				if (submitButton) submitButton.disabled = false;
+			}
+		}
 	</script>
 </BaseLayout>

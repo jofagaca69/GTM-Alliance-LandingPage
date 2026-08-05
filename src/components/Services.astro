@@ -1,4 +1,12 @@
 ---
+import { Image } from 'astro:assets';
+import transporteInternacional from '../assets/servicios/transporte-internacional.webp';
+import agenciamientoAduanero from '../assets/servicios/agenciamiento-aduanero.webp';
+import almacenajeDistribucion from '../assets/servicios/almacenaje-distribucion.webp';
+import consolidacionCarga from '../assets/servicios/consolidacion-carga.webp';
+import seguroMercancias from '../assets/servicios/seguro-mercancias.webp';
+import asesoriaComercioExterior from '../assets/servicios/asesoria-comercio-exterior.webp';
+
 const ICONS = {
 	transporte: '<circle cx="5" cy="18" r="1.75"/><circle cx="12" cy="6" r="1.75"/><circle cx="19" cy="18" r="1.75"/><path d="M6.4 16.5L10.8 7.7M13.2 7.7l5.4 8.8"/>',
 	aduana:
@@ -16,43 +24,61 @@ const servicios = [
 	{
 		num: '01',
 		title: 'Transporte Internacional',
-		description: 'Marítimo, aéreo y terrestre.',
+		description:
+			'Movemos tu carga por vía marítima, aérea y terrestre, eligiendo la ruta más eficiente para cada operación de importación o exportación.',
 		slug: 'transporte-internacional',
+		alt: 'Contenedores y buque de carga para transporte internacional marítimo, aéreo y terrestre',
+		image: transporteInternacional,
 		icon: ICONS.transporte,
 	},
 	{
 		num: '02',
 		title: 'Agenciamiento Aduanero',
-		description: 'Trámites, normativas y cumplimiento.',
+		description:
+			'Gestionamos trámites, documentación y cumplimiento normativo ante las autoridades aduaneras para que tu mercancía cruce fronteras sin contratiempos.',
 		slug: 'agenciamiento-aduanero',
+		alt: 'Gestión documental de agenciamiento aduanero y cumplimiento normativo',
+		image: agenciamientoAduanero,
 		icon: ICONS.aduana,
 	},
 	{
 		num: '03',
 		title: 'Almacenaje y Distribución',
-		description: 'Frío y carga seca.',
+		description:
+			'Bodegaje especializado en frío y carga seca, con picking, empaque y despacho listos para la siguiente etapa de tu cadena logística.',
 		slug: 'almacenaje-distribucion',
+		alt: 'Bodega de almacenaje y distribución para carga refrigerada y carga seca',
+		image: almacenajeDistribucion,
 		icon: ICONS.almacenaje,
 	},
 	{
 		num: '04',
 		title: 'Consolidación de Carga',
-		description: 'Agrupación y manejo especializado.',
+		description:
+			'Agrupamos envíos de distintos orígenes en una sola operación, reduciendo costos y tiempos de tránsito sin perder trazabilidad.',
 		slug: 'consolidacion-carga',
+		alt: 'Consolidación y manejo especializado de carga para exportación',
+		image: consolidacionCarga,
 		icon: ICONS.consolidacion,
 	},
 	{
 		num: '05',
 		title: 'Seguro de Mercancías',
-		description: 'Cobertura total.',
+		description:
+			'Cobertura frente a daños, pérdidas o retrasos durante el transporte, para que tu carga llegue protegida a su destino.',
 		slug: 'seguro-mercancias',
+		alt: 'Seguro de mercancías con cobertura total durante el transporte internacional',
+		image: seguroMercancias,
 		icon: ICONS.seguro,
 	},
 	{
 		num: '06',
 		title: 'Asesoría en Comercio Exterior',
-		description: 'Acompañamiento estratégico.',
+		description:
+			'Acompañamiento estratégico en cada decisión de exportación e importación, desde la normativa aplicable hasta el mejor modo de transporte.',
 		slug: 'asesoria-comercio-exterior',
+		alt: 'Asesoría estratégica en comercio exterior e importación-exportación',
+		image: asesoriaComercioExterior,
 		icon: ICONS.asesoria,
 	},
 ];
@@ -90,13 +116,12 @@ const servicios = [
 						<div class="relative h-full w-full overflow-hidden rounded-[2rem]">
 							{/* Fondo de respaldo: gradiente de marca, visible mientras carga la foto o si falla */}
 							<div class="absolute inset-0 bg-[linear-gradient(160deg,#1c2f4a_0%,#0a1220_100%)]" />
-							<img
-								src={`/images/servicios/${servicio.slug}.webp`}
-								alt=""
+							<Image
+								src={servicio.image}
+								alt={servicio.alt}
+								widths={[400, 800, 1200]}
+								sizes="(min-width: 768px) 620px, 100vw"
 								loading="lazy"
-								decoding="async"
-								width="1440"
-								height="900"
 								class="absolute inset-0 h-full w-full object-cover"
 							/>
 							<div class="absolute inset-0 bg-gradient-to-t from-gtm-deep/95 via-gtm-deep/25 to-transparent" />

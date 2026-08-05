@@ -1,77 +1,256 @@
 ---
 import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import DotGrid from '../components/DotGrid.astro';
 import Globe from '../components/Globe.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import { TELEFONO, CORREOS, SEDE_PRINCIPAL } from '../data/contact';
+import logoImg from '../assets/logo.webp';
+import transporteInternacionalImg from '../assets/servicios/transporte-internacional.webp';
+import agenciamientoAduaneroImg from '../assets/servicios/agenciamiento-aduanero.webp';
+import almacenajeDistribucionImg from '../assets/servicios/almacenaje-distribucion.webp';
+import consolidacionCargaImg from '../assets/servicios/consolidacion-carga.webp';
+import seguroMercanciasImg from '../assets/servicios/seguro-mercancias.webp';
+import asesoriaComercioExteriorImg from '../assets/servicios/asesoria-comercio-exterior.webp';
+import lineaCongeladosImg from '../assets/linea-congelados.jpg';
+import lineaCargaSecaImg from '../assets/linea-carga-seca.jpg';
 
 interface Props {
 	title: string;
 	description: string;
-	/** Ruta relativa a la imagen OG, ej. "/images/og-home.png" */
-	image?: string;
+	/**
+	 * Imagen OG específica de la página: ruta absoluta ("/images/og-home.png")
+	 * o un asset importado (`ImageMetadata`). Si se omite, se genera una
+	 * tarjeta por defecto a partir del logo con `getImage()`.
+	 */
+	image?: string | ImageMetadata;
 	/** Sobreescribe la URL canónica calculada automáticamente */
 	canonicalURL?: string;
 	/** Tipo de contenido Open Graph */
 	type?: 'website' | 'article';
 	/** Excluye la página de los índices de búsqueda */
 	noindex?: boolean;
-	/** Palabras clave adicionales */
-	keywords?: string;
+	/**
+	 * Nodos JSON-LD adicionales, específicos de la página, que se fusionan en
+	 * el `@graph` compartido (p. ej. `ContactPage` + `BreadcrumbList` en
+	 * `/pqrsd`). El nodo `Organization` y sus `Service` siempre se incluyen.
+	 */
+	schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const {
-	title,
-	description,
-	image = '/og-image.png',
-	type = 'website',
-	noindex = false,
-	keywords,
-} = Astro.props;
+const { title, description, image, type = 'website', noindex = false, schema } = Astro.props;
 
-const siteBase = Astro.site ?? new URL('https://gtmalliance.com');
+const siteBase = Astro.site ?? new URL('https://gtm-alliance.com');
 const canonicalURL = Astro.props.canonicalURL ?? new URL(Astro.url.pathname, siteBase).href;
-const ogImageURL = new URL(image, siteBase).href;
+
+// Imagen OG: si la página pasa una ruta de string, se respeta tal cual (caso
+// legado). En cualquier otro caso —sin prop o con un asset importado— se
+// genera una tarjeta a partir del logo con getImage(), para que
+// og:image/twitter:image nunca apunten a un archivo inexistente mientras el
+// cliente no entregue un diseño OG dedicado.
+//
+// El servicio sharp de Astro nunca amplía más allá del tamaño de origen
+// (`withoutEnlargement: true`), así que pedir 1200x630 sobre un logo de
+// 1024x535 no lo agranda — sharp lo deja en 1024x535 pero `getImage()` sigue
+// reportando el ancho/alto *solicitados* en `.attributes`, desincronizando
+// el archivo real de los meta `og:image:width/height`. Por eso aquí se pide
+// exactamente el tamaño nativo del logo (1024x535, relación ~1.91:1, casi
+// idéntica a la recomendada 1200x630) en vez de forzar un tamaño mayor.
+// El fondo blanco es necesario porque el logo es tinta oscura sobre
+// transparente (igual que en Navbar/Footer, que también lo montan sobre
+// blanco); un fondo oscuro lo dejaría prácticamente invisible.
+let ogImageURL: string;
+let ogImageWidth: number;
+let ogImageHeight: number;
+
+if (typeof image === 'string') {
+	ogImageURL = new URL(image, siteBase).href;
+	ogImageWidth = 1200;
+	ogImageHeight = 630;
+} else {
+	const sourceImage = image ?? logoImg;
+	const ogAsset = await getImage({
+		src: sourceImage,
+		width: sourceImage.width,
+		height: sourceImage.height,
+		background: '#ffffff',
+		format: 'png',
+	});
+	ogImageURL = new URL(ogAsset.src, siteBase).href;
+	ogImageWidth = ogAsset.attributes.width ?? sourceImage.width;
+	ogImageHeight = ogAsset.attributes.height ?? sourceImage.height;
+}
 const fullTitle = `${title} | GTM Alliance`;
 
-const defaultKeywords =
-	'logística internacional, carga seca, carga general, flete marítimo, transporte de carga, freight forwarder, GTM Alliance';
+/* -------------------------------------------------------------------------
+ * JSON-LD: un único @graph compartido por todas las páginas.
+ *
+ * `organizationId`/`websiteId` anclan la Organización y el WebSite con `@id`
+ * para que `/` y `/pqrsd/` referencien la misma entidad en vez de emitir dos
+ * nodos Organization sin relación entre sí.
+ *
+ * Deliberadamente NO se incluyen (hasta confirmación del cliente):
+ * `openingHoursSpecification` (horarios del footer son `placeholder: true`),
+ * `geo`/`hasMap` (sin coordenadas verificadas), `foundingDate`, ni una
+ * sucursal Medellín (aún no opera). Publicar NAP no verificado es un riesgo
+ * de política de datos estructurados, no solo un problema de precisión.
+ * ---------------------------------------------------------------------- */
 
-const orgSchema = {
-	'@context': 'https://schema.org',
-	'@type': 'Organization',
-	name: 'GTM Alliance',
-	description: 'Logística internacional de carga seca y general por mar, tierra y aire.',
-	url: siteBase.href,
-	logo: new URL('/logo.webp', siteBase).href,
-	sameAs: [],
-	contactPoint: {
-		'@type': 'ContactPoint',
-		contactType: 'customer service',
-		availableLanguage: ['Spanish'],
+const organizationId = `${siteBase.href}#organization`;
+const websiteId = `${siteBase.href}#website`;
+const logoId = `${siteBase.href}#logo`;
+
+const servicios = [
+	{
+		slug: 'transporte-internacional',
+		name: 'Transporte Internacional',
+		description: 'Transporte internacional de carga marítimo, aéreo y terrestre para operaciones de importación y exportación.',
+		image: transporteInternacionalImg,
 	},
+	{
+		slug: 'agenciamiento-aduanero',
+		name: 'Agenciamiento Aduanero',
+		description: 'Trámites, normativas y cumplimiento aduanero para operaciones de comercio exterior en Colombia.',
+		image: agenciamientoAduaneroImg,
+	},
+	{
+		slug: 'almacenaje-distribucion',
+		name: 'Almacenaje y Distribución',
+		description: 'Almacenaje y distribución especializados para carga refrigerada y carga seca.',
+		image: almacenajeDistribucionImg,
+	},
+	{
+		slug: 'consolidacion-carga',
+		name: 'Consolidación de Carga',
+		description: 'Agrupación y manejo especializado de carga para optimizar costos y tiempos de exportación.',
+		image: consolidacionCargaImg,
+	},
+	{
+		slug: 'seguro-mercancias',
+		name: 'Seguro de Mercancías',
+		description: 'Cobertura total de seguro para mercancías durante el transporte internacional.',
+		image: seguroMercanciasImg,
+	},
+	{
+		slug: 'asesoria-comercio-exterior',
+		name: 'Asesoría en Comercio Exterior',
+		description: 'Acompañamiento estratégico y normativo en operaciones de comercio exterior.',
+		image: asesoriaComercioExteriorImg,
+	},
+	{
+		slug: 'linea-congelados',
+		name: 'Línea de Congelados',
+		description: 'Cadena de frío con trazabilidad total del agricultor al destino final, en alianza con Coldfood: compra directa, supervisión en cultivos, procesamiento en plantas certificadas, transporte refrigerado monitoreado y exportación con seguimiento digital.',
+		image: lineaCongeladosImg,
+		anchor: '#congelados',
+	},
+	{
+		slug: 'linea-carga-seca',
+		name: 'Línea de Carga Seca',
+		description: 'Exportación multi-industria de carga seca: almacenaje, picking, empaque, control de inventarios y coordinación logística y aduanera.',
+		image: lineaCargaSecaImg,
+		anchor: '#carga-seca',
+	},
+];
+
+const serviceNodes = servicios.map((servicio) => ({
+	'@type': 'Service',
+	'@id': `${siteBase.href}#servicio-${servicio.slug}`,
+	name: servicio.name,
+	serviceType: servicio.name,
+	description: servicio.description,
+	provider: { '@id': organizationId },
+	areaServed: { '@type': 'Country', name: 'Colombia' },
+	url: `${siteBase.href}${servicio.anchor ?? '#servicios'}`,
+	image: {
+		'@type': 'ImageObject',
+		url: new URL(servicio.image.src, siteBase).href,
+		width: servicio.image.width,
+		height: servicio.image.height,
+	},
+	inLanguage: 'es-CO',
+}));
+
+const organizationNode = {
+	'@type': ['Organization', 'LocalBusiness'],
+	'@id': organizationId,
+	name: 'GTM Alliance',
+	legalName: 'GTM Alliance S.A.S.',
+	description:
+		'Agencia colombiana de comercio exterior y logística internacional: agenciamiento aduanero, transporte marítimo, aéreo y terrestre, almacenaje en frío y carga seca, consolidación de carga, seguro de mercancías y asesoría en comercio exterior.',
+	url: siteBase.href,
+	logo: {
+		'@type': 'ImageObject',
+		'@id': logoId,
+		url: new URL(logoImg.src, siteBase).href,
+		width: logoImg.width,
+		height: logoImg.height,
+		caption: 'GTM Alliance',
+	},
+	image: { '@id': logoId },
+	telephone: TELEFONO.href.replace('tel:', ''),
+	email: CORREOS.gerencia,
+	identifier: {
+		'@type': 'PropertyValue',
+		name: 'NIT',
+		value: '902028580',
+	},
+	naics: '488510',
+	isicV4: '5229',
+	knowsLanguage: ['es'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: SEDE_PRINCIPAL.streetAddress,
+		addressLocality: SEDE_PRINCIPAL.addressLocality,
+		addressRegion: SEDE_PRINCIPAL.addressRegion,
+		addressCountry: SEDE_PRINCIPAL.addressCountry,
+	},
+	areaServed: { '@type': 'Country', name: 'Colombia' },
+	sameAs: ['https://www.linkedin.com/company/gtm-alliance'],
+	contactPoint: [
+		{
+			'@type': 'ContactPoint',
+			contactType: 'customer service',
+			telephone: TELEFONO.href.replace('tel:', ''),
+			email: CORREOS.gerencia,
+			areaServed: 'CO',
+			availableLanguage: { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
+		},
+		{
+			'@type': 'ContactPoint',
+			contactType: 'billing support',
+			telephone: TELEFONO.href.replace('tel:', ''),
+			email: CORREOS.administracion,
+			areaServed: 'CO',
+			availableLanguage: { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
+		},
+	],
 	hasOfferCatalog: {
 		'@type': 'OfferCatalog',
-		name: 'Servicios Logísticos',
-		itemListElement: [
-			{
-				'@type': 'Offer',
-				itemOffered: {
-					'@type': 'Service',
-					name: 'Carga Seca',
-					description: 'Transporte y gestión de carga seca por mar, tierra y aire.',
-				},
-			},
-			{
-				'@type': 'Offer',
-				itemOffered: {
-					'@type': 'Service',
-					name: 'Logística Internacional',
-					description: 'Soluciones logísticas integrales para comercio exterior.',
-				},
-			},
-		],
+		name: 'Servicios de comercio exterior y logística internacional',
+		itemListElement: servicios.map((servicio) => ({
+			'@type': 'Offer',
+			itemOffered: { '@id': `${siteBase.href}#servicio-${servicio.slug}` },
+		})),
 	},
+};
+
+const websiteNode = {
+	'@type': 'WebSite',
+	'@id': websiteId,
+	url: siteBase.href,
+	name: 'GTM Alliance',
+	inLanguage: 'es-CO',
+	publisher: { '@id': organizationId },
+};
+
+const pageSchemaNodes = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+
+const graphSchema = {
+	'@context': 'https://schema.org',
+	'@graph': [organizationNode, websiteNode, ...serviceNodes, ...pageSchemaNodes],
 };
 ---
 
@@ -83,6 +262,14 @@ const orgSchema = {
 		<meta name="generator" content={Astro.generator} />
 
 		<meta name="theme-color" content="#0a1220" />
+
+		<!-- Google Tag Manager -->
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+				new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-MMMHLX5X');</script>
+		<!-- End Google Tag Manager -->
 
 		<!-- Favicons -->
 		<link rel="icon" href="/favicon.ico" />
@@ -108,11 +295,19 @@ const orgSchema = {
 			crossorigin
 		/>
 
+		<!-- Cada sección importa GSAP por su cuenta (Hero, Services, Contact, ...),
+		     así que el navegador solo lo descubre al parsear cada script de body,
+		     muy adentro del árbol de módulos. Importarlo aquí, en el head, hace
+		     que arranque su descarga en cuanto el navegador llega a esta etiqueta,
+		     en vez de esperar al primer componente que lo use. -->
+		<script>
+			import '../scripts/gsap';
+		</script>
+
 		<!-- SEO Primario -->
 		<title>{fullTitle}</title>
 		<meta name="description" content={description} />
-		<meta name="keywords" content={keywords ? `${keywords}, ${defaultKeywords}` : defaultKeywords} />
-		<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
 		<link rel="canonical" href={canonicalURL} />
 
 		<!-- Open Graph -->
@@ -121,10 +316,10 @@ const orgSchema = {
 		<meta property="og:title" content={fullTitle} />
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content={ogImageURL} />
-		<meta property="og:image:width" content="1200" />
-		<meta property="og:image:height" content="630" />
+		<meta property="og:image:width" content={String(ogImageWidth)} />
+		<meta property="og:image:height" content={String(ogImageHeight)} />
 		<meta property="og:site_name" content="GTM Alliance" />
-		<meta property="og:locale" content="es_MX" />
+		<meta property="og:locale" content="es_CO" />
 
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image" />
@@ -132,11 +327,15 @@ const orgSchema = {
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImageURL} />
 
-		<!-- JSON-LD: Organización -->
-		<script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+		<!-- JSON-LD: Organización, sitio y catálogo de servicios -->
+		<script type="application/ld+json" set:html={JSON.stringify(graphSchema)} />
 	</head>
 
 	<body class="bg-gtm-deep text-slate-200 antialiased">
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MMMHLX5X"
+						  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
 		<DotGrid />
 		<Globe />
 		<Navbar />
