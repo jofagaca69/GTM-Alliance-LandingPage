@@ -94,7 +94,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 								name="tipo"
 								required
 								class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
-							>
+								>
 								<option value="" disabled selected>Selecciona una opción</option>
 								<option value="peticion">Petición</option>
 								<option value="queja">Queja</option>
@@ -104,6 +104,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 								<option value="incidencia-operativa">Incidencia operativa</option>
 								<option value="otro">Otro</option>
 							</select>
+						</div>
+
+						<div class="sm:col-span-2">
+							<label for="mensaje" class="mb-2 block text-sm font-medium text-slate-200">Mensaje</label>
+							<textarea
+								id="mensaje"
+								name="mensaje"
+								rows="4"
+								required
+								class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+								placeholder="Describe los detalles de tu solicitud"
+							></textarea>
 						</div>
 
 						<div class="sm:col-span-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
