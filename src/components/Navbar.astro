@@ -18,6 +18,8 @@ const initialActive = Astro.url.pathname === '/' ? 'inicio' : '';
 				src={logo}
 				alt="GTM Alliance - Global Team Work"
 				width={128}
+				loading="eager"
+				fetchpriority="high"
 				class="h-7 w-auto sm:h-8"
 			/>
 		</a>

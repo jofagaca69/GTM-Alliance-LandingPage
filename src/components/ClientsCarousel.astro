@@ -1,8 +1,29 @@
 ---
-// Logos de empresas con las que hemos trabajado.
-// TODO: reemplazar/agregar logos reales aquí a medida que estén disponibles.
-const logo = { src: '/logos/coldfood.png', alt: 'Coldfood' };
-const logos = Array.from({ length: 6 }, () => logo);
+import { Image } from 'astro:assets';
+import coldfood from '../assets/logos/coldfood.png';
+import cls from '../assets/logos/cls-logistic-solutions.png';
+import logicx from '../assets/logos/logicx.png';
+
+// Aliados estratégicos de GTM Alliance.
+const aliados = [
+	{
+		src: coldfood,
+		alt: 'Coldfood — aliado de GTM Alliance en procesamiento y exportación de alimentos congelados',
+	},
+	{
+		src: cls,
+		alt: 'CLS Logistic Solutions SAS — aliado de GTM Alliance en soluciones logísticas',
+	},
+	{
+		src: logicx,
+		alt: 'logicx, Agencia de Aduanas Nivel 2 — aliado de GTM Alliance en agenciamiento aduanero',
+	},
+];
+
+// El track se duplica en el DOM (más abajo) para que el loop GSAP
+// (xPercent: -50) empalme sin salto; aquí repetimos la lista de aliados
+// para que cada mitad del track supere el ancho del contenedor (max-w-4xl).
+const mitad = [...aliados, ...aliados];
 ---
 
 <section id="clientes" class="bg-transparent py-24 sm:py-32">
@@ -21,25 +42,29 @@ const logos = Array.from({ length: 6 }, () => logo);
 		>
 			<div class="marquee-track flex w-max items-center gap-8 sm:gap-10">
 				{
-					logos.map((item) => (
+					mitad.map((item) => (
 						<span class="flex shrink-0 items-center rounded-2xl bg-white/90 p-4">
-							<img
+							<Image
 								src={item.src}
 								alt={item.alt}
+								height={64}
+								densities={[1, 2]}
 								loading="lazy"
-								class="h-12 w-auto opacity-80 transition duration-300 hover:opacity-100 sm:h-16"
+								class="h-12 w-auto max-w-[10rem] object-contain opacity-80 transition duration-300 hover:opacity-100 sm:h-16"
 							/>
 						</span>
 					))
 				}
 				{
-					logos.map((item) => (
+					mitad.map((item) => (
 						<span class="flex shrink-0 items-center rounded-2xl bg-white/90 p-4" aria-hidden="true">
-							<img
+							<Image
 								src={item.src}
 								alt=""
+								height={64}
+								densities={[1, 2]}
 								loading="lazy"
-								class="h-12 w-auto opacity-80 transition duration-300 hover:opacity-100 sm:h-16"
+								class="h-12 w-auto max-w-[10rem] object-contain opacity-80 transition duration-300 hover:opacity-100 sm:h-16"
 							/>
 						</span>
 					))

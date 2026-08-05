@@ -1,16 +1,31 @@
 ---
 import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import DotGrid from '../components/DotGrid.astro';
 import Globe from '../components/Globe.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { TELEFONO, CORREOS, SEDE_PRINCIPAL } from '../data/contact';
+import logoImg from '../assets/logo.webp';
+import transporteInternacionalImg from '../assets/servicios/transporte-internacional.webp';
+import agenciamientoAduaneroImg from '../assets/servicios/agenciamiento-aduanero.webp';
+import almacenajeDistribucionImg from '../assets/servicios/almacenaje-distribucion.webp';
+import consolidacionCargaImg from '../assets/servicios/consolidacion-carga.webp';
+import seguroMercanciasImg from '../assets/servicios/seguro-mercancias.webp';
+import asesoriaComercioExteriorImg from '../assets/servicios/asesoria-comercio-exterior.webp';
+import lineaCongeladosImg from '../assets/linea-congelados.jpg';
+import lineaCargaSecaImg from '../assets/linea-carga-seca.jpg';
 
 interface Props {
 	title: string;
 	description: string;
-	/** Ruta relativa a la imagen OG, ej. "/images/og-home.png" */
-	image?: string;
+	/**
+	 * Imagen OG específica de la página: ruta absoluta ("/images/og-home.png")
+	 * o un asset importado (`ImageMetadata`). Si se omite, se genera una
+	 * tarjeta por defecto a partir del logo con `getImage()`.
+	 */
+	image?: string | ImageMetadata;
 	/** Sobreescribe la URL canónica calculada automáticamente */
 	canonicalURL?: string;
 	/** Tipo de contenido Open Graph */
@@ -25,18 +40,37 @@ interface Props {
 	schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const {
-	title,
-	description,
-	image = '/og-image.png',
-	type = 'website',
-	noindex = false,
-	schema,
-} = Astro.props;
+const { title, description, image, type = 'website', noindex = false, schema } = Astro.props;
 
 const siteBase = Astro.site ?? new URL('https://gtm-alliance.com');
 const canonicalURL = Astro.props.canonicalURL ?? new URL(Astro.url.pathname, siteBase).href;
-const ogImageURL = new URL(image, siteBase).href;
+
+// Imagen OG: si la página pasa una ruta de string, se respeta tal cual (caso
+// legado). En cualquier otro caso —sin prop o con un asset importado— se
+// genera una tarjeta 1200x630 a partir del logo con getImage(), para que
+// og:image/twitter:image nunca apunten a un archivo inexistente mientras el
+// cliente no entregue un diseño OG dedicado.
+let ogImageURL: string;
+let ogImageWidth: number;
+let ogImageHeight: number;
+
+if (typeof image === 'string') {
+	ogImageURL = new URL(image, siteBase).href;
+	ogImageWidth = 1200;
+	ogImageHeight = 630;
+} else {
+	const ogAsset = await getImage({
+		src: image ?? logoImg,
+		width: 1200,
+		height: 630,
+		fit: 'contain',
+		background: '#0a1220',
+		format: 'png',
+	});
+	ogImageURL = new URL(ogAsset.src, siteBase).href;
+	ogImageWidth = ogAsset.attributes.width ?? 1200;
+	ogImageHeight = ogAsset.attributes.height ?? 630;
+}
 const fullTitle = `${title} | GTM Alliance`;
 
 /* -------------------------------------------------------------------------
@@ -62,50 +96,50 @@ const servicios = [
 		slug: 'transporte-internacional',
 		name: 'Transporte Internacional',
 		description: 'Transporte internacional de carga marítimo, aéreo y terrestre para operaciones de importación y exportación.',
-		image: '/images/servicios/transporte-internacional.webp',
+		image: transporteInternacionalImg,
 	},
 	{
 		slug: 'agenciamiento-aduanero',
 		name: 'Agenciamiento Aduanero',
 		description: 'Trámites, normativas y cumplimiento aduanero para operaciones de comercio exterior en Colombia.',
-		image: '/images/servicios/agenciamiento-aduanero.webp',
+		image: agenciamientoAduaneroImg,
 	},
 	{
 		slug: 'almacenaje-distribucion',
 		name: 'Almacenaje y Distribución',
 		description: 'Almacenaje y distribución especializados para carga refrigerada y carga seca.',
-		image: '/images/servicios/almacenaje-distribucion.webp',
+		image: almacenajeDistribucionImg,
 	},
 	{
 		slug: 'consolidacion-carga',
 		name: 'Consolidación de Carga',
 		description: 'Agrupación y manejo especializado de carga para optimizar costos y tiempos de exportación.',
-		image: '/images/servicios/consolidacion-carga.webp',
+		image: consolidacionCargaImg,
 	},
 	{
 		slug: 'seguro-mercancias',
 		name: 'Seguro de Mercancías',
 		description: 'Cobertura total de seguro para mercancías durante el transporte internacional.',
-		image: '/images/servicios/seguro-mercancias.webp',
+		image: seguroMercanciasImg,
 	},
 	{
 		slug: 'asesoria-comercio-exterior',
 		name: 'Asesoría en Comercio Exterior',
 		description: 'Acompañamiento estratégico y normativo en operaciones de comercio exterior.',
-		image: '/images/servicios/asesoria-comercio-exterior.webp',
+		image: asesoriaComercioExteriorImg,
 	},
 	{
 		slug: 'linea-congelados',
 		name: 'Línea de Congelados',
 		description: 'Cadena de frío con trazabilidad total del agricultor al destino final, en alianza con Coldfood: compra directa, supervisión en cultivos, procesamiento en plantas certificadas, transporte refrigerado monitoreado y exportación con seguimiento digital.',
-		image: '/images/linea-congelados.jpg',
+		image: lineaCongeladosImg,
 		anchor: '#congelados',
 	},
 	{
 		slug: 'linea-carga-seca',
 		name: 'Línea de Carga Seca',
 		description: 'Exportación multi-industria de carga seca: almacenaje, picking, empaque, control de inventarios y coordinación logística y aduanera.',
-		image: '/images/linea-carga-seca.jpg',
+		image: lineaCargaSecaImg,
 		anchor: '#carga-seca',
 	},
 ];
@@ -119,7 +153,12 @@ const serviceNodes = servicios.map((servicio) => ({
 	provider: { '@id': organizationId },
 	areaServed: { '@type': 'Country', name: 'Colombia' },
 	url: `${siteBase.href}${servicio.anchor ?? '#servicios'}`,
-	image: new URL(servicio.image, siteBase).href,
+	image: {
+		'@type': 'ImageObject',
+		url: new URL(servicio.image.src, siteBase).href,
+		width: servicio.image.width,
+		height: servicio.image.height,
+	},
 	inLanguage: 'es-CO',
 }));
 
@@ -134,9 +173,9 @@ const organizationNode = {
 	logo: {
 		'@type': 'ImageObject',
 		'@id': logoId,
-		url: new URL('/logo.webp', siteBase).href,
-		width: 1024,
-		height: 535,
+		url: new URL(logoImg.src, siteBase).href,
+		width: logoImg.width,
+		height: logoImg.height,
 		caption: 'GTM Alliance',
 	},
 	image: { '@id': logoId },
@@ -266,8 +305,8 @@ const graphSchema = {
 		<meta property="og:title" content={fullTitle} />
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content={ogImageURL} />
-		<meta property="og:image:width" content="1200" />
-		<meta property="og:image:height" content="630" />
+		<meta property="og:image:width" content={String(ogImageWidth)} />
+		<meta property="og:image:height" content={String(ogImageHeight)} />
 		<meta property="og:site_name" content="GTM Alliance" />
 		<meta property="og:locale" content="es_CO" />
 
