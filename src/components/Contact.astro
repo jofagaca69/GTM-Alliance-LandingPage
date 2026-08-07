@@ -91,7 +91,15 @@ const contactos = [
 				</p>
 			</div>
 
-			<form id="contact-form" class="mt-8 grid gap-5 sm:grid-cols-2" action="#" method="post">
+			<form id="contact-form" class="mt-8 grid gap-5 sm:grid-cols-2" action="https://api.web3forms.com/submit" method="post">
+				<!-- Reemplaza YOUR_WEB3FORMS_ACCESS_KEY por tu clave de Web3Forms -->
+				<input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY" />
+				<!-- Cambia  al correo destinatario deseado -->
+				<input type="hidden" name="to_email" value="administracion@gtm-alliance.com" />
+				<!-- Actualiza el asunto según el formulario enviado -->
+				<input type="hidden" name="subject" value="Nuevo mensaje de contacto - GTM Alliance" />				
+				<!-- Deja botcheck vacío para detección de bots en Web3Forms -->
+				<input type="hidden" name="botcheck" value="" />
 				<div class="sm:col-span-2">
 					<label for="nombre" class="mb-2 block text-sm font-medium text-slate-200">
 						Nombre Completo*
@@ -157,6 +165,7 @@ const contactos = [
 						Responderemos en menos de 24 horas.
 					</p>
 				</div>
+				<p id="contact-feedback" class="hidden mt-2 text-sm font-medium"></p>
 				
 			</form>
 		</div>
@@ -186,10 +195,48 @@ const contactos = [
 
 	const section = document.querySelector('#contacto');
 	const form = document.querySelector('#contact-form') as HTMLFormElement | null;
+	const feedback = document.getElementById('contact-feedback');
 	const modal = document.getElementById('contact-privacy-modal');
 	const cancelButton = document.getElementById('contact-cancel-policy');
 	const acceptButton = document.getElementById('contact-accept-policy');
-	let formReadyToSubmit = false;
+
+	async function submitForm(formElement: HTMLFormElement) {
+		const submitButton = formElement.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+		const originalText = submitButton?.textContent;
+
+		if (submitButton) {
+			submitButton.disabled = true;
+			submitButton.textContent = 'Enviando...';
+		}
+
+		try {
+			const response = await fetch(formElement.action, {
+				method: 'POST',
+				body: new FormData(formElement),
+				headers: { Accept: 'application/json' },
+			});
+
+			if (response.ok) {
+				feedback?.classList.remove('hidden', 'text-rose-500');
+				feedback?.classList.add('text-gtm-gold');
+				feedback!.textContent = 'Mensaje enviado correctamente. Gracias por contactarnos.';
+				formElement.reset();
+			} else {
+				feedback?.classList.remove('hidden', 'text-gtm-gold');
+				feedback?.classList.add('text-rose-500');
+				feedback!.textContent = 'Ocurrió un error al enviar el formulario. Intenta de nuevo.';
+			}
+		} catch (error) {
+			feedback?.classList.remove('hidden', 'text-gtm-gold');
+			feedback?.classList.add('text-rose-500');
+			feedback!.textContent = 'No se pudo enviar el formulario. Verifica tu conexión e intenta otra vez.';
+		} finally {
+			if (submitButton) {
+				submitButton.disabled = false;
+				submitButton.textContent = originalText ?? '';
+			}
+		}
+	}
 
 	form?.addEventListener('submit', (event) => {
 		event.preventDefault();
@@ -202,28 +249,24 @@ const contactos = [
 		modal?.classList.remove('flex');
 	});
 
-	acceptButton?.addEventListener('click', () => {
-		formReadyToSubmit = true;
+	acceptButton?.addEventListener('click', async () => {
 		modal?.classList.add('hidden');
 		modal?.classList.remove('flex');
-		if (form && formReadyToSubmit) {
-			form.submit();
+		if (form) {
+			await submitForm(form);
 		}
 	});
 
-	if (section) {
-		const mm = gsap.matchMedia();
+	const mm = gsap.matchMedia();
+	mm.add('(prefers-reduced-motion: no-preference)', () => {
+		const tl = gsap.timeline({
+			scrollTrigger: {
+				trigger: section,
+				start: 'top 75%',
+			},
+		});
 
-		mm.add('(prefers-reduced-motion: no-preference)', () => {
-			const tl = gsap.timeline({
-				defaults: { ease: 'power3.out' },
-				scrollTrigger: {
-					trigger: section,
-					start: 'top 75%',
-				},
-			});
-
-			tl.fromTo('.contacto-eyebrow', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 })
+		tl.fromTo('.contacto-eyebrow', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 })
 				.fromTo(
 					'.contacto-title',
 					{ opacity: 0, y: 24 },
@@ -267,5 +310,5 @@ const contactos = [
 				{ opacity: 1, y: 0 },
 			);
 		});
-	}
+	
 </script>
