@@ -1,22 +1,37 @@
 ---
+import { TELEFONO, CORREOS, SEDE_PRINCIPAL } from '../data/contact';
+
+const iconoUbicacion =
+	'<path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>';
+const iconoCorreo =
+	'<path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>';
+const iconoTelefono =
+	'<path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>';
+
 const contactos = [
 	{
 		label: 'Sede',
-		value: 'Bogotá, Colombia',
+		value: `${SEDE_PRINCIPAL.direccion}, ${SEDE_PRINCIPAL.ciudad}`,
 		href: undefined,
-		icon: '<path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>',
-	},
-	{
-		label: 'Correo',
-		value: 'info@gtmalliance.com',
-		href: 'mailto:info@gtmalliance.com',
-		icon: '<path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>',
+		icon: iconoUbicacion,
 	},
 	{
 		label: 'Teléfono',
-		value: '+57 310 000 0000',
-		href: 'tel:+573100000000',
-		icon: '<path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>',
+		value: TELEFONO.label,
+		href: TELEFONO.href,
+		icon: iconoTelefono,
+	},
+	{
+		label: 'Gerencia',
+		value: CORREOS.gerencia,
+		href: `mailto:${CORREOS.gerencia}`,
+		icon: iconoCorreo,
+	},
+	{
+		label: 'Administración',
+		value: CORREOS.administracion,
+		href: `mailto:${CORREOS.administracion}`,
+		icon: iconoCorreo,
 	},
 ];
 ---
@@ -37,7 +52,7 @@ const contactos = [
 			Estamos listos para acompañarte en tus proyectos de comercio exterior y exportación.
 		</p>
 
-		<div class="mt-10 grid grid-cols-1 gap-6 sm:mt-16 sm:grid-cols-3">
+		<div class="mt-10 grid grid-cols-1 gap-6 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4">
 			{
 				contactos.map((item) => {
 					const Tag = item.href ? 'a' : 'div';
@@ -66,7 +81,7 @@ const contactos = [
 
 		<div class="contacto-cta mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-start">
 			<a
-				href="https://wa.me/573100000000"
+				href={TELEFONO.whatsapp}
 				target="_blank"
 				rel="noopener noreferrer"
 				class="rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105"
@@ -74,7 +89,7 @@ const contactos = [
 				Escribir por WhatsApp
 			</a>
 			<a
-				href="mailto:info@gtmalliance.com"
+				href={`mailto:${CORREOS.gerencia}`}
 				class="rounded-full border border-white/40 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
 			>
 				Enviar correo
@@ -92,14 +107,19 @@ const contactos = [
 			</div>
 
 			<form id="contact-form" class="mt-8 grid gap-5 sm:grid-cols-2" action="https://api.web3forms.com/submit" method="post">
-				<!-- Reemplaza YOUR_WEB3FORMS_ACCESS_KEY por tu clave de Web3Forms -->
-				<input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY" />
-				<!-- Cambia  al correo destinatario deseado -->
-				<input type="hidden" name="to_email" value="administracion@gtm-alliance.com" />
-				<!-- Actualiza el asunto según el formulario enviado -->
-				<input type="hidden" name="subject" value="Nuevo mensaje de contacto - GTM Alliance" />				
-				<!-- Deja botcheck vacío para detección de bots en Web3Forms -->
-				<input type="hidden" name="botcheck" value="" />
+
+				<input type="hidden" name="subject" value="Nuevo mensaje de contacto — gtm-alliance.com" />
+				<input type="hidden" name="from_name" value="Formulario de contacto — GTM Alliance" />
+				<input
+					type="checkbox"
+					name="botcheck"
+					class="hidden"
+					style="display: none;"
+					tabindex="-1"
+					autocomplete="off"
+				/>
+
+>>>>>>> e30285c02dc1f06f65da29994cfa91caf066c6a8
 				<div class="sm:col-span-2">
 					<label for="nombre" class="mb-2 block text-sm font-medium text-slate-200">
 						Nombre Completo*
@@ -156,17 +176,17 @@ const contactos = [
 
 				<div class="sm:col-span-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 					<button
+						id="contact-submit"
 						type="submit"
-						class="inline-flex items-center justify-center rounded-full bg-gtm-gold px-7 py-3 text-sm font-semibold text-gtm-navy transition-transform hover:scale-[1.02]"
+						class="inline-flex items-center justify-center rounded-full bg-gtm-gold px-7 py-3 text-sm font-semibold text-gtm-navy transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
 					>
 						Enviar mensaje
 					</button>
-					<p class="text-sm text-slate-400">
+					<p id="contact-form-status" class="text-sm text-slate-400" role="status" aria-live="polite">
 						Responderemos en menos de 24 horas.
 					</p>
 				</div>
-				<p id="contact-feedback" class="hidden mt-2 text-sm font-medium"></p>
-				
+
 			</form>
 		</div>
 	</div>
@@ -199,6 +219,7 @@ const contactos = [
 	const modal = document.getElementById('contact-privacy-modal');
 	const cancelButton = document.getElementById('contact-cancel-policy');
 	const acceptButton = document.getElementById('contact-accept-policy');
+
 
 	async function submitForm(formElement: HTMLFormElement) {
 		const submitButton = formElement.querySelector('button[type="submit"]') as HTMLButtonElement | null;
@@ -238,6 +259,7 @@ const contactos = [
 		}
 	}
 
+
 	form?.addEventListener('submit', (event) => {
 		event.preventDefault();
 		modal?.classList.remove('hidden');
@@ -257,58 +279,4 @@ const contactos = [
 		}
 	});
 
-	const mm = gsap.matchMedia();
-	mm.add('(prefers-reduced-motion: no-preference)', () => {
-		const tl = gsap.timeline({
-			scrollTrigger: {
-				trigger: section,
-				start: 'top 75%',
-			},
-		});
-
-		tl.fromTo('.contacto-eyebrow', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 })
-				.fromTo(
-					'.contacto-title',
-					{ opacity: 0, y: 24 },
-					{ opacity: 1, y: 0, duration: 0.7 },
-					'-=0.3',
-				)
-				.fromTo(
-					'.contacto-intro',
-					{ opacity: 0, y: 24 },
-					{ opacity: 1, y: 0, duration: 0.7 },
-					'-=0.5',
-				)
-				.fromTo(
-					'.contacto-card',
-					{ opacity: 0, y: 32 },
-					{ opacity: 1, y: 0, duration: 0.6, stagger: 0.15 },
-					'-=0.3',
-				)
-				.fromTo(
-					'.contacto-cta',
-					{ opacity: 0, y: 20 },
-					{ opacity: 1, y: 0, duration: 0.6 },
-					'-=0.2',
-				)
-				.fromTo(
-					'.contacto-form',
-					{ opacity: 0, y: 24 },
-					{ opacity: 1, y: 0, duration: 0.7 },
-					'-=0.2',
-				);
-
-			return () => {
-				tl.scrollTrigger?.kill();
-				tl.kill();
-			};
-		});
-
-		mm.add('(prefers-reduced-motion: reduce)', () => {
-			gsap.set(
-				['.contacto-eyebrow', '.contacto-title', '.contacto-intro', '.contacto-card', '.contacto-cta', '.contacto-form'],
-				{ opacity: 1, y: 0 },
-			);
-		});
-	
 </script>

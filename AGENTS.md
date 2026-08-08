@@ -32,13 +32,14 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 - **Routing**: file-based under `src/pages/`. Currently a single route, `index.astro`, which composes the page from components in import order (`Hero`, `ClientsCarousel`, `AboutUs`, ...).
 - **Layout**: `src/layouts/BaseLayout.astro` wraps every page — handles the `<head>` (SEO meta tags, Open Graph, Twitter Card, canonical URL, JSON-LD `Organization` schema) and renders the persistent `Navbar` and `Footer` around the page's `<slot />`. Pages pass `title`, `description`, `keywords`, and optionally `image`/`type`/`noindex`/`canonicalURL` as props.
-- **Sections as components**: each homepage section (`Hero`, `ClientsCarousel`, `AboutUs`, ...) is a self-contained `.astro` file in `src/components/` with its own markup, an `id` used as an in-page anchor (`#inicio`, `#quienes-somos`, etc. — referenced by `Navbar`/`Footer` nav links), and its own scoped `<script>` for animation/interactivity. There is no shared component-composition layer beyond this — sections are added to `index.astro` directly.
+- **Sections as components**: each homepage section (`Hero`, `ClientsCarousel`, `AboutUs`, ...) is a self-contained `.astro` file in `src/components/` with its own markup, an `id` used as an in-page anchor (`#inicio`, `#quienes-somos`, etc.). There is no shared component-composition layer beyond this — sections are added to `index.astro` directly.
+- **Navigation data**: nav items (labels, hrefs, the "Líneas de Negocio" dropdown) live in a single source of truth, `src/data/nav.ts`, consumed by `Navbar.astro` (desktop + mobile) and `Footer.astro`. Add new anchor-linked sections there rather than editing `Navbar`/`Footer` markup directly. `src/scripts/scrollspy.ts` drives the active-link highlight (header + footer) via GSAP ScrollTrigger, keyed off `data-nav-link`/`data-nav-group` attributes rendered from that same data.
 - **Styling**: Tailwind CSS v4 via the `@tailwindcss/vite` plugin (configured in `astro.config.mjs`, no separate `tailwind.config.js`). Custom brand tokens are defined with `@theme` in `src/styles/global.css` (`--color-gtm-navy`, `--color-gtm-gold`), used as `text-gtm-navy`, `bg-gtm-gold`, etc. Global styles are imported once, in `BaseLayout.astro`.
 - **Typography**: two self-hosted variable fonts, declared via `@font-face` in `src/styles/global.css` and served from `public/fonts/` (no CDN/Google Fonts). `--font-sans` = **Plus Jakarta Sans** (body text — set as the default via `body { font-family: var(--font-sans); }`, so most elements need no extra class). `--font-display` = **Zodiak** (serif) — applied with the `font-display` utility class to headings (`h1`/`h2`/`h3`), the hero's gold emphasis span, uppercase eyebrow/tag labels, and the "GTM ALLIANCE" wordmark in `Navbar`/`Footer`. Follow this split for any new section: body copy stays unstyled (inherits Jakarta), titles/labels/wordmark get `font-display`. `BaseLayout.astro` preloads both variable `woff2` files since the Hero is above the fold.
 - **Animation**: `src/scripts/gsap.ts` is the single entry point for GSAP — it registers `ScrollTrigger` once and re-exports `gsap`/`ScrollTrigger`. Any component script must import from `'../scripts/gsap'` rather than importing `gsap` directly, so the plugin registration always happens.
   - Animation pattern used throughout: `gsap.matchMedia()` with two branches — `'(prefers-reduced-motion: no-preference)'` builds the real timeline/tween (and returns a cleanup function that kills the timeline/tween and any ScrollTrigger), and `'(prefers-reduced-motion: reduce)'` just `gsap.set(...)` elements to their final visible state. Follow this pattern for any new animated section.
   - Sections below the fold trigger their timeline off `ScrollTrigger` (`start: 'top 75%'` on the section element); above-the-fold content (Hero) animates immediately on load.
-- **Static assets**: images, logos, and favicons live in `public/` and are referenced by absolute path (e.g. `/logo.webp`, `/images/linea-congelados.jpg`).
+- **Static assets**: photos and logos live in `src/assets/` (`src/assets/servicios/`, `src/assets/logos/`) and are always rendered with `<Image>`/`getImage()` from `astro:assets` — import the file, then pass it as `src` (`widths`/`sizes` for photos, `height`+`densities` for fixed-size logos). Only favicons, `site.webmanifest`, and `fonts/` remain in `public/`, referenced by absolute path (`<Image>` can't process `<link rel="icon">`). `BaseLayout.astro`'s JSON-LD and `og:image` build their URLs from the imported asset's `.src`/`.width`/`.height`, never from a `public/` path — that mismatch previously caused broken structured-data and OG image URLs.
 - **Interactive UI without a framework**: `Navbar.astro` implements the mobile menu toggle and desktop dropdown with a plain inline `<script>` (vanilla DOM APIs, no React/Vue/Svelte integration is installed). Follow this approach for simple interactivity rather than introducing a UI framework.
 
 ## Conventions
@@ -68,13 +69,14 @@ The client supplied a full content brief (`Pagina Web.docx`) laying out the site
 6. **Portal de Clientes** (not yet built — likely out of scope for this static marketing site)
    Authenticated client area: tracking de envíos en tiempo real, documentación digital, reportes y estadísticas, asistencia personalizada, historial de operaciones. This implies auth + backend data, unlike the rest of the static site — flag scope/architecture with the user before starting rather than assuming it belongs in this Astro project as-is.
 
-7. **Contacto** (`#contacto` — not yet built)
-   Bogotá, Colombia · info@gtmalliance.com · +57 310 000 0000
+7. **Contacto** (`#contacto`, done)
+   Carrera 110 # 70G-17, Piso 2, Bogotá D.C. · gerencia@gtm-alliance.com · administracion@gtm-alliance.com · +57 300 797 4993
 
 ### Known content gaps to reconcile
 
-- `Footer.astro` currently has placeholder contact info (México, `+52 (999) 999-9999`) — should be updated to Bogotá, Colombia / `info@gtmalliance.com` / `+57 310 000 0000` per the brief.
-- `BaseLayout.astro`'s `orgSchema` JSON-LD has an empty `sameAs` and no `address` — update alongside the footer once contact/social data is finalized.
+- Real contact data (phone, address, gerencia/administración emails) lives in `src/data/contact.ts`, consumed by `Contact.astro`, `Footer.astro`, `DryCargoLine.astro`, and `BaseLayout.astro`'s `orgSchema` JSON-LD (`address`, `contactPoint.telephone`/`.email`). Do not hardcode contact values elsewhere — import from that module.
+- `Footer.astro` still has `placeholder: true` entries for `horarios`, `redes`, and `legales` — attention hours, social media URLs, and legal/policy pages are filler pending the client's final data. `grep "placeholder: true"` in that file lists every one.
+- `BaseLayout.astro`'s `orgSchema` JSON-LD still has an empty `sameAs` — fill it in once social media URLs arrive.
 
 ## Documentation
 

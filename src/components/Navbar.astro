@@ -1,57 +1,40 @@
 ---
-type SimpleLink = { label: string; href: string; active?: boolean };
-type DropdownLink = {
-	label: string;
-	dropdown: { tag: string; title: string; href: string; description: string }[];
-};
-type NavItem = SimpleLink | DropdownLink;
+import { Image } from 'astro:assets';
+import { NAV_ITEMS, groupTargets } from '../data/nav';
+import logo from '../assets/logo.webp';
 
-const navItems: NavItem[] = [
-	{ label: 'Inicio', href: '/#inicio', active: true },
-	{ label: 'Quiénes Somos', href: '/#quienes-somos' },
-	{ label: 'Servicios', href: '/#servicios' },
-	{
-		label: 'Líneas de Negocio',
-		dropdown: [
-			{
-				tag: 'Línea de Frío',
-				title: 'Congelados',
-				href: '/#congelados',
-				description: 'Cadena de frío con trazabilidad total, en alianza con Coldfood.',
-			},
-			{
-				tag: 'Línea Seca',
-				title: 'Carga Seca',
-				href: '/#carga-seca',
-				description: 'Exportación multi-industria. Próximamente Medellín.',
-			},
-		],
-	},
-	{ label: 'Contacto', href: '/#contacto' },
-];
+// Estado activo inicial (antes de que el scrollspy tome el control), para
+// que el HTML servido ya llegue correcto y no haya flash en la primera
+// pintura. Fuera de `/` no hay secciones que espiar en el home.
+const initialActive = Astro.url.pathname === '/' ? 'inicio' : '';
 ---
 
 <header class="fixed inset-x-4 top-4 z-50 sm:inset-x-6 md:inset-x-0">
 	<div
 		class="mx-auto flex max-w-4xl items-center justify-between gap-4 rounded-full border border-white/10 bg-gtm-navy/70 px-4 py-2.5 shadow-lg shadow-black/40 backdrop-blur-md md:px-6"
 	>
-		<a href="#inicio" class="flex shrink-0 items-center rounded-full bg-white px-2.5 py-1">
-			<img src="/logo.webp" alt="GTM Alliance - Global Team Work" class="h-7 w-auto sm:h-8" />
+		<a href="/#inicio" class="flex shrink-0 items-center rounded-full bg-white px-2.5 py-1">
+			<Image
+				src={logo}
+				alt="GTM Alliance - Global Team Work"
+				width={128}
+				loading="eager"
+				fetchpriority="high"
+				class="h-7 w-auto sm:h-8"
+			/>
 		</a>
 
 		<nav class="hidden items-center gap-6 md:flex" aria-label="Principal">
 			{
-				navItems.map((item) => {
-					if ('href' in item) {
+				NAV_ITEMS.map((item) => {
+					if (item.kind === 'link') {
 						return (
 							<a
 								href={item.href}
-								aria-current={item.active ? 'page' : undefined}
-								class={`pb-0.5 text-sm font-medium transition-colors ${
-									item.active
-										? 'border-b-2 border-gtm-gold text-white'
-										: 'border-b-2 border-transparent text-slate-300 hover:text-white'
-								}`}
+								data-nav-link={item.id}
+								data-active={item.id === initialActive ? '' : undefined}
+								aria-current={item.id === initialActive ? 'page' : undefined}
+								class="border-b-2 border-transparent pb-0.5 text-sm font-medium text-slate-300 transition-colors hover:text-white data-[active]:border-gtm-gold data-[active]:text-white"
 							>
 								{item.label}
 							</a>
@@ -63,9 +46,10 @@ const navItems: NavItem[] = [
 							<button
 								type="button"
 								id="dropdown-btn"
+								data-nav-group={groupTargets(item)}
 								aria-expanded="false"
 								aria-haspopup="true"
-								class="flex items-center gap-1 border-b-2 border-transparent pb-0.5 text-sm font-medium text-slate-300 transition-colors hover:text-white"
+								class="flex items-center gap-1 border-b-2 border-transparent pb-0.5 text-sm font-medium text-slate-300 transition-colors hover:text-white data-[active]:border-gtm-gold data-[active]:text-white"
 							>
 								{item.label}
 								<svg
@@ -87,16 +71,17 @@ const navItems: NavItem[] = [
 								class="absolute left-1/2 mt-3 hidden w-[26rem] -translate-x-1/2 rounded-2xl border border-white/10 bg-gtm-navy/95 p-1 shadow-lg shadow-black/50 backdrop-blur-md"
 							>
 								<div class="grid grid-cols-2">
-									{item.dropdown.map((sub, i) => (
+									{item.children.map((sub, i) => (
 										<a
 											href={sub.href}
+											data-nav-link={sub.id}
 											role="menuitem"
-											class={`flex flex-col gap-1.5 rounded-xl p-4 transition-colors hover:bg-white/5 ${i === 0 ? 'border-r border-white/10' : ''}`}
+											class={`flex flex-col gap-1.5 rounded-xl p-4 ring-1 ring-transparent transition-colors hover:bg-white/5 data-[active]:bg-white/5 data-[active]:ring-gtm-gold/30 ${i === 0 ? 'border-r border-white/10' : ''}`}
 										>
 											<span class="font-display text-[10px] font-semibold tracking-widest text-gtm-gold uppercase">
 												{sub.tag}
 											</span>
-											<span class="text-sm font-semibold text-white">{sub.title}</span>
+											<span class="text-sm font-semibold text-white">{sub.label}</span>
 											<span class="text-xs leading-relaxed text-slate-400">{sub.description}</span>
 										</a>
 									))}
@@ -147,49 +132,36 @@ const navItems: NavItem[] = [
 		aria-label="Principal (móvil)"
 		class="mx-auto mt-2 hidden max-w-4xl flex-col gap-1 rounded-3xl border border-white/10 bg-gtm-navy/90 p-3 shadow-lg shadow-black/40 backdrop-blur-md md:hidden"
 	>
-		<a
-			href="#inicio"
-			aria-current="page"
-			class="rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors"
-		>
-			Inicio
-		</a>
-		<a
-			href="#quienes-somos"
-			class="rounded-full px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
-		>
-			Quiénes Somos
-		</a>
-		<a
-			href="#servicios"
-			class="rounded-full px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
-		>
-			Servicios
-		</a>
-
-		<!-- Líneas de Negocio (expanded inline) -->
-		<span class="font-display mt-1 px-4 text-[10px] font-semibold tracking-widest text-gtm-gold uppercase">
-			Líneas de Negocio
-		</span>
-		<a
-			href="#congelados"
-			class="rounded-full py-2 pl-7 pr-4 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
-		>
-			Congelados
-		</a>
-		<a
-			href="#carga-seca"
-			class="rounded-full py-2 pl-7 pr-4 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
-		>
-			Carga Seca
-		</a>
-
-		<a
-			href="#contacto"
-			class="mt-1 rounded-full px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
-		>
-			Contacto
-		</a>
+		{
+			NAV_ITEMS.map((item) =>
+				item.kind === 'link' ? (
+					<a
+						href={item.href}
+						data-nav-link={item.id}
+						data-active={item.id === initialActive ? '' : undefined}
+						aria-current={item.id === initialActive ? 'page' : undefined}
+						class="rounded-full px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white data-[active]:bg-white/10 data-[active]:text-white"
+					>
+						{item.label}
+					</a>
+				) : (
+					<Fragment>
+						<span class="font-display mt-1 px-4 text-[10px] font-semibold tracking-widest text-gtm-gold uppercase">
+							{item.label}
+						</span>
+						{item.children.map((sub) => (
+							<a
+								href={sub.href}
+								data-nav-link={sub.id}
+								class="rounded-full py-2 pr-4 pl-7 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white data-[active]:bg-white/10 data-[active]:text-white"
+							>
+								{sub.label}
+							</a>
+						))}
+					</Fragment>
+				),
+			)
+		}
 	</nav>
 </header>
 
@@ -244,4 +216,10 @@ const navItems: NavItem[] = [
 			setDropdownOpen(false);
 		}
 	});
+</script>
+
+<script>
+	import { initScrollSpy } from '../scripts/scrollspy';
+
+	initScrollSpy();
 </script>
