@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT_FORM_CONFIG } from '../data/contact-form';
 
 const pageURL = new URL('/pqrsd/', 'https://gtm-alliance.com').href;
 
@@ -75,9 +76,10 @@ const pqrsdSchema = [
 
 				<div class="rounded-3xl border border-white/10 bg-slate-950/60 p-8 shadow-2xl shadow-black/20 backdrop-blur-sm">
 					<h2 class="font-display text-2xl font-semibold text-white">Formulario de PQRSD</h2>
-					<form id="pqrsd-form" class="mt-6 grid gap-5 sm:grid-cols-2" action="https://api.web3forms.com/submit" method="post">
-						<input type="hidden" name="subject" value="Nueva solicitud PQRSD — gtm-alliance.com" />
-						<input type="hidden" name="from_name" value="Formulario PQRSD — GTM Alliance" />
+					<form id="pqrsd-form" class="mt-6 grid gap-5 sm:grid-cols-2" action="https://api.web3forms.com/submit" method="POST">
+						<input type="hidden" name="access_key" value={CONTACT_FORM_CONFIG.accessKey} />
+						<input type="hidden" name="subject" value={CONTACT_FORM_CONFIG.pqrsd.subject} />
+						<input type="hidden" name="from_name" value={CONTACT_FORM_CONFIG.fromName} />
 						<input
 							type="checkbox"
 							name="botcheck"
@@ -91,7 +93,7 @@ const pqrsdSchema = [
 							<label for="nombre" class="mb-2 block text-sm font-medium text-slate-200">Nombre completo</label>
 							<input
 								id="nombre"
-								name="nombre"
+								name="name"
 								type="text"
 								required
 								class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
@@ -146,7 +148,7 @@ const pqrsdSchema = [
 							<label for="mensaje" class="mb-2 block text-sm font-medium text-slate-200">Mensaje</label>
 							<textarea
 								id="mensaje"
-								name="mensaje"
+								name="message"
 								rows="4"
 								required
 								class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
@@ -190,12 +192,74 @@ const pqrsdSchema = [
 	</div>
 
 	<script>
+		import { CONTACT_FORM_CONFIG } from '../data/contact-form';
+
 		const form = document.getElementById('pqrsd-form') as HTMLFormElement | null;
 		const modal = document.getElementById('privacy-modal');
 		const cancelButton = document.getElementById('cancel-policy');
 		const acceptButton = document.getElementById('accept-policy');
 		const submitButton = document.getElementById('pqrsd-submit') as HTMLButtonElement | null;
 		const statusEl = document.getElementById('pqrsd-form-status');
+		const accessKey = CONTACT_FORM_CONFIG.accessKey.trim();
+
+		function setStatus(message: string, tone: 'default' | 'error' | 'success') {
+			if (!statusEl) return;
+
+			statusEl.textContent = message;
+			statusEl.classList.remove('text-red-400', 'text-emerald-400', 'text-slate-400');
+
+			if (tone === 'error') {
+				statusEl.classList.add('text-red-400');
+			} else if (tone === 'success') {
+				statusEl.classList.add('text-emerald-400');
+			} else {
+				statusEl.classList.add('text-slate-400');
+			}
+		}
+
+		async function submitForm(formElement: HTMLFormElement) {
+			if (submitButton) {
+				submitButton.disabled = true;
+				submitButton.textContent = 'Enviando...';
+			}
+
+			setStatus('Enviando...', 'default');
+
+			try {
+				const formData = new FormData(formElement);
+				const payload = Object.fromEntries(formData.entries());
+
+				const response = await fetch('https://api.web3forms.com/submit', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Accept: 'application/json',
+					},
+					body: JSON.stringify(payload),
+				});
+
+				const result = await response.json().catch(() => ({
+					success: false,
+					message: 'Respuesta inesperada del servicio.',
+				}));
+
+				if (response.ok && result.success) {
+					formElement.reset();
+					setStatus('¡Solicitud enviada! Tu información está segura con nosotros.', 'success');
+				} else {
+					throw new Error(result.message ?? 'No se pudo enviar la solicitud.');
+				}
+			} catch (error) {
+				const message = error instanceof Error ? error.message : 'No se pudo enviar la solicitud.';
+				console.error('Web3Forms PQRSD submit failed', error);
+				setStatus(`No pudimos enviar tu solicitud. ${message}`, 'error');
+			} finally {
+				if (submitButton) {
+					submitButton.disabled = false;
+					submitButton.textContent = 'Enviar solicitud';
+				}
+			}
+		}
 
 		form?.addEventListener('submit', (event) => {
 			event.preventDefault();
@@ -211,52 +275,24 @@ const pqrsdSchema = [
 		acceptButton?.addEventListener('click', async () => {
 			modal?.classList.add('hidden');
 			modal?.classList.remove('flex');
-			if (form) {
-				await submitForm(form);
+
+			if (!form) return;
+
+			if (!form.checkValidity()) {
+				form.reportValidity();
+				return;
 			}
+
+			if (!accessKey) {
+				setStatus('Falta la clave de Web3Forms. Configúrala en src/data/contact-form.ts.', 'error');
+				return;
+			}
+
+			await submitForm(form);
 		});
 
-		async function submitForm(target: HTMLFormElement) {
-			const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
-
-			if (submitButton) submitButton.disabled = true;
-			if (statusEl) {
-				statusEl.textContent = 'Enviando...';
-				statusEl.classList.remove('text-red-400');
-				statusEl.classList.add('text-slate-400');
-			}
-
-			try {
-				const formData = new FormData(target);
-				formData.append('access_key', accessKey ?? '');
-
-				const response = await fetch('https://api.web3forms.com/submit', {
-					method: 'POST',
-					headers: { Accept: 'application/json' },
-					body: formData,
-				});
-				const result = await response.json();
-
-				if (response.ok && result.success) {
-					target.reset();
-					if (statusEl) {
-						statusEl.textContent = '¡Solicitud enviada! Tu información está segura con nosotros.';
-						statusEl.classList.remove('text-red-400');
-						statusEl.classList.add('text-emerald-400');
-					}
-				} else {
-					throw new Error(result.message ?? 'No se pudo enviar la solicitud.');
-				}
-			} catch {
-				if (statusEl) {
-					statusEl.textContent =
-						'No pudimos enviar tu solicitud. Escríbenos por WhatsApp o inténtalo de nuevo en unos minutos.';
-					statusEl.classList.remove('text-slate-400', 'text-emerald-400');
-					statusEl.classList.add('text-red-400');
-				}
-			} finally {
-				if (submitButton) submitButton.disabled = false;
-			}
-		}
+		form?.addEventListener('input', () => {
+			setStatus('Tu información está segura con nosotros.', 'default');
+		});
 	</script>
 </BaseLayout>
