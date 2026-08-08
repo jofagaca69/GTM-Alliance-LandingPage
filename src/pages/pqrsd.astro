@@ -131,8 +131,8 @@ const pqrsdSchema = [
 								id="tipo"
 								name="tipo"
 								required
-								class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
-								>
+								class="w-full rounded-2xl border border-white/10 bg-[#0f1a2e] px-4 py-3 text-base text-white focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+							>
 								<option value="" disabled selected>Selecciona una opción</option>
 								<option value="peticion">Petición</option>
 								<option value="queja">Queja</option>
@@ -190,6 +190,17 @@ const pqrsdSchema = [
 			</div>
 		</div>
 	</div>
+
+	<style>
+		select#tipo option {
+			background-color: #0f1a2e;
+			color: #ffffff;
+		}
+
+		select#tipo option[disabled] {
+			color: #94a3b8;
+		}
+	</style>
 
 	<script>
 		import { CONTACT_FORM_CONFIG } from '../data/contact-form';
