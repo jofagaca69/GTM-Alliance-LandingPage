@@ -37,12 +37,18 @@ export type NavItem = NavLink | NavGroup;
 export const NAV_ITEMS: NavItem[] = [
 	{ kind: 'link', id: 'inicio', label: 'Inicio', href: '/#inicio' },
 	{ kind: 'link', id: 'quienes-somos', label: 'Quiénes Somos', href: '/#quienes-somos' },
-	{ kind: 'link', id: 'servicios', label: 'Servicios', href: '/#servicios' },
 	{
 		kind: 'group',
-		id: 'lineas-de-negocio',
-		label: 'Líneas de Negocio',
+		id: 'nuestros-servicios',
+		label: 'Nuestros Servicios',
 		children: [
+			{
+				id: 'servicios',
+				label: 'Servicios',
+				href: '/#servicios',
+				tag: 'Comercio Exterior',
+				description: 'Transporte, agenciamiento aduanero, almacenaje, seguros y asesoría integral.',
+			},
 			{
 				id: 'congelados',
 				label: 'Congelados',

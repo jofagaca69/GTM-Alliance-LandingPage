@@ -68,15 +68,15 @@ const initialActive = Astro.url.pathname === '/' ? 'inicio' : '';
 							<div
 								id="dropdown-panel"
 								role="menu"
-								class="absolute left-1/2 mt-3 hidden w-[26rem] -translate-x-1/2 rounded-2xl border border-gtm-navy/10 bg-white/95 p-1 shadow-lg shadow-gtm-navy/15 backdrop-blur-md"
+								class="absolute left-1/2 mt-3 hidden w-80 -translate-x-1/2 rounded-2xl border border-gtm-navy/10 bg-white/95 p-1 shadow-lg shadow-gtm-navy/15 backdrop-blur-md"
 							>
-								<div class="grid grid-cols-2">
-									{item.children.map((sub, i) => (
+								<div class="flex flex-col divide-y divide-gtm-navy/10">
+									{item.children.map((sub) => (
 										<a
 											href={sub.href}
 											data-nav-link={sub.id}
 											role="menuitem"
-											class={`flex flex-col gap-1.5 rounded-xl p-4 ring-1 ring-transparent transition-colors hover:bg-gtm-navy/5 data-[active]:bg-gtm-navy/5 data-[active]:ring-gtm-gold/30 ${i === 0 ? 'border-r border-gtm-navy/10' : ''}`}
+											class="flex flex-col gap-1.5 rounded-xl p-4 ring-1 ring-transparent transition-colors hover:bg-gtm-navy/5 data-[active]:bg-gtm-navy/5 data-[active]:ring-gtm-gold/30"
 										>
 											<span class="font-display text-[10px] font-semibold tracking-widest text-gtm-gold-ink uppercase">
 												{sub.tag}
