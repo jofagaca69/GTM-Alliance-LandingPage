@@ -1,8 +1,13 @@
 import createGlobe from 'cobe';
 import type { COBEOptions, Globe as CobeGlobe } from 'cobe';
 import { gsap, ScrollTrigger } from './gsap';
-import { ARCS, KEYFRAMES, MARKERS, focusAngles, toCobeOffset, unwrapChain } from './globe-routes';
+import { ARCS, KEYFRAMES, MARKERS, ROUTES, focusAngles, toCobeOffset, unwrapChain } from './globe-routes';
+import { createVehicleLayer, type VehicleLayer } from './globe-vehicles';
 import { debounce, getDpr } from './utils';
+
+/** Compartidos entre las options de cobe y la proyección de la capa de vehículos. */
+const ARC_HEIGHT = 0.28;
+const MARKER_ELEVATION = 0.01;
 
 type GlobeState = {
 	phi: number;
@@ -98,20 +103,20 @@ export function initGlobe(): () => void {
 		devicePixelRatio: dpr,
 		phi: state.phi,
 		theta: state.theta,
-		dark: 1,
+		dark: 0,
 		diffuse: 1.15,
 		mapSamples,
-		mapBrightness: 4.2,
-		mapBaseBrightness: 0.03,
-		baseColor: [0.13, 0.2, 0.31],
-		markerColor: [0.831, 0.647, 0.216],
-		glowColor: [0.16, 0.26, 0.4],
+		mapBrightness: 4.5,
+		mapBaseBrightness: 0.12,
+		baseColor: [0.66, 0.72, 0.83],
+		markerColor: [0.541, 0.416, 0.071],
+		glowColor: [0.8, 0.85, 0.93],
 		markers: MARKERS,
 		arcs: ARCS,
-		arcColor: [0.831, 0.647, 0.216],
+		arcColor: [0.541, 0.416, 0.071],
 		arcWidth: 0.35,
-		arcHeight: 0.28,
-		markerElevation: 0.01,
+		arcHeight: ARC_HEIGHT,
+		markerElevation: MARKER_ELEVATION,
 		scale: state.scale,
 		offset: [0, 0],
 		opacity: state.opacity,
@@ -120,15 +125,30 @@ export function initGlobe(): () => void {
 
 	const globe: CobeGlobe = createGlobe(canvas, options);
 
+	const vehiclesEl = document.getElementById('globe-vehicles');
+	const vehicles: VehicleLayer | null = vehiclesEl
+		? createVehicleLayer(vehiclesEl, ROUTES, {
+				reduceMotion: reduceMotionQuery.matches,
+				compact: smallQuery.matches,
+				arcHeight: ARC_HEIGHT,
+				markerElevation: MARKER_ELEVATION,
+			})
+		: null;
+
 	let firstFrameDone = false;
-	function render() {
+	let lastTimeSec = 0;
+	function render(timeSec: number = lastTimeSec) {
+		lastTimeSec = timeSec;
+		const phi = state.phi + state.drift;
+		const [offsetX, offsetY] = toCobeOffset(state.offsetX * cssW, state.offsetY * cssH, state.scale);
 		globe.update({
-			phi: state.phi + state.drift,
+			phi,
 			theta: state.theta,
 			scale: state.scale,
-			offset: toCobeOffset(state.offsetX * cssW, state.offsetY * cssH, state.scale),
+			offset: [offsetX, offsetY],
 			opacity: state.opacity,
 		});
+		vehicles?.update({ phi, theta: state.theta, scale: state.scale, offsetX, offsetY, cssW, cssH }, timeSec);
 		if (!firstFrameDone) {
 			firstFrameDone = true;
 			canvas.classList.replace('opacity-0', 'opacity-100');
@@ -144,7 +164,7 @@ export function initGlobe(): () => void {
 		last = now;
 		state.driftPhase += DRIFT_OMEGA * dt;
 		state.drift = state.driftAmp * Math.sin(state.driftPhase);
-		render();
+		render(now / 1000);
 	}
 
 	function start() {
@@ -225,7 +245,7 @@ export function initGlobe(): () => void {
 	mm.add('(prefers-reduced-motion: reduce)', () => {
 		state.driftAmp = 0;
 		state.drift = 0;
-		requestAnimationFrame(render);
+		requestAnimationFrame(() => render());
 	});
 
 	return () => {
@@ -235,6 +255,7 @@ export function initGlobe(): () => void {
 		window.removeEventListener('orientationchange', debouncedResize);
 		window.removeEventListener('load', onLoad);
 		document.removeEventListener('visibilitychange', onVisibility);
+		vehicles?.destroy();
 		globe.destroy();
 	};
 }

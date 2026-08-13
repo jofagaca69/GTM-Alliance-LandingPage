@@ -4,11 +4,11 @@ const CELL_DESKTOP = 32;
 const CELL_MOBILE = 40;
 const BASE_RADIUS = 1.1;
 const MAX_RADIUS = 2.4;
-const BASE_ALPHA = 0.14;
+const BASE_ALPHA = 0.12;
 const MAX_ALPHA = 0.75;
 const INFLUENCE_RADIUS = 170;
-const BASE_COLOR = '148, 163, 184';
-const ACCENT_COLOR = '212, 165, 55';
+const BASE_COLOR = '28, 47, 74';
+const ACCENT_COLOR = '138, 106, 18';
 /** Umbral (px) bajo el cual el puntero suavizado se considera "asentado" y se detiene el rAF. */
 const SETTLE_EPSILON = 0.1;
 

@@ -25,6 +25,11 @@
 @theme {
 	--color-gtm-navy: #1c2f4a;
 	--color-gtm-gold: #d4a537;
+	/* Dorado accesible para TEXTO sobre fondo claro: #d4a537 sobre #faf8f3 da 2.2:1 (falla AA).
+	   #8a6a12 da 4.7:1. --color-gtm-gold se mantiene intacto para usos como fondo (botones CTA). */
+	--color-gtm-gold-ink: #8a6a12;
+	--color-gtm-bone: #faf8f3;
+	--color-gtm-surface: #ffffff;
 	--color-gtm-deep: #0a1220;
 
 	--font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
@@ -37,8 +42,8 @@ body {
 
 html {
 	scroll-padding-top: 6rem;
-	background-color: var(--color-gtm-deep);
-	color-scheme: dark;
+	background-color: var(--color-gtm-bone);
+	color-scheme: light;
 }
 
 /* Fallback cuando no hay WebGL disponible: esfera estática en CSS */
@@ -56,9 +61,9 @@ html {
 	transform: translate(-50%, -50%);
 	border-radius: 9999px;
 	background:
-		radial-gradient(circle at 34% 30%, rgba(56, 92, 140, 0.55), rgba(12, 24, 42, 0.9) 62%),
-		radial-gradient(circle at 50% 50%, rgba(212, 165, 55, 0.1), transparent 70%);
-	box-shadow: 0 0 140px 40px rgba(28, 47, 74, 0.55);
+		radial-gradient(circle at 34% 30%, rgba(213, 222, 235, 0.75), rgba(226, 231, 240, 0.35) 62%),
+		radial-gradient(circle at 50% 50%, rgba(212, 165, 55, 0.12), transparent 70%);
+	box-shadow: 0 0 140px 40px rgba(28, 47, 74, 0.12);
 	filter: blur(5px);
 }
 

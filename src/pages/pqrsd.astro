@@ -36,22 +36,22 @@ const pqrsdSchema = [
 	<section id="pqrsd" class="relative overflow-hidden py-20 sm:py-28">
 		<div class="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
 			<div class="max-w-3xl">
-				<span class="font-display inline-block text-xs font-semibold tracking-[0.35em] text-gtm-gold uppercase">
+				<span class="font-display inline-block text-xs font-semibold tracking-[0.35em] text-gtm-gold-ink uppercase">
 					PQRSD
 				</span>
-				<h1 class="font-display mt-4 text-4xl leading-tight font-bold text-white sm:text-5xl lg:text-6xl">
+				<h1 class="font-display mt-4 text-4xl leading-tight font-bold text-gtm-navy sm:text-5xl lg:text-6xl">
 					Tu voz importa en cada operación
 				</h1>
-				<p class="mt-5 text-lg leading-relaxed text-slate-300">
+				<p class="mt-5 text-lg leading-relaxed text-slate-700">
 					En GTM Alliance valoramos tus comentarios, solicitudes y reclamos. Completa este formulario
 					y nos pondremos en contacto contigo para atender tu caso con la mayor celeridad.
 				</p>
 			</div>
 
 			<div class="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-				<div class="rounded-3xl border border-white/10 bg-slate-950/60 p-8 shadow-2xl shadow-black/20 backdrop-blur-sm">
-					<h2 class="font-display text-2xl font-semibold text-white">¿Qué puedes reportar?</h2>
-					<ul class="mt-6 space-y-4 text-sm leading-relaxed text-slate-300">
+				<div class="rounded-3xl border border-gtm-navy/10 bg-gtm-surface p-8 shadow-2xl shadow-gtm-navy/10 backdrop-blur-sm">
+					<h2 class="font-display text-2xl font-semibold text-gtm-navy">¿Qué puedes reportar?</h2>
+					<ul class="mt-6 space-y-4 text-sm leading-relaxed text-slate-700">
 						<li class="flex gap-3">
 							<span class="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-gtm-gold"></span>
 							<span>Petición de información sobre servicios, tiempos o costos.</span>
@@ -66,16 +66,16 @@ const pqrsdSchema = [
 						</li>
 					</ul>
 
-					<div class="mt-8 rounded-2xl border border-gtm-gold/20 bg-gtm-gold/10 p-5">
-						<p class="text-sm font-semibold text-gtm-gold">Respuesta estimada</p>
-						<p class="mt-2 text-sm leading-relaxed text-slate-300">
+					<div class="mt-8 rounded-2xl border border-gtm-gold/30 bg-gtm-gold/10 p-5">
+						<p class="text-sm font-semibold text-gtm-gold-ink">Respuesta estimada</p>
+						<p class="mt-2 text-sm leading-relaxed text-slate-700">
 							Responderemos tu solicitud dentro de los tiempos establecidos por nuestra política de atención al cliente.
 						</p>
 					</div>
 				</div>
 
-				<div class="rounded-3xl border border-white/10 bg-slate-950/60 p-8 shadow-2xl shadow-black/20 backdrop-blur-sm">
-					<h2 class="font-display text-2xl font-semibold text-white">Formulario de PQRSD</h2>
+				<div class="rounded-3xl border border-gtm-navy/10 bg-gtm-surface p-8 shadow-2xl shadow-gtm-navy/10 backdrop-blur-sm">
+					<h2 class="font-display text-2xl font-semibold text-gtm-navy">Formulario de PQRSD</h2>
 					<form id="pqrsd-form" class="mt-6 grid gap-5 sm:grid-cols-2" action="https://api.web3forms.com/submit" method="POST">
 						<input type="hidden" name="access_key" value={CONTACT_FORM_CONFIG.accessKey} />
 						<input type="hidden" name="subject" value={CONTACT_FORM_CONFIG.pqrsd.subject} />
@@ -90,48 +90,48 @@ const pqrsdSchema = [
 						/>
 
 						<div class="sm:col-span-2">
-							<label for="nombre" class="mb-2 block text-sm font-medium text-slate-200">Nombre completo</label>
+							<label for="nombre" class="mb-2 block text-sm font-medium text-slate-700">Nombre completo</label>
 							<input
 								id="nombre"
 								name="name"
 								type="text"
 								required
-								class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+								class="w-full rounded-2xl border border-gtm-navy/15 bg-gtm-surface px-4 py-3 text-base text-gtm-navy placeholder:text-slate-500 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
 								placeholder="Tu nombre"
 							/>
 						</div>
 
 						<div>
-							<label for="email" class="mb-2 block text-sm font-medium text-slate-200">Email</label>
+							<label for="email" class="mb-2 block text-sm font-medium text-slate-700">Email</label>
 							<input
 								id="email"
 								name="email"
 								type="email"
 								required
-								class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+								class="w-full rounded-2xl border border-gtm-navy/15 bg-gtm-surface px-4 py-3 text-base text-gtm-navy placeholder:text-slate-500 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
 								placeholder="tu@email.com"
 							/>
 						</div>
 
 						<div>
-							<label for="telefono" class="mb-2 block text-sm font-medium text-slate-200">Teléfono</label>
+							<label for="telefono" class="mb-2 block text-sm font-medium text-slate-700">Teléfono</label>
 							<input
 								id="telefono"
 								name="telefono"
 								type="tel"
 								required
-								class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+								class="w-full rounded-2xl border border-gtm-navy/15 bg-gtm-surface px-4 py-3 text-base text-gtm-navy placeholder:text-slate-500 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
 								placeholder="+57 300 000 0000"
 							/>
 						</div>
 
 						<div class="sm:col-span-2">
-							<label for="tipo" class="mb-2 block text-sm font-medium text-slate-200">Tipo de solicitud</label>
+							<label for="tipo" class="mb-2 block text-sm font-medium text-slate-700">Tipo de solicitud</label>
 							<select
 								id="tipo"
 								name="tipo"
 								required
-								class="w-full rounded-2xl border border-white/10 bg-[#0f1a2e] px-4 py-3 text-base text-white focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+								class="w-full rounded-2xl border border-gtm-navy/15 bg-gtm-surface px-4 py-3 text-base text-gtm-navy focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
 							>
 								<option value="" disabled selected>Selecciona una opción</option>
 								<option value="peticion">Petición</option>
@@ -145,13 +145,13 @@ const pqrsdSchema = [
 						</div>
 
 						<div class="sm:col-span-2">
-							<label for="mensaje" class="mb-2 block text-sm font-medium text-slate-200">Mensaje</label>
+							<label for="mensaje" class="mb-2 block text-sm font-medium text-slate-700">Mensaje</label>
 							<textarea
 								id="mensaje"
 								name="message"
 								rows="4"
 								required
-								class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-400 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
+								class="w-full rounded-2xl border border-gtm-navy/15 bg-gtm-surface px-4 py-3 text-base text-gtm-navy placeholder:text-slate-500 focus:border-gtm-gold focus:outline-none focus:ring-2 focus:ring-gtm-gold/40"
 								placeholder="Describe los detalles de tu solicitud"
 							></textarea>
 						</div>
@@ -164,7 +164,7 @@ const pqrsdSchema = [
 							>
 								Enviar solicitud
 							</button>
-							<p id="pqrsd-form-status" class="text-sm text-slate-400" role="status" aria-live="polite">
+							<p id="pqrsd-form-status" class="text-sm text-slate-500" role="status" aria-live="polite">
 								Tu información está segura con nosotros.
 							</p>
 						</div>
@@ -174,14 +174,14 @@ const pqrsdSchema = [
 		</div>
 	</section>
 
-	<div id="privacy-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
-		<div class="w-full max-w-lg rounded-3xl border border-white/10 bg-slate-950 p-8 shadow-2xl shadow-black/30">
-			<h3 class="font-display text-2xl font-semibold text-white">Política de tratamiento de datos</h3>
-			<p class="mt-4 text-sm leading-relaxed text-slate-300">
+	<div id="privacy-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-gtm-navy/40 px-4 backdrop-blur-sm">
+		<div class="w-full max-w-lg rounded-3xl border border-gtm-navy/10 bg-gtm-surface p-8 shadow-2xl shadow-gtm-navy/15">
+			<h3 class="font-display text-2xl font-semibold text-gtm-navy">Política de tratamiento de datos</h3>
+			<p class="mt-4 text-sm leading-relaxed text-slate-700">
 				Tus datos serán utilizados únicamente para identificarte, atender tu solicitud y dar seguimiento a tu caso. Puedes solicitar la actualización o eliminación de tus datos en cualquier momento.
 			</p>
 			<div class="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
-				<button id="cancel-policy" type="button" class="rounded-full border border-white/20 px-5 py-2.5 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/10">
+				<button id="cancel-policy" type="button" class="rounded-full border border-gtm-navy/20 px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-gtm-navy/5">
 					Cancelar
 				</button>
 				<button id="accept-policy" type="button" class="rounded-full bg-gtm-gold px-5 py-2.5 text-sm font-semibold text-gtm-navy transition-transform hover:scale-[1.02]">
@@ -193,12 +193,12 @@ const pqrsdSchema = [
 
 	<style>
 		select#tipo option {
-			background-color: #0f1a2e;
-			color: #ffffff;
+			background-color: #ffffff;
+			color: #1c2f4a;
 		}
 
 		select#tipo option[disabled] {
-			color: #94a3b8;
+			color: #64748b;
 		}
 	</style>
 
@@ -217,14 +217,14 @@ const pqrsdSchema = [
 			if (!statusEl) return;
 
 			statusEl.textContent = message;
-			statusEl.classList.remove('text-red-400', 'text-emerald-400', 'text-slate-400');
+			statusEl.classList.remove('text-red-600', 'text-emerald-700', 'text-slate-500');
 
 			if (tone === 'error') {
-				statusEl.classList.add('text-red-400');
+				statusEl.classList.add('text-red-600');
 			} else if (tone === 'success') {
-				statusEl.classList.add('text-emerald-400');
+				statusEl.classList.add('text-emerald-700');
 			} else {
-				statusEl.classList.add('text-slate-400');
+				statusEl.classList.add('text-slate-500');
 			}
 		}
 

@@ -7,9 +7,15 @@
 		class="block h-full w-full opacity-0 blur-[1.5px] transition-opacity duration-700 md:blur-[2.5px]"
 	></canvas>
 
+	<!-- Aviones y barcos recorriendo las rutas del globo (cobe no dibuja iconos: se
+	     proyectan aparte, ver globe-vehicles.ts). Sin blur propio: a este tamaño ya
+	     pierden legibilidad con el blur del canvas; el drop-shadow por icono basta
+	     para integrarlos visualmente. -->
+	<div id="globe-vehicles" class="absolute inset-0"></div>
+
 	<!-- Viñeta: mantiene el texto legible cerca de los bordes -->
 	<div
-		class="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_center,rgba(10,18,32,0.30)_0%,rgba(10,18,32,0.48)_65%,rgba(10,18,32,0.80)_100%)]"
+		class="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_center,rgba(250,248,243,0.30)_0%,rgba(250,248,243,0.55)_65%,rgba(250,248,243,0.85)_100%)]"
 	>
 	</div>
 </div>

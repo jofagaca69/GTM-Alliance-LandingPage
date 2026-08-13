@@ -53,40 +53,69 @@ const GOLD: [number, number, number] = [0.831, 0.647, 0.216];
 const SKY: [number, number, number] = [0.44, 0.72, 0.95];
 
 export const MARKERS: Marker[] = [
-	{ location: [PLACES.bogota.lat, PLACES.bogota.lon], size: 0.1, color: GOLD, id: 'bogota' },
-	{ location: [PLACES.medellin.lat, PLACES.medellin.lon], size: 0.07, color: GOLD, id: 'medellin' },
-	{ location: [PLACES.cartagena.lat, PLACES.cartagena.lon], size: 0.06, color: GOLD, id: 'cartagena' },
-	{ location: [PLACES.shanghai.lat, PLACES.shanghai.lon], size: 0.08, color: SKY, id: 'shanghai' },
-	{ location: [PLACES.miami.lat, PLACES.miami.lon], size: 0.08, color: SKY, id: 'miami' },
-	{ location: [PLACES.rotterdam.lat, PLACES.rotterdam.lon], size: 0.08, color: SKY, id: 'rotterdam' },
+	{ location: [PLACES.panama.lat, PLACES.panama.lon], size: 0.1, color: GOLD },
+	{ location: [PLACES.medellin.lat, PLACES.medellin.lon], size: 0.07, color: GOLD },
+	{ location: [PLACES.cartagena.lat, PLACES.cartagena.lon], size: 0.06, color: GOLD },
+	{ location: [PLACES.shanghai.lat, PLACES.shanghai.lon], size: 0.08, color: SKY },
+	{ location: [PLACES.miami.lat, PLACES.miami.lon], size: 0.08, color: SKY },
+	{ location: [PLACES.rotterdam.lat, PLACES.rotterdam.lon], size: 0.08, color: SKY },
 ];
 
-export const ARCS: Arc[] = [
+/** Modo de transporte de una ruta: determina qué icono la recorre. */
+export type RouteMode = 'air' | 'sea';
+
+export type Route = Arc & {
+	id: string;
+	mode: RouteMode;
+	/** Vueltas de ida (t: 0→1) por segundo. */
+	speed: number;
+	/** Vehículos simultáneos sobre la ruta, con fase escalonada. */
+	count: number;
+};
+
+/** Rutas del globo: geometría de arco + metadatos para la capa de
+ * vehículos (aviones/barcos). `ARCS`/`MARKERS` (lo que consume cobe) se
+ * derivan de aquí. */
+export const ROUTES: Route[] = [
 	{
+		id: 'cn-co',
 		from: [PLACES.shanghai.lat, PLACES.shanghai.lon],
 		to: [PLACES.bogota.lat, PLACES.bogota.lon],
 		color: SKY,
-		id: 'cn-co',
+		mode: 'sea',
+		speed: 0.045,
+		count: 2,
 	},
 	{
+		id: 'us-co',
 		from: [PLACES.miami.lat, PLACES.miami.lon],
 		to: [PLACES.bogota.lat, PLACES.bogota.lon],
 		color: SKY,
-		id: 'us-co',
+		mode: 'air',
+		speed: 0.1,
+		count: 1,
 	},
 	{
+		id: 'co-eu',
 		from: [PLACES.cartagena.lat, PLACES.cartagena.lon],
 		to: [PLACES.rotterdam.lat, PLACES.rotterdam.lon],
 		color: GOLD,
-		id: 'co-eu',
+		mode: 'sea',
+		speed: 0.045,
+		count: 2,
 	},
 	{
+		id: 'co-med',
 		from: [PLACES.bogota.lat, PLACES.bogota.lon],
 		to: [PLACES.medellin.lat, PLACES.medellin.lon],
 		color: GOLD,
-		id: 'co-med',
+		mode: 'air',
+		speed: 0.1,
+		count: 1,
 	},
 ];
+
+export const ARCS: Arc[] = ROUTES.map(({ from, to, color }) => ({ from, to, color }));
 
 type GlobeKeyframe = {
 	/** Selector CSS de la sección cuya entrada dispara este keyframe.
