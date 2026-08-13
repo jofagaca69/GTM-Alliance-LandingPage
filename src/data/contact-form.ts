@@ -4,7 +4,7 @@
  * (no se envía en el POST). Ver https://web3forms.com/
  */
 export const CONTACT_FORM_CONFIG = {
-	accessKey: 'f428109f-17d9-4806-bf12-29eee74f244a',
+	accessKey: 'e630ba10-c30e-4bb4-85fc-5d64c7825f6a',
 	fromName: 'GTM Alliance',
 	contact: {
 		subject: 'Nuevo mensaje de contacto — gtm-alliance.com',
