@@ -54,7 +54,7 @@ export const NAV_ITEMS: NavItem[] = [
 				label: 'Congelados',
 				href: '/#congelados',
 				tag: 'Línea de Frío',
-				description: 'Cadena de frío con trazabilidad total, en alianza con Coldfood.',
+				description: 'Congelados con tu propia marca, en alianza con Coldfood.',
 			},
 			{
 				id: 'carga-seca',

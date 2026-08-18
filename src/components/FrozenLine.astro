@@ -1,187 +1,241 @@
 ---
 import { Image } from 'astro:assets';
-import lineaCongelados from '../assets/linea-congelados.jpg';
+import coldfoodLogo from '../assets/logos/coldfood.png';
+import cadenaFrio from '../assets/congelados/cadena-frio.png';
+import lineaFrescos from '../assets/congelados/linea-frescos.jpg';
+import lineaPrecocidos from '../assets/congelados/linea-precocidos.jpg';
+import lineaCongelados from '../assets/congelados/linea-congelados.jpg';
+
+const heroChips = [
+	'Compra directa al agricultor',
+	'Procesamiento especializado',
+	'Marca propia (Private Label)',
+	'Exportación internacional',
+];
 
 const pasos = [
+	{ num: '01', titulo: 'Origen', descripcion: 'Agricultores colombianos.' },
+	{ num: '02', titulo: 'Producción', descripcion: 'Procesamiento especializado en planta Coldfood.' },
+	{ num: '03', titulo: 'Tu marca', descripcion: 'Desarrollamos tu marca con la mejor presentación.' },
+	{ num: '04', titulo: 'Exportación', descripcion: 'Consolidamos y exportamos a cualquier mercado del mundo.' },
+];
+
+const lineas = [
 	{
-		num: '01',
-		titulo: 'Compra directa al agricultor',
-		descripcion:
-			'Trabajamos con agricultores certificados, seleccionando productos desde su origen para garantizar calidad, frescura y prácticas agrícolas responsables.',
+		id: 'frescos',
+		label: 'Frescos',
+		descriptor: 'Naturales y nutritivos, listos para congelar con toda su frescura.',
+		image: lineaFrescos,
+		alt: 'Productos frescos de la línea GTM Alliance: yuca, plátano verde, lulo y mora empacados con marca propia',
+		productos: ['Yuca Fresca', 'Yuca en Trozos', 'Plátano Verde', 'Yuca Stick', 'Lulo', 'Mora'],
 	},
 	{
-		num: '02',
-		titulo: 'Supervisión en cultivos',
-		descripcion:
-			'Seguimiento técnico en campo, verificando condiciones de cultivo, manejo del producto y cumplimiento de normas fitosanitarias.',
+		id: 'precocidos',
+		label: 'Precocidos',
+		descriptor: 'Prácticos, deliciosos y listos para preparar.',
+		image: lineaPrecocidos,
+		alt: 'Productos precocidos de la línea GTM Alliance: croquetas y francesa de yuca, tajadas, plátanos maduros y tostones empacados con marca propia',
+		productos: ['Yuca Croqueta', 'Yuca Francesa', 'Tajadas', 'Plátanos Maduros', 'Tostones'],
 	},
 	{
-		num: '03',
-		titulo: 'Procesamiento Coldfood',
-		descripcion:
-			'Plantas con certificaciones internacionales, control de temperatura, BPM y protocolos sanitarios estrictos.',
-	},
-	{
-		num: '04',
-		titulo: 'Transporte refrigerado',
-		descripcion:
-			'Cadena de frío monitoreada en tiempo real, asegurando estabilidad térmica hasta el puerto de embarque.',
-	},
-	{
-		num: '05',
-		titulo: 'Exportación y entrega',
-		descripcion:
-			'Seguimiento digital del contenedor y trazabilidad documental completa hasta el destino final.',
+		id: 'congelados',
+		label: 'Congelados',
+		descriptor: 'Variedad y calidad para cada necesidad del mercado.',
+		image: lineaCongelados,
+		alt: 'Productos congelados de la línea GTM Alliance: papa criolla, yuca stick, arracacha y mixes de vegetales empacados con marca propia',
+		productos: ['Papa Criolla', 'Yuca Stick', 'Arracacha', 'Mix de Sancocho', 'Mix de Ajiaco'],
 	},
 ];
 
-const tags = [
-	'Diseño de marca',
-	'Identidad visual',
-	'Empaques y etiquetas',
-	'Normativa país destino',
-	'Presentación comercial',
-];
+const marcaChips = ['Diseño de marca', 'Identidad visual', 'Empaques y etiquetas', 'Normativa país destino'];
 
-const productos = [
-	'Frutas congeladas',
-	'Verduras congeladas',
-	'Mezclas vegetales',
-	'Proteínas congeladas',
-	'Agrícolas procesados',
-	'Listos para exportación',
+const ICONS = {
+	calidad: '<circle cx="12" cy="8.5" r="5.25"/><path d="M9.25 8.5l1.85 1.85L14.75 6.5"/><path d="M9 13.25L7.25 19.5 12 17l4.75 2.5-1.75-6.25"/>',
+	inocuidad: '<path d="M12 3s5.5 6.4 5.5 10.25a5.5 5.5 0 11-11 0C6.5 9.4 12 3 12 3z"/><path d="M9.25 13.25l1.85 1.85 3.65-4"/>',
+	cadenaFrio:
+		'<path d="M12 2.5v19M4.5 7l15 10M4.5 17L19.5 7"/><path d="M12 6.25l-1.75 1.05M12 6.25l1.75 1.05M12 17.75l-1.75-1.05M12 17.75l1.75-1.05M7.1 9.3l.3-2.05M7.1 9.3l-1.9.8M16.9 9.3l-.3-2.05M16.9 9.3l1.9.8M7.1 14.7l.3 2.05M7.1 14.7l-1.9-.8M16.9 14.7l-.3 2.05M16.9 14.7l1.9-.8"/>',
+	consolidacion: '<rect x="4" y="4" width="10.5" height="10.5" rx="1.25"/><rect x="9.5" y="9.5" width="10.5" height="10.5" rx="1.25"/>',
+	documentacion:
+		'<path d="M7 3.5h7l4 4V20a.75.75 0 01-.75.75H7A.75.75 0 016.25 20V4.25A.75.75 0 017 3.5z"/><path d="M14 3.5v4h4"/><path d="M8.75 12.5h6.5M8.75 15.25h6.5M8.75 18h4"/>',
+	alcance: '<path d="M12 21s7-7.6 7-12.75A7 7 0 105 8.25C5 13.4 12 21 12 21z"/><circle cx="12" cy="8.25" r="2.5"/>',
+};
+
+const sellos = [
+	{ label: 'Calidad internacional', icon: ICONS.calidad },
+	{ label: 'Inocuidad garantizada', icon: ICONS.inocuidad },
+	{ label: 'Cadena de frío controlada', icon: ICONS.cadenaFrio },
+	{ label: 'Consolidación multiproducto', icon: ICONS.consolidacion },
+	{ label: 'Documentación y aduanas', icon: ICONS.documentacion },
+	{ label: 'Llegamos más lejos por ti', icon: ICONS.alcance },
 ];
 ---
 
 <section id="congelados" class="bg-transparent py-16 sm:py-24">
 	<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-		<div class="flex flex-wrap items-center gap-3">
-			<span
-				class="congelados-eyebrow font-display inline-block text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase"
-			>
-				01 — Línea de congelados
-			</span>
-			<span
-				class="congelados-eyebrow rounded-full border border-gtm-navy/20 px-3 py-1 text-[11px] font-medium text-slate-600"
-			>
-				En alianza con Coldfood
-			</span>
-		</div>
-
-		<h2
-			class="congelados-title font-display mt-3 max-w-3xl text-3xl leading-tight font-bold text-gtm-navy sm:text-4xl lg:text-5xl"
-		>
-			Cadena de frío con trazabilidad total, del agricultor al destino final
-		</h2>
-
-		<p class="congelados-intro mt-4 max-w-3xl text-base leading-relaxed text-slate-700 lg:text-lg">
-			Junto a <span class="font-semibold text-gtm-navy">Coldfood</span> — especialista en procesamiento
-			y conservación de alimentos congelados — garantizamos calidad certificada y cumplimiento de
-			estándares internacionales en cada etapa.
-		</p>
-
-		<div
-			class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/12 bg-white/12 sm:mt-16 sm:grid-cols-2 lg:grid-cols-5"
-		>
-			{
-				pasos.map((paso) => (
-					<div
-						class:list={[
-							'congelados-step group relative p-6 backdrop-blur-sm transition-colors duration-300',
-							paso.num === '03'
-								? 'bg-gtm-navy/90 ring-0 ring-inset ring-gtm-gold transition-shadow hover:ring-2'
-								: 'bg-gtm-deep/85 hover:bg-gtm-navy/85',
-						]}
-					>
-						<span
-							class:list={[
-								'font-display block text-3xl font-bold transition-colors duration-300',
-								paso.num === '03' ? 'text-white' : 'text-gtm-gold group-hover:text-white',
-							]}
-						>
-							{paso.num}
-						</span>
-						<h3
-							class:list={[
-								'font-display mt-3 text-sm font-bold transition-colors duration-300',
-								paso.num === '03' ? 'text-white' : 'text-slate-100 group-hover:text-white',
-							]}
-						>
-							{paso.titulo}
-						</h3>
-						<p
-							class:list={[
-								'mt-2 text-xs leading-relaxed transition-colors duration-300',
-								paso.num === '03' ? 'text-slate-300' : 'text-slate-400 group-hover:text-slate-200',
-							]}
-						>
-							{paso.descripcion}
-						</p>
-					</div>
-				))
-			}
-			<!-- Relleno: a 640-1023px la grilla de 2 columnas deja una 6ª celda vacía para
-			     5 elementos; sin esto el globo se filtra crudo en ese hueco. -->
-			<div class="hidden bg-gtm-deep/85 backdrop-blur-sm sm:block lg:hidden" aria-hidden="true"></div>
-		</div>
-
-		<div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-			<div class="congelados-block rounded-2xl bg-gtm-surface p-8 ring-1 ring-gtm-navy/10 backdrop-blur-sm">
-				<span class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
-					Desarrollo de marca
-				</span>
-				<h3 class="font-display mt-3 text-xl font-bold text-gtm-navy sm:text-2xl">
-					Tu producto, tu marca, nuestra logística.
-				</h3>
-				<p class="mt-4 text-sm leading-relaxed text-slate-700">
-					Creamos marcas personalizadas para clientes internacionales, listas para su mercado
-					destino: diseñamos identidad visual, empaques y etiquetas conforme a la normativa del
-					país de llegada, para que tu producto llegue listo para el anaquel.
+		<!-- Bloque hero: split asimétrico -->
+		<div class="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-10">
+			<div class="congelados-hero-copy lg:col-span-5">
+				<div class="flex items-center gap-3">
+					<Image
+						src={coldfoodLogo}
+						alt="Coldfood"
+						height={36}
+						densities={[1, 2]}
+						loading="lazy"
+						class="h-8 w-auto object-contain"
+					/>
+					<span class="text-xs font-medium text-slate-500">En alianza con Coldfood</span>
+				</div>
+				<h2 class="font-display mt-4 text-3xl leading-tight font-bold text-gtm-navy sm:text-4xl lg:text-5xl">
+					Línea de <span class="text-gtm-gold-ink">Congelados</span>
+				</h2>
+				<p class="mt-4 text-base leading-relaxed text-slate-700 lg:text-lg">
+					De la mano de Coldfood, llevamos lo mejor del campo colombiano a los mercados del mundo con
+					tu propia marca.
 				</p>
-				<div class="mt-5 flex flex-wrap gap-2">
+				<div class="mt-6 flex flex-wrap gap-2">
 					{
-						tags.map((tag) => (
+						heroChips.map((chip) => (
 							<span class="rounded-full border border-gtm-navy/15 px-3 py-1 text-xs text-slate-700">
-								{tag}
+								{chip}
 							</span>
 						))
 					}
 				</div>
 			</div>
 
-			<div class="congelados-block rounded-2xl bg-gtm-surface p-8 ring-1 ring-gtm-navy/10 backdrop-blur-sm">
-				<span class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
-					Productos
-				</span>
-				<p class="mt-3 text-sm leading-relaxed text-slate-700">
-					Estos son los productos congelados que exportamos junto a Coldfood, siguiendo la misma
-					cadena de frío con trazabilidad total:
-				</p>
-				<div class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
-					<ul class="space-y-3">
-						{
-							productos.map((item) => (
-								<li class="flex gap-3 text-sm leading-relaxed text-slate-700">
-									<span class="text-gtm-gold-ink" aria-hidden="true">
-										→
-									</span>
-									<span>{item}</span>
-								</li>
-							))
-						}
-					</ul>
-					<div class="aspect-[4/3] overflow-hidden rounded-xl">
-						<Image
-							src={lineaCongelados}
-							alt="Productos congelados de la línea Coldfood + GTM Alliance: carnes, pescado, mariscos y vegetales"
-							widths={[300, 600, 900]}
-							sizes="(min-width: 640px) 260px, 100vw"
-							loading="lazy"
-							class="h-full w-full object-cover"
-						/>
-					</div>
+			<div class="congelados-hero-image lg:col-span-7">
+				<div class="aspect-[16/10] overflow-hidden rounded-3xl ring-1 ring-gtm-navy/10">
+					<Image
+						src={cadenaFrio}
+						alt="Cadena de frío Coldfood y GTM Alliance: del cultivo colombiano a la planta certificada y el contenedor de exportación"
+						widths={[640, 960, 1280, 1600]}
+						sizes="(min-width: 1024px) 700px, 100vw"
+						loading="lazy"
+						class="h-full w-full object-cover"
+					/>
 				</div>
 			</div>
+		</div>
+
+		<!-- Cadena de valor: riel dividido de 4 pasos -->
+		<div class="congelados-pasos mt-14 overflow-hidden rounded-3xl bg-gtm-surface ring-1 ring-gtm-navy/10 sm:mt-20">
+			<div class="grid grid-cols-1 divide-y divide-gtm-navy/10 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
+				{
+					pasos.map((paso) => (
+						<div class="congelados-paso p-6 sm:p-7">
+							<span class="font-display block text-3xl font-bold text-gtm-gold">{paso.num}</span>
+							<h3 class="font-display mt-3 text-sm font-bold tracking-wide text-gtm-navy uppercase">
+								{paso.titulo}
+							</h3>
+							<p class="mt-2 text-sm leading-relaxed text-slate-600">{paso.descripcion}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+
+		<!-- Explorador de líneas de producto -->
+		<div class="congelados-productos mt-14 sm:mt-20">
+			<h3 class="font-display text-2xl font-bold text-gtm-navy sm:text-3xl">Nuestras líneas de productos</h3>
+
+			<div role="tablist" aria-label="Líneas de productos" class="mt-6 flex flex-wrap gap-2">
+				{
+					lineas.map((linea, i) => (
+						<button
+							type="button"
+							role="tab"
+							id={`tab-${linea.id}`}
+							aria-controls={`panel-${linea.id}`}
+							aria-selected={i === 0 ? 'true' : 'false'}
+							tabindex={i === 0 ? 0 : -1}
+							data-target={linea.id}
+							class="congelados-tab cursor-pointer rounded-full px-5 py-2.5 text-sm font-semibold text-slate-600 ring-1 ring-gtm-navy/15 transition-colors duration-300 aria-selected:bg-gtm-navy aria-selected:text-white aria-selected:ring-gtm-navy hover:not-aria-selected:bg-gtm-navy/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gtm-gold"
+						>
+							{linea.label}
+						</button>
+					))
+				}
+			</div>
+
+			<div class="mt-6">
+				{
+					lineas.map((linea, i) => (
+						<div
+							role="tabpanel"
+							id={`panel-${linea.id}`}
+							aria-labelledby={`tab-${linea.id}`}
+							data-panel={linea.id}
+							hidden={i !== 0}
+							class="congelados-panel grid gap-6 rounded-3xl bg-gtm-surface p-6 ring-1 ring-gtm-navy/10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8 lg:p-8"
+						>
+							<div class="aspect-[4/3] overflow-hidden rounded-2xl lg:aspect-auto">
+								<Image
+									src={linea.image}
+									alt={linea.alt}
+									widths={[400, 800, 1100]}
+									sizes="(min-width: 1024px) 620px, 100vw"
+									loading="lazy"
+									class="h-full w-full object-cover"
+								/>
+							</div>
+							<div class="flex flex-col justify-center">
+								<span class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
+									Línea {linea.label}
+								</span>
+								<p class="mt-3 text-sm leading-relaxed text-slate-700">{linea.descriptor}</p>
+								<div class="mt-5 flex flex-wrap gap-2">
+									{
+										linea.productos.map((producto) => (
+											<span class="rounded-full border border-gtm-navy/15 px-3 py-1 text-xs text-slate-700">
+												{producto}
+											</span>
+										))
+									}
+								</div>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+
+		<!-- Marca propia + sellos -->
+		<div class="congelados-cta mt-14 overflow-hidden rounded-3xl bg-gtm-navy sm:mt-20">
+			<div class="p-8 sm:p-10 lg:p-12">
+				<p class="font-display text-2xl font-bold leading-tight text-white sm:text-3xl">
+					Tu producto, tu marca, nuestra experiencia.
+				</p>
+				<p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
+					Diseñamos identidad visual, empaques y etiquetas conforme a la normativa del país de
+					llegada, para que tu producto llegue listo para el anaquel.
+				</p>
+				<div class="mt-5 flex flex-wrap gap-2">
+					{
+						marcaChips.map((chip) => (
+							<span class="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200">
+								{chip}
+							</span>
+						))
+					}
+				</div>
+			</div>
+
+			<ul class="grid grid-cols-2 gap-x-4 gap-y-6 border-t border-white/10 px-8 py-8 sm:grid-cols-3 sm:px-10 lg:grid-cols-6 lg:px-12">
+				{
+					sellos.map((sello) => (
+						<li class="flex flex-col items-center gap-2 text-center">
+							<span
+								set:html={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">${sello.icon}</svg>`}
+								class="text-gtm-gold"
+							/>
+							<span class="text-[11px] font-semibold tracking-wide text-slate-200 uppercase">
+								{sello.label}
+							</span>
+						</li>
+					))
+				}
+			</ul>
 		</div>
 	</div>
 </section>
@@ -203,35 +257,11 @@ const productos = [
 				},
 			});
 
-			tl.fromTo(
-				'.congelados-eyebrow',
-				{ opacity: 0, y: 16 },
-				{ opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
-			)
-				.fromTo(
-					'.congelados-title',
-					{ opacity: 0, y: 24 },
-					{ opacity: 1, y: 0, duration: 0.7 },
-					'-=0.3',
-				)
-				.fromTo(
-					'.congelados-intro',
-					{ opacity: 0, y: 24 },
-					{ opacity: 1, y: 0, duration: 0.7 },
-					'-=0.5',
-				)
-				.fromTo(
-					'.congelados-step',
-					{ opacity: 0, y: 32 },
-					{ opacity: 1, y: 0, duration: 0.6, stagger: 0.1 },
-					'-=0.3',
-				)
-				.fromTo(
-					'.congelados-block',
-					{ opacity: 0, y: 32 },
-					{ opacity: 1, y: 0, duration: 0.6, stagger: 0.15 },
-					'-=0.3',
-				);
+			tl.fromTo('.congelados-hero-copy', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7 })
+				.fromTo('.congelados-hero-image', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7 }, '-=0.5')
+				.fromTo('.congelados-paso', { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }, '-=0.3')
+				.fromTo('.congelados-productos', { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.2')
+				.fromTo('.congelados-cta', { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.25');
 
 			return () => {
 				tl.scrollTrigger?.kill();
@@ -241,9 +271,54 @@ const productos = [
 
 		mm.add('(prefers-reduced-motion: reduce)', () => {
 			gsap.set(
-				['.congelados-eyebrow', '.congelados-title', '.congelados-intro', '.congelados-step', '.congelados-block'],
+				['.congelados-hero-copy', '.congelados-hero-image', '.congelados-paso', '.congelados-productos', '.congelados-cta'],
 				{ opacity: 1, y: 0 },
 			);
+		});
+
+		// Explorador de líneas de producto: pestañas accesibles con navegación por teclado.
+		const tabs = Array.from(section.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+		const panels = Array.from(section.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		function activate(target: string, focus = false) {
+			tabs.forEach((tab) => {
+				const selected = tab.dataset.target === target;
+				tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+				tab.tabIndex = selected ? 0 : -1;
+				if (selected && focus) tab.focus();
+			});
+			panels.forEach((panel) => {
+				const show = panel.dataset.panel === target;
+				if (show && panel.hidden) {
+					panel.hidden = false;
+					if (reduceMotion) {
+						gsap.set(panel, { opacity: 1, y: 0 });
+					} else {
+						gsap.fromTo(panel, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' });
+					}
+				} else if (!show) {
+					panel.hidden = true;
+				}
+			});
+		}
+
+		tabs.forEach((tab, i) => {
+			tab.addEventListener('click', () => {
+				if (tab.dataset.target) activate(tab.dataset.target);
+			});
+			tab.addEventListener('keydown', (event) => {
+				const key = event.key;
+				if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(key)) return;
+				event.preventDefault();
+				let nextIndex = i;
+				if (key === 'ArrowRight') nextIndex = (i + 1) % tabs.length;
+				if (key === 'ArrowLeft') nextIndex = (i - 1 + tabs.length) % tabs.length;
+				if (key === 'Home') nextIndex = 0;
+				if (key === 'End') nextIndex = tabs.length - 1;
+				const next = tabs[nextIndex];
+				if (next?.dataset.target) activate(next.dataset.target, true);
+			});
 		});
 	}
 </script>
