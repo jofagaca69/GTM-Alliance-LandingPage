@@ -31,6 +31,9 @@
 	--color-gtm-bone: #faf8f3;
 	--color-gtm-surface: #ffffff;
 	--color-gtm-deep: #0a1220;
+	/* Superficie glaciar exclusiva de la línea de Congelados: mismo azul de marca
+	   (--color-gtm-navy) sobre un tinte de fondo más frío que el blanco/hueso del resto del sitio. */
+	--color-gtm-ice: #eef4f8;
 
 	--font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 	--font-display: "Zodiak", ui-serif, Georgia, serif;
