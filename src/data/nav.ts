@@ -40,7 +40,7 @@ export const NAV_ITEMS: NavItem[] = [
 	{
 		kind: 'group',
 		id: 'nuestros-servicios',
-		label: 'Nuestros Servicios',
+		label: 'Nuestros Productos',
 		children: [
 			{
 				id: 'servicios',

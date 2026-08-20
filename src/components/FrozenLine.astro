@@ -6,11 +6,35 @@ import lineaFrescos from '../assets/congelados/linea-frescos.png';
 import lineaPrecocidos from '../assets/congelados/linea-precocidos.png';
 import lineaCongelados from '../assets/congelados/linea-congelados.png';
 
+const PASO_ICONS = {
+	origen: '<path d="M12 21V10"/><path d="M12 10C12 6.5 9.5 4 6 4c0 3.5 2.5 6 6 6z"/><path d="M12 13c0-4 3-7 7-7 0 4-3 7-7 7z"/>',
+	produccion:
+		'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
+	marca:
+		'<path d="M11 3H4.8A1.8 1.8 0 003 4.8V11c0 .48.19.93.53 1.27l8.4 8.4a1.8 1.8 0 002.54 0l6.2-6.2a1.8 1.8 0 000-2.54l-8.4-8.4A1.8 1.8 0 0011 3z"/><circle cx="7.5" cy="7.5" r="1.4"/>',
+	exportacion: '<path d="M4 15.5l1 4h14l1-4"/><path d="M6.5 15.5V8.5h3l2.5-2.5 2.5 2.5h3v7"/><path d="M12 6V3"/>',
+};
+
 const pasos = [
-	{ num: '01', titulo: 'Origen', descripcion: 'Agricultores colombianos.' },
-	{ num: '02', titulo: 'Producción', descripcion: 'Procesamiento especializado en planta Coldfood.' },
-	{ num: '03', titulo: 'Tu marca', descripcion: 'Desarrollamos tu marca con la mejor presentación.' },
-	{ num: '04', titulo: 'Exportación', descripcion: 'Consolidamos y exportamos a cualquier mercado del mundo.' },
+	{ num: '01', titulo: 'Origen', descripcion: 'Agricultores colombianos.', icon: PASO_ICONS.origen },
+	{
+		num: '02',
+		titulo: 'Producción',
+		descripcion: 'Procesamiento especializado en planta Coldfood.',
+		icon: PASO_ICONS.produccion,
+	},
+	{
+		num: '03',
+		titulo: 'Tu marca',
+		descripcion: 'Desarrollamos tu marca con la mejor presentación.',
+		icon: PASO_ICONS.marca,
+	},
+	{
+		num: '04',
+		titulo: 'Exportación',
+		descripcion: 'Consolidamos y exportamos a cualquier mercado del mundo.',
+		icon: PASO_ICONS.exportacion,
+	},
 ];
 
 const lineas = [
@@ -37,8 +61,6 @@ const lineas = [
 	},
 ];
 
-const marcaChips = ['Diseño de marca', 'Identidad visual', 'Empaques y etiquetas', 'Normativa país destino'];
-
 const ICONS = {
 	calidad: '<circle cx="12" cy="8.5" r="5.25"/><path d="M9.25 8.5l1.85 1.85L14.75 6.5"/><path d="M9 13.25L7.25 19.5 12 17l4.75 2.5-1.75-6.25"/>',
 	inocuidad: '<path d="M12 3s5.5 6.4 5.5 10.25a5.5 5.5 0 11-11 0C6.5 9.4 12 3 12 3z"/><path d="M9.25 13.25l1.85 1.85 3.65-4"/>',
@@ -57,7 +79,6 @@ const sellos = [
 
 <section id="congelados" class="bg-transparent py-16 sm:py-24">
 	<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-		<!-- Bloque 1: qué es — hero + cadena de valor fusionados en una sola tarjeta -->
 		<div class="congelados-hero overflow-hidden rounded-3xl bg-gtm-surface ring-1 ring-gtm-navy/10">
 			<div class="grid gap-8 p-6 sm:p-8 lg:grid-cols-12 lg:items-center lg:gap-10 lg:p-10">
 				<div class="lg:col-span-5">
@@ -101,23 +122,53 @@ const sellos = [
 				</div>
 			</div>
 
-			<!-- Cadena de valor: riel dividido de 4 pasos, al pie de la misma tarjeta -->
-			<div class="grid grid-cols-1 divide-y divide-gtm-navy/10 border-t border-gtm-navy/10 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
-				{
-					pasos.map((paso) => (
-						<div class="p-5 sm:p-6">
-							<span class="font-display block text-3xl font-bold text-gtm-navy">{paso.num}</span>
-							<h3 class="font-display mt-3 text-sm font-bold tracking-wide text-gtm-navy uppercase">
-								{paso.titulo}
-							</h3>
-							<p class="mt-2 text-sm leading-relaxed text-slate-600">{paso.descripcion}</p>
-						</div>
-					))
-				}
+			<div class="border-t border-gtm-navy/10 px-6 py-10 sm:px-8 sm:py-12 lg:px-10">
+				<!-- Timeline vertical: mobile / tablet -->
+				<div class="grid grid-cols-[auto_1fr] gap-x-4 lg:hidden">
+					{
+						pasos.map((paso, i) => (
+							<>
+								<div class="flex flex-col items-center">
+									<span
+										set:html={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">${paso.icon}</svg>`}
+										class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white text-gtm-gold-ink ring-2 ring-gtm-navy/15"
+									/>
+									{i < pasos.length - 1 && <span class="mt-1 w-px flex-1 bg-gtm-navy/15" aria-hidden="true" />}
+								</div>
+								<div class={i < pasos.length - 1 ? 'congelados-paso pb-8' : 'congelados-paso'}>
+									<span class="font-display block text-xs font-semibold tracking-widest text-gtm-gold-ink">
+										{paso.num}
+									</span>
+									<h3 class="font-display mt-1 text-base font-bold text-gtm-navy">{paso.titulo}</h3>
+									<p class="mt-1 text-sm leading-relaxed text-slate-600">{paso.descripcion}</p>
+								</div>
+							</>
+						))
+					}
+				</div>
+
+				<!-- Stepper horizontal: desktop -->
+				<div class="relative hidden lg:grid lg:grid-cols-4 lg:gap-x-6">
+					<div class="pointer-events-none absolute inset-x-[12.5%] top-7 h-px bg-gtm-navy/15" aria-hidden="true"></div>
+					{
+						pasos.map((paso) => (
+							<div class="congelados-paso relative flex flex-col items-center text-center">
+								<span
+									set:html={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">${paso.icon}</svg>`}
+									class="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-white text-gtm-gold-ink ring-2 ring-gtm-navy/15"
+								/>
+								<span class="font-display mt-3 text-xs font-semibold tracking-widest text-gtm-gold-ink">
+									{paso.num}
+								</span>
+								<h3 class="font-display mt-1 text-sm font-bold text-gtm-navy">{paso.titulo}</h3>
+								<p class="mt-1.5 max-w-[13rem] text-sm leading-relaxed text-slate-600">{paso.descripcion}</p>
+							</div>
+						))
+					}
+				</div>
 			</div>
 		</div>
 
-		<!-- Bloque 2: qué vendemos — las 3 líneas de producto, siempre visibles -->
 		<div class="mt-14 sm:mt-20">
 			<div class="congelados-portafolio">
 				<span class="font-display text-xs font-semibold tracking-widest text-gtm-navy uppercase">
@@ -130,14 +181,14 @@ const sellos = [
 				{
 					lineas.map((linea) => (
 						<div class="congelados-producto overflow-hidden rounded-3xl bg-gtm-ice ring-1 ring-gtm-navy/10">
-							<div class="aspect-[4/3] overflow-hidden">
+							<div class="aspect-[16/9] overflow-hidden p-3 sm:p-4">
 								<Image
 									src={linea.image}
 									alt={linea.alt}
 									widths={[360, 540, 700, 1000]}
 									sizes="(min-width: 1024px) 348px, (min-width: 640px) calc(50vw - 3rem), calc(100vw - 2rem)"
 									loading="lazy"
-									class="h-full w-full object-cover"
+									class="h-full w-full object-contain"
 								/>
 							</div>
 							<div class="p-5 sm:p-6">
@@ -181,13 +232,9 @@ const sellos = [
 				},
 			});
 
-			// .congelados-hero, .congelados-producto y .congelados-cta son superficies
-			// opacas sobre una sección bg-transparent con el globo (#globe-layer) fijo
-			// detrás de toda la página: se animan con y/scale y nunca con opacity,
-			// porque un panel semitransparente se mezcla con el globo animado y se ve
-			// como manchas doradas/azules superpuestas (mismo criterio que Services.astro).
 			tl.fromTo('.congelados-hero', { y: 24, scale: 0.97 }, { y: 0, scale: 1, duration: 0.7 })
-				.fromTo('.congelados-portafolio', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+				.fromTo('.congelados-paso', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.1 }, '-=0.3')
+				.fromTo('.congelados-portafolio', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.2')
 				.fromTo('.congelados-producto', { y: 24, scale: 0.97 }, { y: 0, scale: 1, duration: 0.5, stagger: 0.08 }, '-=0.2')
 				.fromTo('.congelados-cta', { y: 28, scale: 0.98 }, { y: 0, scale: 1, duration: 0.6 }, '-=0.2');
 
@@ -198,11 +245,14 @@ const sellos = [
 		});
 
 		mm.add('(prefers-reduced-motion: reduce)', () => {
-			gsap.set(['.congelados-hero', '.congelados-portafolio', '.congelados-producto', '.congelados-cta'], {
-				opacity: 1,
-				y: 0,
-				scale: 1,
-			});
+			gsap.set(
+				['.congelados-hero', '.congelados-paso', '.congelados-portafolio', '.congelados-producto', '.congelados-cta'],
+				{
+					opacity: 1,
+					y: 0,
+					scale: 1,
+				},
+			);
 		});
 	}
 </script>
