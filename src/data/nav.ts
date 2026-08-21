@@ -65,6 +65,7 @@ export const NAV_ITEMS: NavItem[] = [
 			},
 		],
 	},
+	{ kind: 'link', id: 'por-que-elegirnos', label: 'Por qué elegirnos', href: '/#por-que-elegirnos' },
 	{ kind: 'link', id: 'contacto', label: 'Contacto', href: '/#contacto' },
 ];
 
