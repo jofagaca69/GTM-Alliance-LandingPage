@@ -51,8 +51,18 @@ const mercados = [
 ];
 
 const certificaciones = [
-	{ nombre: 'INVIMA', descripcion: 'Registro Sanitario Colombiano', logo: invimaLogo },
-	{ nombre: 'FDA', descripcion: 'Food and Drug Administration', logo: fdaLogo },
+	{
+		nombre: 'INVIMA',
+		descripcion: 'Registro Sanitario Colombiano',
+		alt: 'Logo de INVIMA, Registro Sanitario Colombiano',
+		logo: invimaLogo,
+	},
+	{
+		nombre: 'FDA',
+		descripcion: 'Food and Drug Administration',
+		alt: 'Logo de la FDA, Food and Drug Administration de Estados Unidos',
+		logo: fdaLogo,
+	},
 ];
 
 const eventos = [
@@ -169,8 +179,8 @@ const chips = [
 								{cert.logo ? (
 									<Image
 										src={cert.logo}
-										alt={cert.nombre}
-										height={726}
+										alt={cert.alt}
+										height={64}
 										densities={[1, 2]}
 										loading="lazy"
 										class="h-16 w-auto max-w-full object-contain"
