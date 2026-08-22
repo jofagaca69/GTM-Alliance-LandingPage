@@ -36,7 +36,7 @@ export type NavItem = NavLink | NavGroup;
 
 export const NAV_ITEMS: NavItem[] = [
 	{ kind: 'link', id: 'inicio', label: 'Inicio', href: '/#inicio' },
-	{ kind: 'link', id: 'quienes-somos', label: 'Quiénes Somos', href: '/#quienes-somos' },
+	// { kind: 'link', id: 'quienes-somos', label: 'Quiénes Somos', href: '/#quienes-somos' },
 	{
 		kind: 'group',
 		id: 'nuestros-servicios',
