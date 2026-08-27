@@ -16,23 +16,26 @@ const PASO_ICONS = {
 };
 
 const pasos = [
-	{ num: '01', titulo: 'Origen', descripcion: 'Agricultores colombianos.', icon: PASO_ICONS.origen },
+	{ num: '01',
+	 titulo: 'Productores colombianos ', 
+	 descripcion: 'Materias primas de calidad.', 
+	 icon: PASO_ICONS.origen },
 	{
 		num: '02',
-		titulo: 'Producción',
-		descripcion: 'Procesamiento especializado en planta Coldfood.',
+		titulo: 'Procesamiento especializado',
+		descripcion: 'Calidad y congelacion controlada.',
 		icon: PASO_ICONS.produccion,
 	},
 	{
 		num: '03',
-		titulo: 'Tu marca',
-		descripcion: 'Desarrollamos tu marca con la mejor presentación.',
+		titulo: 'Marca privada o propia',
+		descripcion: 'Empaques adaptados a tu mercado.',
 		icon: PASO_ICONS.marca,
 	},
 	{
 		num: '04',
-		titulo: 'Exportación',
-		descripcion: 'Consolidamos y exportamos a cualquier mercado del mundo.',
+		titulo: 'Exportacion internacional',
+		descripcion: 'Logística para mercados internacionales.',
 		icon: PASO_ICONS.exportacion,
 	},
 ];
@@ -40,24 +43,24 @@ const pasos = [
 const lineas = [
 	{
 		label: 'Frescos',
-		descriptor: 'Naturales y nutritivos, listos para congelar con toda su frescura.',
+		descriptor: 'Productos seleccionados y congelados para conservar su sabor, textura y calidad natural.',
 		image: lineaFrescos,
 		alt: 'Productos frescos de la línea GTM Alliance: yuca, plátano verde, lulo y mora empacados con marca propia',
-		productos: ['Yuca Fresca', 'Plátano Verde', 'Lulo', 'Mora'],
+		productos: ['Yuca', 'Plátano Verde', 'Lulo', 'Mora', 'Guayaba'],
+	},
+	{
+		label: 'Prefritos',
+		descriptor: 'Productos con valor agregado, elaborados para ofrecer practicidad, textura y sabor en cada preparación.',
+		image: lineaPrecocidos,
+		alt: 'Productos precocidos de la línea GTM Alliance: croquetas y francesa de yuca, tajadas, plátanos maduros y tostones empacados con marca propia',
+		productos: ['Yuca Croqueta', 'Yuca Francesa', 'Tajadas', 'Plátanos Maduros', 'Tostones'],
 	},
 	{
 		label: 'Precocidos',
-		descriptor: 'Prácticos, deliciosos y listos para preparar.',
-		image: lineaPrecocidos,
-		alt: 'Productos precocidos de la línea GTM Alliance: croquetas y francesa de yuca, tajadas, plátanos maduros y tostones empacados con marca propia',
-		productos: ['Yuca Croqueta', 'Tajadas', 'Plátanos Maduros', 'Tostones'],
-	},
-	{
-		label: 'Congelados',
-		descriptor: 'Variedad y calidad para cada necesidad del mercado.',
+		descriptor: 'Prácticos y listos para preparar, conservando el sabor y las características tradicionales de cada producto.',
 		image: lineaCongelados,
 		alt: 'Productos congelados de la línea GTM Alliance: papa criolla, yuca stick, arracacha y mixes de vegetales empacados con marca propia',
-		productos: ['Papa Criolla', 'Arracacha', 'Mix de Sancocho', 'Mix de Ajiaco'],
+		productos: ['Papa Criolla','Yuca Stick','Arracacha', 'Mix de Sancocho', 'Mix de Ajiaco'],
 	},
 ];
 
@@ -94,11 +97,11 @@ const sellos = [
 						<span class="text-xs font-medium text-slate-500">En alianza con Coldfood</span>
 					</div>
 					<h2 class="font-display mt-4 text-3xl leading-tight font-bold text-gtm-navy sm:text-4xl lg:text-5xl">
-						Línea de <span class="text-gtm-gold-ink">Congelados</span>
+						LINEA DE <span class="text-gtm-gold-ink">CONGELADOS</span>
 					</h2>
 					<p class="mt-4 text-base leading-relaxed text-slate-700 lg:text-lg">
-						De la mano de Coldfood, llevamos lo mejor del campo colombiano a los mercados del mundo con
-						tu propia marca.
+						De la mano de Coldfood, desarrollamos soluciones en productos congelados para distribuidores, 
+						importadores y marcas privadas, llevando la calidad del campo colombiano a mercados internacionales.
 					</p>
 					<a
 						href="#contacto"

@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets';
-import macrorrueda from '../assets/eventos/macrorrueda-2026.jpg';
-import colombiaCo from '../assets/eventos/colombia-co-corferias.jpg';
+import macrorrueda from '../assets/eventos/macrorrueda.jpeg';
+import colombiaCo from '../assets/eventos/alimentec.jpg';
+import americas from '../assets/eventos/americas.jpg';
 import invimaLogo from '../assets/logos/invima.jpg';
 import fdaLogo from '../assets/logos/fda.png';
 import flagUs from '../assets/flags/us.png';
@@ -235,22 +236,30 @@ const chips = [
 					))
 				}
 
-				<div class="elegir-evento relative flex aspect-[4/3] flex-col justify-between overflow-hidden rounded-2xl bg-[linear-gradient(160deg,#1c2f4a_0%,#0a1220_100%)] p-5 sm:col-span-2 lg:col-span-1">
-					<span
-						class="font-display inline-flex w-fit items-center gap-1.5 rounded-full bg-gtm-gold/15 px-2.5 py-0.5 text-[0.65rem] font-bold tracking-wide text-gtm-gold uppercase ring-1 ring-gtm-gold/40"
-					>
-						<span class="h-1.5 w-1.5 rounded-full bg-gtm-gold" aria-hidden="true"></span>
-						Próximamente
-					</span>
-					<div>
-						<p class="font-display text-3xl leading-none font-bold tabular-nums text-white sm:text-4xl">
-							14–16 <span class="text-gtm-gold">SEPT</span>
-						</p>
-						<p class="font-display text-lg font-bold tabular-nums text-white sm:text-xl">2026</p>
-						<h4 class="font-display mt-3 text-sm font-bold text-white sm:text-base">
-							Americas Food &amp; Beverage Show
-						</h4>
-						<p class="mt-1 text-xs leading-snug text-slate-300 sm:text-sm">Miami Beach Convention Center</p>
+				<div class="elegir-evento group relative flex aspect-[4/3] flex-col justify-between overflow-hidden rounded-2xl bg-white ring-1 ring-gtm-navy/10 sm:col-span-2 lg:col-span-1">
+					<Image
+						src={americas}
+						alt="Americas Food & Beverage Show — World Trade Center Miami"
+						widths={[400, 600, 800]}
+						sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+						loading="lazy"
+						class="absolute inset-0 h-full w-full object-contain object-center"
+					/>
+					<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
+					<div class="relative z-10 flex h-full flex-col justify-between p-4 sm:p-5">
+						<span
+							class="font-display inline-flex w-fit items-center gap-1.5 rounded-full bg-gtm-gold px-2.5 py-0.5 text-[0.65rem] font-bold tracking-wide text-gtm-navy uppercase"
+						>
+							<span class="h-1.5 w-1.5 rounded-full bg-gtm-navy" aria-hidden="true"></span>
+							Próximamente
+						</span>
+						<div>
+							
+							<h4 class="font-display mt-1.5 text-sm font-bold text-white sm:text-base">
+								Americas Food &amp; Beverage Show
+							</h4>
+							<p class="mt-0.5 text-xs leading-snug text-slate-200">Miami Beach Convention Center</p>
+						</div>
 					</div>
 				</div>
 			</div>

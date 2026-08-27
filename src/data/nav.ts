@@ -43,13 +43,6 @@ export const NAV_ITEMS: NavItem[] = [
 		label: 'Nuestros Productos',
 		children: [
 			{
-				id: 'servicios',
-				label: 'Servicios',
-				href: '/#servicios',
-				tag: 'Comercio Exterior',
-				description: 'Transporte, agenciamiento aduanero, almacenaje, seguros y asesoría integral.',
-			},
-			{
 				id: 'congelados',
 				label: 'Congelados',
 				href: '/#congelados',
@@ -62,6 +55,13 @@ export const NAV_ITEMS: NavItem[] = [
 				href: '/#carga-seca',
 				tag: 'Línea Seca',
 				description: 'Exportación multi-industria. Próximamente Medellín.',
+			},
+			{
+				id: 'servicios',
+				label: 'Servicios',
+				href: '/#servicios',
+				tag: 'Comercio Exterior',
+				description: 'Transporte, agenciamiento aduanero, almacenaje, seguros y asesoría integral.',
 			},
 		],
 	},
