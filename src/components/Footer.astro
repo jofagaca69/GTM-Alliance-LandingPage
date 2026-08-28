@@ -7,15 +7,6 @@ import logo from '../assets/logo.webp';
 const year = new Date().getFullYear();
 const initialActive = Astro.url.pathname === '/' ? 'inicio' : 'pqrsd';
 
-/* -------------------------------------------------------------------------
- * Contenido del footer.
- *
- * Teléfono y correos vienen de `src/data/contact.ts`. Las entradas marcadas
- * con `placeholder: true` (horarios, redes sociales, páginas legales) siguen
- * pendientes de que el cliente entregue la información definitiva.
- * `grep "placeholder: true"` las lista todas.
- * ---------------------------------------------------------------------- */
-
 type FooterValue = { label: string; href?: string; placeholder?: true };
 
 const lineasContacto: { titulo: string; valores: FooterValue[] }[] = [
@@ -43,7 +34,6 @@ const oficinas: { ciudad: string; direccion: string; placeholder?: true }[] = [
 const horarios: { dias: string; horas: string; placeholder?: true }[] = [
 	{ dias: 'Lunes a viernes', horas: '8:00 a. m. – 6:00 p. m.', placeholder: true },
 	{ dias: 'Sábados', horas: '8:00 a. m. – 12:00 m.', placeholder: true },
-	{ dias: 'Domingos y festivos', horas: 'Cerrado', placeholder: true },
 ];
 
 /* Glifos de marca (Simple Icons, viewBox 24x24, `fill="currentColor"`). */
@@ -177,8 +167,9 @@ const navLinkClass =
 						{
 							horarios.map((horario) => (
 								<div class="flex flex-wrap justify-between gap-x-3">
-									<dt class="text-sm text-slate-500">{horario.dias}</dt>
-									<dd class="text-sm text-slate-500">{horario.horas}</dd>
+									<span class="text-sm text-slate-500">{horario.dias}</span>
+
+									<span class="text-sm text-slate-500">{horario.horas}</span>
 								</div>
 							))
 						}
