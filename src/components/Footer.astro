@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { NAV_ITEMS } from '../data/nav';
-import { TELEFONO, CORREOS, SEDE_PRINCIPAL } from '../data/contact';
+import { TELEFONO, TELEFONO2, CORREOS, SEDE_PRINCIPAL } from '../data/contact';
 import logo from '../assets/logo.webp';
 
 const year = new Date().getFullYear();
@@ -29,21 +29,21 @@ const lineasContacto: { titulo: string; valores: FooterValue[] }[] = [
 	{
 		titulo: 'Administración',
 		valores: [
-			{ label: TELEFONO.label, href: TELEFONO.href },
+			{ label: TELEFONO2.label, href: TELEFONO2.href },
 			{ label: CORREOS.administracion, href: `mailto:${CORREOS.administracion}` },
 		],
 	},
 ];
 
 const oficinas: { ciudad: string; direccion: string; placeholder?: true }[] = [
-	{ ciudad: SEDE_PRINCIPAL.ciudad, direccion: SEDE_PRINCIPAL.direccion },
-	{ ciudad: 'Medellín, Colombia', direccion: 'Próximamente', placeholder: true },
+	{ ciudad: SEDE_PRINCIPAL.ciudad, direccion: SEDE_PRINCIPAL.direccion }
+	
 ];
 
-const horarios: { dias: string; horas: string; placeholder?: true }[] = [
-	{ dias: 'Lunes a viernes', horas: '8:00 a. m. – 6:00 p. m.', placeholder: true },
-	{ dias: 'Sábados', horas: '8:00 a. m. – 12:00 m.', placeholder: true },
-	{ dias: 'Domingos y festivos', horas: 'Cerrado', placeholder: true },
+const horarios: { dias: string; horas: string; cerrado?: boolean; placeholder?: true }[] = [
+	{ dias: 'Lun–Vie', horas: '8:00 a.m – 6:00 p.m', placeholder: true },
+	{ dias: 'Sábados', horas: '8:00 a.m – 12:00 m', placeholder: true },
+	{ dias: 'Dom. y festivos', horas: 'Cerrado', cerrado: true, placeholder: true },
 ];
 
 /* Glifos de marca (Simple Icons, viewBox 24x24, `fill="currentColor"`). */
@@ -57,8 +57,13 @@ const redes: { nombre: string; href: string; icon: string; placeholder?: true }[
 
 const legales: FooterValue[] = [
 	{ label: 'Formulario PQRSD', href: '/pqrsd/' },
-	{ label: 'Política de tratamiento de datos', href: '/pqrsd/', placeholder: true },
-	{ label: 'Términos y condiciones', href: '/pqrsd/', placeholder: true },
+	{ label: 'Política de de tratamiento de datos', href: '/politica-privacidad/', placeholder: true },
+	{ label: 'Política de Garantía', href: '/politica-garantia/', placeholder: true },
+	{ label: 'Política RSE', href: '/politica-rse/', placeholder: true },
+	{ label: 'Código de Ética', href: '/codigo-etica/', placeholder: true },
+	{ label: 'Política Ambiental', href: '/politica-ambiental/', placeholder: true },
+	{ label: 'Superintendencia de Industria y Comercio', href: 'https://www.sic.gov.co/' },
+	{ label: 'Estatuto del consumidor', href: 'https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=44306' },
 ];
 
 /* Enlace de navegación del footer: punto dorado a la izquierda que aparece
@@ -89,10 +94,10 @@ const navLinkClass =
 			</p>
 		</div>
 
-		<!-- 4 columnas -->
-		<div class="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-			<!-- 1. Líneas de contacto -->
-			<div class="flex flex-col gap-5">
+		<!-- Columnas del footer -->
+		<div class="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+			<!-- 1. Líneas de contacto + LinkedIn -->
+			<div class="flex flex-col gap-5 lg:col-span-3">
 				<h3 class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
 					Líneas de contacto
 				</h3>
@@ -102,10 +107,12 @@ const navLinkClass =
 							<p class="text-sm font-semibold text-gtm-navy">{linea.titulo}</p>
 							{linea.valores.map((valor) => {
 								const Tag = valor.href ? 'a' : 'span';
+								const external = valor.href?.startsWith('http');
 								return (
 									<Tag
 										href={valor.href}
 										class="block text-sm break-words text-slate-500 transition-colors hover:text-gtm-navy"
+										{...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
 									>
 										{valor.label}
 									</Tag>
@@ -114,10 +121,33 @@ const navLinkClass =
 						</div>
 					))
 				}
+
+				<div class="mt-1 flex flex-col gap-3 border-t border-gtm-navy/10 pt-5">
+					<p class="text-sm font-semibold text-gtm-navy">Síguenos</p>
+					<ul class="flex flex-wrap gap-3">
+						{
+							redes.map((red) => (
+								<li>
+									<a
+										href={red.href}
+										aria-label={red.nombre}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="flex h-10 w-10 items-center justify-center rounded-full bg-gtm-navy/5 text-slate-600 ring-1 ring-gtm-navy/10 transition-colors hover:bg-gtm-gold hover:text-gtm-navy"
+									>
+										<span
+											set:html={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">${red.icon}</svg>`}
+										/>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
 			</div>
 
-			<!-- 2. Navegación (participa en el scrollspy) -->
-			<div class="flex flex-col gap-5">
+			<!-- 2. Navegación -->
+			<div class="flex flex-col gap-5 lg:col-span-3">
 				<h3 class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
 					Navegación
 				</h3>
@@ -158,7 +188,7 @@ const navLinkClass =
 			</div>
 
 			<!-- 3. Oficinas de Atención -->
-			<div class="flex flex-col gap-5">
+			<div class="flex flex-col gap-5 lg:col-span-3">
 				<h3 class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
 					Oficinas de Atención
 				</h3>
@@ -171,14 +201,23 @@ const navLinkClass =
 					))
 				}
 
-				<div class="flex flex-col gap-2">
-					<p class="text-sm font-semibold text-gtm-navy">Horarios de atención</p>
-					<dl class="flex flex-col gap-1">
+				<div class="mt-2 flex flex-col gap-3 border-t border-gtm-navy/10 pt-5">
+					<p class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
+						Horarios de atención
+					</p>
+					<dl class="flex flex-col gap-2.5">
 						{
 							horarios.map((horario) => (
-								<div class="flex flex-wrap justify-between gap-x-3">
-									<dt class="text-sm text-slate-500">{horario.dias}</dt>
-									<dd class="text-sm text-slate-500">{horario.horas}</dd>
+								<div class="grid grid-cols-[minmax(0,6.75rem)_1fr] items-baseline gap-x-4">
+									<dt class="text-sm font-medium text-gtm-navy">{horario.dias}</dt>
+									<dd
+										class:list={[
+											'text-sm leading-snug tabular-nums',
+											horario.cerrado ? 'text-slate-400 italic' : 'text-slate-500',
+										]}
+									>
+										{horario.horas}
+									</dd>
 								</div>
 							))
 						}
@@ -188,43 +227,27 @@ const navLinkClass =
 
 			</div>
 
-			<!-- 4. Redes sociales + General -->
-			<div class="flex flex-col gap-5">
+			<!-- 4. General (derecha) -->
+			<div class="flex flex-col gap-5 sm:col-span-2 lg:col-span-3 lg:col-start-10">
 				<h3 class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
-					Síguenos
-				</h3>
-				<ul class="flex flex-wrap gap-3">
-					{
-						redes.map((red) => (
-							<li>
-								<a
-									href={red.href}
-									aria-label={red.nombre}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="flex h-10 w-10 items-center justify-center rounded-full bg-gtm-navy/5 text-slate-600 ring-1 ring-gtm-navy/10 transition-colors hover:bg-gtm-gold hover:text-gtm-navy"
-								>
-									<span
-										set:html={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">${red.icon}</svg>`}
-									/>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-
-				<h3 class="font-display mt-2 text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
 					General
 				</h3>
 				<ul class="flex flex-col gap-2.5">
 					{
-						legales.map((item) => (
-							<li>
-								<a href={item.href} class="text-sm text-slate-500 transition-colors hover:text-gtm-navy">
-									{item.label}
-								</a>
-							</li>
-						))
+						legales.map((item) => {
+							const external = item.href?.startsWith('http');
+							return (
+								<li>
+									<a
+										href={item.href}
+										class="text-sm leading-snug text-slate-500 transition-colors hover:text-gtm-navy"
+										{...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+									>
+										{item.label}
+									</a>
+								</li>
+							);
+						})
 					}
 				</ul>
 			</div>
@@ -238,7 +261,9 @@ const navLinkClass =
 				&copy; {year} GTM Alliance. Todos los derechos reservados.
 			</p>
 			<a
-				href="/#contacto"
+				href={TELEFONO2.whatsapp}
+				target="_blank"
+				rel="noopener noreferrer"
 				class="rounded-full bg-gtm-gold px-6 py-2.5 text-xs font-semibold text-gtm-navy transition-transform hover:scale-105"
 			>
 				Solicita una cotización

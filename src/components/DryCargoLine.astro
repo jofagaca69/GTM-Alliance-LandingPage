@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import cargaSeca from '../assets/carga-seca.jpg';
+import cargaSeca from '../assets/cargaSeca.jpg';
 import contenedor from '../assets/container2.png';
 
 const logoModules = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*.{jpg,JPG}', {
@@ -27,37 +27,30 @@ const pasos = [
 	{
 		titulo: 'Compra a fabricantes aliados',
 		descripcion: 'Negociamos directamente con múltiples fabricantes colombianos.',
-		icon: icon('apreton-de-manos.png'),
 	},
 	{
 		titulo: 'Recepción en nuestra bodega',
 		descripcion: 'Recibimos y verificamos la mercancía en nuestras instalaciones especializadas.',
-		icon: icon('garaje.png'),
 	},
 	{
 		titulo: 'Etiquetado según país destino',
 		descripcion: 'Adaptamos el etiquetado e información a las normativas de cada mercado.',
-		icon: icon('etiqueta.png'),
 	},
 	{
 		titulo: 'Embalaje especializado',
 		descripcion: 'Usamos el empaque adecuado para proteger cada producto durante el transporte.',
-		icon: icon('embalaje.png'),
 	},
 	{
 		titulo: 'Consolidación de carga',
 		descripcion: 'Agrupamos diferentes productos de varios proveedores en un solo envío.',
-		icon: icon('logistica.png'),
 	},
 	{
 		titulo: 'Gestión documental y aduanera',
 		descripcion: 'Nos encargamos de toda la documentación, permisos e inspecciones.',
-		icon: icon('documentos.png'),
 	},
 	{
 		titulo: 'Exportación internacional',
 		descripcion: 'Coordinamos el transporte internacional hasta el puerto de destino.',
-		icon: icon('camion-de-reparto.png'),
 	},
 ];
 
@@ -90,22 +83,24 @@ const beneficios = [
 
 <section id="carga-seca" class="bg-transparent py-10 sm:py-10">
 	<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-		<div class="carga-hero relative aspect-[16/9] overflow-hidden rounded-2xl sm:aspect-[21/9] sm:rounded-3xl lg:aspect-[2.35/1]">
+		<div class="carga-hero relative overflow-hidden rounded-2xl sm:rounded-3xl">
 			<Image
 				src={cargaSeca}
 				alt="Línea de carga seca — consolidación y exportación GTM Alliance"
-				widths={[640, 960, 1280, 1600]}
+				width={854}
+				height={352}
+				widths={[640, 854]}
 				sizes="(min-width: 1024px) 1152px, 100vw"
+				quality={92}
 				loading="lazy"
-				class="absolute inset-0 h-full w-full object-cover object-[center_55%] sm:object-[center_50%] lg:object-center"
+				class="block h-auto w-full"
 			/>
-			<div class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-br from-black/75 via-black/35 to-transparent"></div>
-			<div class="absolute left-0 top-0 z-20 max-w-lg px-4 pt-5 pb-6 text-left sm:max-w-xl sm:px-8 sm:pt-6 lg:max-w-2xl lg:px-10 lg:pt-8">
-				<h2 class="carga-title font-display text-3xl leading-[1.05] font-bold text-white drop-shadow-md sm:text-4xl lg:text-5xl">
+			<div class="absolute left-0 top-0 z-10 max-w-lg px-4 pt-5 pb-6 text-left sm:max-w-xl sm:px-8 sm:pt-6 lg:max-w-2xl lg:px-10 lg:pt-8">
+				<h2 class="carga-title font-display text-3xl leading-[1.05] font-bold text-white [text-shadow:0_2px_14px_rgba(10,18,32,0.9)] sm:text-4xl lg:text-5xl">
 					<span class="block uppercase">Línea de</span>
 					<span class="block uppercase text-gtm-gold">Carga Seca</span>
 				</h2>
-				<p class="carga-intro mt-2.5 text-sm leading-relaxed text-slate-100 drop-shadow-md sm:mt-3 sm:text-base lg:text-lg">
+				<p class="carga-intro mt-2.5 text-sm leading-relaxed text-slate-100 [text-shadow:0_1px_10px_rgba(10,18,32,0.85)] sm:mt-3 sm:text-base lg:text-lg">
 					Consolidamos productos de múltiples
 					<span class="block">fabricantes en un solo embarque internacional.</span>
 				</p>
@@ -145,22 +140,8 @@ const beneficios = [
 				aria-label="Proceso de consolidación de carga seca"
 			>
 				{
-					pasos.map((paso, i) => (
+					pasos.map((paso) => (
 						<li class="carga-paso flex w-[15rem] shrink-0 snap-start flex-col gap-2 rounded-2xl border border-gtm-gold/40 bg-white p-4 shadow-sm shadow-gtm-navy/5 sm:w-[17rem] sm:gap-3 sm:p-5 lg:w-[16.5rem]">
-							<div class="flex items-center gap-3">
-								<span class="font-display flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gtm-gold text-sm font-bold text-gtm-navy">
-									{i + 1}
-								</span>
-								<Image
-									src={paso.icon}
-									alt=""
-									width={36}
-									height={36}
-									densities={[1, 2]}
-									loading="lazy"
-									class="h-9 w-9 object-contain"
-								/>
-							</div>
 							<h4 class="font-display text-base font-bold leading-snug text-gtm-navy">{paso.titulo}</h4>
 							<p class="text-sm leading-relaxed text-slate-600">{paso.descripcion}</p>
 						</li>

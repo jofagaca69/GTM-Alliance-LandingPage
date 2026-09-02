@@ -4,10 +4,20 @@
  * `Organization` de `BaseLayout.astro`.
  */
 
+const WHATSAPP_MAS_INFO = 'Hola, me gustaría solicitar más información.';
+
 export const TELEFONO = {
 	label: '+57 300 797 4993',
-	href: 'tel:+573007974993',
-	whatsapp: 'https://wa.me/573007974993',
+	tel: 'tel:+573007974993',
+	href: `https://wa.me/573007974993?text=${encodeURIComponent(WHATSAPP_MAS_INFO)}`,
+	whatsapp: `https://wa.me/573007974993?text=${encodeURIComponent(WHATSAPP_MAS_INFO)}`,
+};
+
+export const TELEFONO2 = {
+	label: '+57  301 254 3223',
+	tel: 'tel:+573012543223',
+	href: `https://wa.me/573012543223?text=${encodeURIComponent(WHATSAPP_MAS_INFO)}`,
+	whatsapp: `https://wa.me/573012543223?text=${encodeURIComponent(WHATSAPP_MAS_INFO)}`,
 };
 
 export const CORREOS = {

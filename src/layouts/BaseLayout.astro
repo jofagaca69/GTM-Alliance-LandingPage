@@ -190,7 +190,7 @@ const organizationNode = {
 		caption: 'GTM Alliance',
 	},
 	image: { '@id': logoId },
-	telephone: TELEFONO.href.replace('tel:', ''),
+	telephone: TELEFONO.tel.replace('tel:', ''),
 	email: CORREOS.gerencia,
 	identifier: {
 		'@type': 'PropertyValue',
@@ -213,7 +213,7 @@ const organizationNode = {
 		{
 			'@type': 'ContactPoint',
 			contactType: 'customer service',
-			telephone: TELEFONO.href.replace('tel:', ''),
+			telephone: TELEFONO.tel.replace('tel:', ''),
 			email: CORREOS.gerencia,
 			areaServed: 'CO',
 			availableLanguage: { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
@@ -221,7 +221,7 @@ const organizationNode = {
 		{
 			'@type': 'ContactPoint',
 			contactType: 'billing support',
-			telephone: TELEFONO.href.replace('tel:', ''),
+			telephone: TELEFONO.tel.replace('tel:', ''),
 			email: CORREOS.administracion,
 			areaServed: 'CO',
 			availableLanguage: { '@type': 'Language', name: 'Spanish', alternateName: 'es' },

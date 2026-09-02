@@ -5,9 +5,7 @@ import colombiaCo from '../assets/eventos/alimentec.jpg';
 import americas from '../assets/eventos/americas.jpg';
 import invimaLogo from '../assets/logos/invima.jpg';
 import fdaLogo from '../assets/logos/fda.png';
-import flagUs from '../assets/flags/us.png';
-import flagMx from '../assets/flags/mx.png';
-import flagEu from '../assets/flags/eu.png';
+import paises from '../assets/flags/paises.jpg';
 
 const ICONS = {
 	// Insignia de certificación — copiado del sello "calidad" de FrozenLine.astro (huérfano, nunca renderizado ahí).
@@ -32,20 +30,14 @@ function svg(path: string, cls = 'h-6 w-6') {
 
 const mercados = [
 	{
-		bandera: flagUs,
-		alt: 'Bandera de Estados Unidos',
 		nombre: 'Estados Unidos',
 		descripcion: 'Alianzas y operaciones con clientes en todo el país.',
 	},
 	{
-		bandera: flagMx,
-		alt: 'Bandera de México',
 		nombre: 'México',
 		descripcion: 'Presencia estratégica y relaciones comerciales sólidas.',
 	},
 	{
-		bandera: flagEu,
-		alt: 'Bandera de la Unión Europea',
 		nombre: 'Europa',
 		descripcion: 'Exportando calidad colombiana a mercados exigentes.',
 	},
@@ -68,19 +60,19 @@ const certificaciones = [
 
 const eventos = [
 	{
-		nombre: 'Macrorrueda de las Américas',
-		etiqueta: 'ProColombia',
-		descripcion: 'Fortalecemos la industria colombiana y abrimos nuevos mercados.',
-		image: macrorrueda,
-		alt: 'Pantalla y letrero de la Macrorrueda de las Américas 2026 en el recinto ferial',
+		nombre: 'Corferias, Bogotá',
+		etiqueta: 'Alimentec',
+		descripcion: 'Participamos activamente conectando oportdidades y generando valor.',
+		image: colombiaCo,
+		alt: 'Alimentec 2026 en Corferias, Bogotá',
 		posicion: 'object-[center_38%]',
 	},
 	{
-		nombre: 'Colombia CO',
-		etiqueta: 'Corferias, Bogotá',
-		descripcion: 'El país de la belleza: presencia colombiana en el escenario internacional.',
-		image: colombiaCo,
-		alt: 'Entrada de la feria Colombia CO — The Country of Beauty — en Corferias, Bogotá',
+		nombre: 'ProColombia.',
+		etiqueta: 'Macrorrueda',
+		descripcion: 'Fortalecemos la industria colombiana y abrimos nuevos mercados.',
+		image: macrorrueda,
+		alt: 'Pantalla y letrero de la Macrorrueda  2026 en el recinto ferial',
 		posicion: 'object-[center_18%]',
 	},
 ];
@@ -136,38 +128,35 @@ const chips = [
 
 		<!-- Experiencia internacional + Certificaciones -->
 		<div class="mt-12 grid gap-6 sm:mt-16 lg:grid-cols-[1.35fr_1fr]">
-			<div
-				class="elegir-panel overflow-hidden rounded-3xl bg-[linear-gradient(160deg,#1c2f4a_0%,#0a1220_100%)] p-6 sm:p-8"
-			>
-				<h3 class="font-display text-xl font-bold text-white sm:text-2xl">
-					Experiencia <span class="text-gtm-gold">internacional</span>
-				</h3>
-				<p class="mt-2 max-w-sm text-sm leading-relaxed text-slate-300">
-					Llevamos lo mejor de Colombia a los mercados que más lo valoran.
-				</p>
-				<ul class="mt-6 space-y-4">
-					{
-						mercados.map((mercado) => (
-							<li class="flex items-start gap-3">
-								<span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-white/20">
-									<Image
-										src={mercado.bandera}
-										alt={mercado.alt}
-										width={36}
-										height={36}
-										densities={[1, 2]}
-										loading="lazy"
-										class="h-full w-full object-cover"
-									/>
-								</span>
-								<div class="min-w-0">
-									<p class="font-display text-sm font-bold text-white">{mercado.nombre}</p>
-									<p class="text-sm leading-snug text-slate-300">{mercado.descripcion}</p>
-								</div>
-							</li>
-						))
-					}
-				</ul>
+			<div class="elegir-panel relative min-h-[20rem] overflow-hidden rounded-3xl sm:min-h-[22rem]">
+				<Image
+					src={paises}
+					alt="Mapa de rutas comerciales de GTM Alliance: Colombia conectada con Estados Unidos, México, Europa y Centroamérica"
+					widths={[480, 640, 800, 960]}
+					sizes="(min-width: 1024px) 620px, 100vw"
+					loading="lazy"
+					class="absolute inset-0 h-full w-full object-cover object-center"
+				/>
+				<div class="relative z-10 flex h-full min-h-[20rem] flex-col justify-between p-6 sm:min-h-[22rem] sm:p-8">
+					<div>
+						<h3 class="font-display text-xl font-bold text-white [text-shadow:0_2px_14px_rgba(10,18,32,0.9)] sm:text-2xl">
+							Experiencia <span class="text-gtm-gold">internacional</span>
+						</h3>
+						<p class="mt-2 max-w-sm text-sm leading-relaxed text-white [text-shadow:0_1px_10px_rgba(10,18,32,0.85)]">
+							Llevamos lo mejor de Colombia a los mercados que más lo valoran.
+						</p>
+					</div>
+					<ul class="mt-5 space-y-3 sm:mt-4">
+						{
+							mercados.map((mercado) => (
+								<li>
+									<p class="font-display text-sm font-bold text-white [text-shadow:0_1px_10px_rgba(10,18,32,0.9)]">{mercado.nombre}</p>
+									<p class="text-sm leading-snug text-white [text-shadow:0_1px_8px_rgba(10,18,32,0.85)]">{mercado.descripcion}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
 			</div>
 
 			<div class="elegir-cert rounded-3xl bg-gtm-surface p-6 ring-1 ring-gtm-navy/10 sm:p-8">
