@@ -31,16 +31,10 @@ const oficinas: { ciudad: string; direccion: string; placeholder?: true }[] = [
 	
 ];
 
-<<<<<<< HEAD
 const horarios: { dias: string; horas: string; cerrado?: boolean; placeholder?: true }[] = [
 	{ dias: 'Lun–Vie', horas: '8:00 a.m – 6:00 p.m', placeholder: true },
 	{ dias: 'Sábados', horas: '8:00 a.m – 12:00 m', placeholder: true },
 	{ dias: 'Dom. y festivos', horas: 'Cerrado', cerrado: true, placeholder: true },
-=======
-const horarios: { dias: string; horas: string; placeholder?: true }[] = [
-	{ dias: 'Lunes a viernes', horas: '8:00 a. m. – 6:00 p. m.', placeholder: true },
-	{ dias: 'Sábados', horas: '8:00 a. m. – 12:00 m.', placeholder: true },
->>>>>>> edb21c2c83d589e832a3fc9fc0f8fb46e9478d65
 ];
 
 /* Glifos de marca (Simple Icons, viewBox 24x24, `fill="currentColor"`). */
@@ -205,7 +199,6 @@ const navLinkClass =
 					<dl class="flex flex-col gap-2.5">
 						{
 							horarios.map((horario) => (
-<<<<<<< HEAD
 								<div class="grid grid-cols-[minmax(0,6.75rem)_1fr] items-baseline gap-x-4">
 									<dt class="text-sm font-medium text-gtm-navy">{horario.dias}</dt>
 									<dd
@@ -216,12 +209,6 @@ const navLinkClass =
 									>
 										{horario.horas}
 									</dd>
-=======
-								<div class="flex flex-wrap justify-between gap-x-3">
-									<span class="text-sm text-slate-500">{horario.dias}</span>
-
-									<span class="text-sm text-slate-500">{horario.horas}</span>
->>>>>>> edb21c2c83d589e832a3fc9fc0f8fb46e9478d65
 								</div>
 							))
 						}

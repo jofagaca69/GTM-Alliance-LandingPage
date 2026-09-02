@@ -2,24 +2,14 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import cargaSeca from '../assets/cargaSeca.jpg';
-import contenedor from '../assets/container2.png';
 
 const logoModules = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*.{jpg,JPG}', {
-	eager: true,
-});
-const iconModules = import.meta.glob<{ default: ImageMetadata }>('../assets/icons/*.png', {
 	eager: true,
 });
 
 function logo(path: string) {
 	const mod = logoModules[`../assets/logos/${path}`];
 	if (!mod) throw new Error(`Logo no encontrado: ${path}`);
-	return mod.default;
-}
-
-function icon(path: string) {
-	const mod = iconModules[`../assets/icons/${path}`];
-	if (!mod) throw new Error(`Icono no encontrado: ${path}`);
 	return mod.default;
 }
 
@@ -70,15 +60,6 @@ const marcas = [
 ];
 
 const pistaMarcas = [...marcas, ...marcas];
-
-const beneficios = [
-	{ label: 'Menor inversión en inventario', icon: icon('dinero.png') },
-	{ label: 'Reducción de costos logísticos', icon: icon('precio-bajo.png') },
-	{ label: 'Más productos, más oportunidades', icon: icon('agregar-producto.png') },
-	{ label: 'Seguridad en cada etapa del proceso', icon: icon('privacidad-de-datos.png') },
-	{ label: 'Acceso a nuevos mercados', icon: icon('acceso-a-internet.png') },
-	{ label: 'Trazabilidad y control total', icon: icon('prueba.png') },
-];
 ---
 
 <section id="carga-seca" class="bg-transparent py-10 sm:py-10">
@@ -95,18 +76,10 @@ const beneficios = [
 				loading="lazy"
 				class="block h-auto w-full"
 			/>
-<<<<<<< HEAD
 			<div class="absolute left-0 top-0 z-10 max-w-lg px-4 pt-5 pb-6 text-left sm:max-w-xl sm:px-8 sm:pt-6 lg:max-w-2xl lg:px-10 lg:pt-8">
 				<h2 class="carga-title font-display text-3xl leading-[1.05] font-bold text-white [text-shadow:0_2px_14px_rgba(10,18,32,0.9)] sm:text-4xl lg:text-5xl">
 					<span class="block uppercase">Línea de</span>
 					<span class="block uppercase text-gtm-gold">Carga Seca</span>
-=======
-			<div class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-br from-black/75 via-black/35 to-transparent"></div>
-			<div class="absolute left-0 top-0 z-20 max-w-lg px-4 pt-5 pb-6 text-left sm:max-w-xl sm:px-8 sm:pt-6 lg:max-w-2xl lg:px-10 lg:pt-8">
-				<h2 class="carga-title font-display text-3xl leading-[1.05] font-bold text-white drop-shadow-md sm:text-4xl lg:text-5xl">
-					<span class="block">Línea de</span>
-					<span class="block text-gtm-gold">Carga Seca</span>
->>>>>>> edb21c2c83d589e832a3fc9fc0f8fb46e9478d65
 				</h2>
 				<p class="carga-intro mt-2.5 text-sm leading-relaxed text-slate-100 [text-shadow:0_1px_10px_rgba(10,18,32,0.85)] sm:mt-3 sm:text-base lg:text-lg">
 					Consolidamos productos de múltiples
@@ -232,9 +205,7 @@ const beneficios = [
 				.fromTo('.carga-intro', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7 }, '-=0.5')
 				.fromTo('.carga-stepper', { opacity: 0, y: 32 }, { opacity: 1, y: 0, duration: 0.7 }, '-=0.35')
 				.fromTo('.carga-paso', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.08 }, '-=0.3')
-				.fromTo('.carga-marcas', { opacity: 0, y: 32 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.2')
-				.fromTo('.carga-beneficios', { opacity: 0, y: 32 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.3')
-				.fromTo('.carga-cta', { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.3');
+				.fromTo('.carga-marcas', { opacity: 0, y: 32 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.2');
 
 			let marqueeTween: gsap.core.Tween | undefined;
 			const pause = () => marqueeTween?.pause();
@@ -269,8 +240,6 @@ const beneficios = [
 					'.carga-stepper',
 					'.carga-paso',
 					'.carga-marcas',
-					'.carga-beneficios',
-					'.carga-cta',
 				],
 				{ opacity: 1, y: 0 },
 			);
