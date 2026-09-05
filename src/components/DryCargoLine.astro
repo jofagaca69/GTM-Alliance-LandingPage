@@ -68,13 +68,11 @@ const pistaMarcas = [...marcas, ...marcas];
 			<Image
 				src={cargaSeca}
 				alt="Línea de carga seca — consolidación y exportación GTM Alliance"
-				width={854}
-				height={352}
 				widths={[640, 854]}
-				sizes="(min-width: 1024px) 1152px, 100vw"
-				quality={92}
+				sizes="(min-width: 1024px) 1152px, calc(100vw - 2rem)"
+				quality={90}
 				loading="lazy"
-				class="block h-auto w-full"
+				class="block h-auto w-full object-contain"
 			/>
 			<div class="absolute left-0 top-0 z-10 max-w-lg px-4 pt-5 pb-6 text-left sm:max-w-xl sm:px-8 sm:pt-6 lg:max-w-2xl lg:px-10 lg:pt-8">
 				<h2 class="carga-title font-display text-3xl leading-[1.05] font-bold text-white [text-shadow:0_2px_14px_rgba(10,18,32,0.9)] sm:text-4xl lg:text-5xl">
