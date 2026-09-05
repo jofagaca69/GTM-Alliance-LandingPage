@@ -48,11 +48,10 @@ const redes: { nombre: string; href: string; icon: string; placeholder?: true }[
 
 const legales: FooterValue[] = [
 	{ label: 'Formulario PQRSD', href: '/pqrsd/' },
-	{ label: 'Política de de tratamiento de datos', href: '/politica-privacidad/', placeholder: true },
-	{ label: 'Política de Garantía', href: '/politica-garantia/', placeholder: true },
-	{ label: 'Política RSE', href: '/politica-rse/', placeholder: true },
-	{ label: 'Código de Ética', href: '/codigo-etica/', placeholder: true },
-	{ label: 'Política Ambiental', href: '/politica-ambiental/', placeholder: true },
+	{ label: 'Política de tratamiento de datos', href: '/docs/politica-tratamiento-datos-personales.pdf' },
+	{ label: 'Reclamaciones y no conformidades', href: '/docs/reclamaciones-y-no-conformidades.pdf' },
+	{ label: 'Política RSE', href: '/docs/politica-rse.pdf' },
+	{ label: 'Código de Ética', href: '/docs/codigo-etica.pdf' },
 	{ label: 'Superintendencia de Industria y Comercio', href: 'https://www.sic.gov.co/' },
 	{ label: 'Estatuto del consumidor', href: 'https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=44306' },
 ];
@@ -226,13 +225,15 @@ const navLinkClass =
 				<ul class="flex flex-col gap-2.5">
 					{
 						legales.map((item) => {
-							const external = item.href?.startsWith('http');
+							const newTab = Boolean(
+								item.href && (item.href.startsWith('http') || item.href.includes('.pdf')),
+							);
 							return (
 								<li>
 									<a
 										href={item.href}
 										class="text-sm leading-snug text-slate-500 transition-colors hover:text-gtm-navy"
-										{...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+										{...(newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
 									>
 										{item.label}
 									</a>
