@@ -1,26 +1,31 @@
 ---
 import { Image } from 'astro:assets';
-import { NAV_ITEMS } from '../data/nav';
-import { TELEFONO, TELEFONO2, CORREOS, SEDE_PRINCIPAL } from '../data/contact';
+import { getNavItems } from '../data/nav';
+import { TELEFONO, TELEFONO2, CORREOS, SEDE_PRINCIPAL, whatsappHref } from '../data/contact';
+import { getLocale, useTranslations, localizePath } from '../i18n/utils';
 import logo from '../assets/logo.webp';
 
+const lang = getLocale(Astro.url);
+const t = useTranslations(lang);
+const navItems = getNavItems(lang);
+
 const year = new Date().getFullYear();
-const initialActive = Astro.url.pathname === '/' ? 'inicio' : 'pqrsd';
+const initialActive = Astro.url.pathname === localizePath('/', lang) ? 'inicio' : 'pqrsd';
 
 type FooterValue = { label: string; href?: string; placeholder?: true };
 
 const lineasContacto: { titulo: string; valores: FooterValue[] }[] = [
 	{
-		titulo: 'Gerencia',
+		titulo: t.footer.lineasContacto.gerencia,
 		valores: [
-			{ label: TELEFONO.label, href: TELEFONO.href },
+			{ label: TELEFONO.label, href: whatsappHref(TELEFONO.numero, lang) },
 			{ label: CORREOS.gerencia, href: `mailto:${CORREOS.gerencia}` },
 		],
 	},
 	{
-		titulo: 'Administración',
+		titulo: t.footer.lineasContacto.administracion,
 		valores: [
-			{ label: TELEFONO2.label, href: TELEFONO2.href },
+			{ label: TELEFONO2.label, href: whatsappHref(TELEFONO2.numero, lang) },
 			{ label: CORREOS.administracion, href: `mailto:${CORREOS.administracion}` },
 		],
 	},
@@ -28,14 +33,12 @@ const lineasContacto: { titulo: string; valores: FooterValue[] }[] = [
 
 const oficinas: { ciudad: string; direccion: string; placeholder?: true }[] = [
 	{ ciudad: SEDE_PRINCIPAL.ciudad, direccion: SEDE_PRINCIPAL.direccion }
-	
+
 ];
 
-const horarios: { dias: string; horas: string; cerrado?: boolean; placeholder?: true }[] = [
-	{ dias: 'Lun–Vie', horas: '8:00 a.m – 6:00 p.m', placeholder: true },
-	{ dias: 'Sábados', horas: '8:00 a.m – 12:00 m', placeholder: true },
-	{ dias: 'Dom. y festivos', horas: 'Cerrado', cerrado: true, placeholder: true },
-];
+const horarios: { dias: string; horas: string; cerrado?: boolean; placeholder?: true }[] = t.footer.horarios.map(
+	(horario, i) => ({ ...horario, cerrado: i === t.footer.horarios.length - 1, placeholder: true }),
+);
 
 /* Glifos de marca (Simple Icons, viewBox 24x24, `fill="currentColor"`). */
 const redes: { nombre: string; href: string; icon: string; placeholder?: true }[] = [
@@ -47,13 +50,13 @@ const redes: { nombre: string; href: string; icon: string; placeholder?: true }[
 ];
 
 const legales: FooterValue[] = [
-	{ label: 'Formulario PQRSD', href: '/pqrsd/' },
-	{ label: 'Política de tratamiento de datos', href: '/docs/politica-tratamiento-datos-personales.pdf' },
-	{ label: 'Reclamaciones y no conformidades', href: '/docs/reclamaciones-y-no-conformidades.pdf' },
-	{ label: 'Política RSE', href: '/docs/politica-rse.pdf' },
-	{ label: 'Código de Ética', href: '/docs/codigo-etica.pdf' },
-	{ label: 'Superintendencia de Industria y Comercio', href: 'https://www.sic.gov.co/' },
-	{ label: 'Estatuto del consumidor', href: 'https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=44306' },
+	{ label: t.footer.legales.pqrsd, href: localizePath('/pqrsd/', lang) },
+	{ label: t.footer.legales.tratamientoDatos, href: '/docs/politica-tratamiento-datos-personales.pdf' },
+	{ label: t.footer.legales.reclamaciones, href: '/docs/reclamaciones-y-no-conformidades.pdf' },
+	{ label: t.footer.legales.rse, href: '/docs/politica-rse.pdf' },
+	{ label: t.footer.legales.eticaCodigo, href: '/docs/codigo-etica.pdf' },
+	{ label: t.footer.legales.sic, href: 'https://www.sic.gov.co/' },
+	{ label: t.footer.legales.estatutoConsumidor, href: 'https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=44306' },
 ];
 
 /* Enlace de navegación del footer: punto dorado a la izquierda que aparece
@@ -69,7 +72,7 @@ const navLinkClass =
 		<div
 			class="flex flex-col gap-6 border-b border-gtm-navy/10 pb-10 sm:flex-row sm:items-center sm:justify-between sm:gap-10"
 		>
-			<a href="/#inicio" class="inline-flex items-center self-start rounded-2xl px-4 py-3">
+			<a href={localizePath('/#inicio', lang)} class="inline-flex items-center self-start rounded-2xl px-4 py-3">
 				<Image
 					src={logo}
 					alt="GTM Alliance - Global Team Work"
@@ -79,8 +82,7 @@ const navLinkClass =
 				/>
 			</a>
 			<p class="max-w-md text-sm leading-relaxed text-slate-500">
-				Conectamos tu carga con el mundo. Soluciones integrales en comercio exterior y logística
-				internacional: carga seca, congelados y mercancías especiales por mar, tierra y aire.
+				{t.footer.tagline}
 			</p>
 		</div>
 
@@ -89,7 +91,7 @@ const navLinkClass =
 			<!-- 1. Líneas de contacto + LinkedIn -->
 			<div class="flex flex-col gap-5 lg:col-span-3">
 				<h3 class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
-					Líneas de contacto
+					{t.footer.lineasContactoTitle}
 				</h3>
 				{
 					lineasContacto.map((linea) => (
@@ -113,7 +115,7 @@ const navLinkClass =
 				}
 
 				<div class="mt-1 flex flex-col gap-3 border-t border-gtm-navy/10 pt-5">
-					<p class="text-sm font-semibold text-gtm-navy">Síguenos</p>
+					<p class="text-sm font-semibold text-gtm-navy">{t.footer.sigueenosTitle}</p>
 					<ul class="flex flex-wrap gap-3">
 						{
 							redes.map((red) => (
@@ -139,11 +141,11 @@ const navLinkClass =
 			<!-- 2. Navegación -->
 			<div class="flex flex-col gap-5 lg:col-span-3">
 				<h3 class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
-					Navegación
+					{t.footer.navegacionTitle}
 				</h3>
 				<ul class="flex flex-col gap-2.5">
 					{
-						NAV_ITEMS.map((item) =>
+						navItems.map((item) =>
 							item.kind === 'link' ? (
 								<li>
 									<a
@@ -180,7 +182,7 @@ const navLinkClass =
 			<!-- 3. Oficinas de Atención -->
 			<div class="flex flex-col gap-5 lg:col-span-3">
 				<h3 class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
-					Oficinas de Atención
+					{t.footer.oficinasTitle}
 				</h3>
 				{
 					oficinas.map((oficina) => (
@@ -193,7 +195,7 @@ const navLinkClass =
 
 				<div class="mt-2 flex flex-col gap-3 border-t border-gtm-navy/10 pt-5">
 					<p class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
-						Horarios de atención
+						{t.footer.horariosTitle}
 					</p>
 					<dl class="flex flex-col gap-2.5">
 						{
@@ -220,7 +222,7 @@ const navLinkClass =
 			<!-- 4. General (derecha) -->
 			<div class="flex flex-col gap-5 sm:col-span-2 lg:col-span-3 lg:col-start-10">
 				<h3 class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase">
-					General
+					{t.footer.generalTitle}
 				</h3>
 				<ul class="flex flex-col gap-2.5">
 					{
@@ -250,15 +252,15 @@ const navLinkClass =
 			class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-gtm-navy/10 pt-8 sm:flex-row"
 		>
 			<p class="text-xs text-slate-500">
-				&copy; {year} GTM Alliance. Todos los derechos reservados.
+				{t.footer.copyright(year)}
 			</p>
 			<a
-				href={TELEFONO2.whatsapp}
+				href={whatsappHref(TELEFONO2.numero, lang)}
 				target="_blank"
 				rel="noopener noreferrer"
 				class="rounded-full bg-gtm-gold px-6 py-2.5 text-xs font-semibold text-gtm-navy transition-transform hover:scale-105"
 			>
-				Solicita una cotización
+				{t.footer.cotizacionCta}
 			</a>
 		</div>
 	</div>

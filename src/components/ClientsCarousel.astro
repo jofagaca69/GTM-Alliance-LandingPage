@@ -7,37 +7,19 @@ import artico from '../assets/logos/ARTICO.png';
 import presservac from '../assets/logos/PRESSERVAC.png';
 import weexp from '../assets/logos/weexp.webp';
 import one from '../assets/logos/one.png';
+import { getLocale, useTranslations } from '../i18n/utils';
+
+const t = useTranslations(getLocale(Astro.url));
+
 // Aliados estratégicos de GTM Alliance.
 const aliados = [
-	{
-		src: coldfood,
-		alt: 'Coldfood — aliado de GTM Alliance en procesamiento y exportación de alimentos congelados',
-	},
-	{
-		src: cls,
-		alt: 'CLS Logistic Solutions SAS — aliado de GTM Alliance en soluciones logísticas',
-	},
-	{
-		src: logicx,
-		alt: 'logicx, Agencia de Aduanas Nivel 2 — aliado de GTM Alliance en agenciamiento aduanero',
-	},
-	{
-		src: artico,
-		alt: 'ARTICO — aliado de GTM Alliance en transporte de carga refrigerada',
-	},
-	{
-		src: presservac,
-		alt: 'PRESSERVAC — aliado de GTM Alliance en transporte de carga refrigerada',
-	},
-	{
-		src: weexp,
-		alt: 'WEEXPORT — aliado de GTM Alliance en exportación de productos colombianos',
-	},
-	{
-		src: one,
-		alt: 'ONE — aliado de GTM Alliance en exportación de productos colombianos',
-	},
-
+	{ src: coldfood, alt: t.clients.alts.coldfood },
+	{ src: cls, alt: t.clients.alts.cls },
+	{ src: logicx, alt: t.clients.alts.logicx },
+	{ src: artico, alt: t.clients.alts.artico },
+	{ src: presservac, alt: t.clients.alts.presservac },
+	{ src: weexp, alt: t.clients.alts.weexp },
+	{ src: one, alt: t.clients.alts.one },
 ];
 
 // Pista del marquee: 4 copias de `aliados` en un único array plano, para que
@@ -57,10 +39,10 @@ const pista = [...aliados, ...aliados, ...aliados, ...aliados];
 		<span
 			class="font-display inline-block text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase"
 		>
-			Nuestros aliados
+			{t.clients.eyebrow}
 		</span>
 		<h2 class="font-display mt-3 text-2xl font-bold text-gtm-navy sm:text-3xl">
-			Alianzas estratégicas
+			{t.clients.title}
 		</h2>
 
 		<div

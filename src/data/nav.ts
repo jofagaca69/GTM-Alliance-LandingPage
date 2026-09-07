@@ -4,9 +4,15 @@
  *
  * `id` es el id de la sección en el DOM del home (sin `#`) y es también la
  * clave que usa el scrollspy (`data-nav-link` / `data-nav-group`, ver
- * `src/scripts/scrollspy.ts`). Los `href` van siempre con `/` delante para
- * que los enlaces funcionen desde rutas que no son el home (p. ej. `/pqrsd`).
+ * `src/scripts/scrollspy.ts`). Es el mismo en los dos idiomas porque las
+ * secciones del DOM no se traducen de id, solo de contenido. Los `href` se
+ * generan con `localizePath()` para que apunten a `/` o `/en/` según
+ * corresponda, y siempre van con `/` delante para que los enlaces funcionen
+ * desde rutas que no son el home (p. ej. `/pqrsd`).
  */
+
+import type { Locale } from '../i18n/config';
+import { useTranslations, localizePath } from '../i18n/utils';
 
 export type NavChild = {
 	id: string;
@@ -34,40 +40,48 @@ export type NavGroup = {
 
 export type NavItem = NavLink | NavGroup;
 
-export const NAV_ITEMS: NavItem[] = [
-	{ kind: 'link', id: 'inicio', label: 'Inicio', href: '/#inicio' },
-	// { kind: 'link', id: 'quienes-somos', label: 'Quiénes Somos', href: '/#quienes-somos' },
-	{
-		kind: 'group',
-		id: 'nuestros-servicios',
-		label: 'Nuestros Productos',
-		children: [
-			{
-				id: 'congelados',
-				label: 'Congelados',
-				href: '/#congelados',
-				tag: 'Línea de Frío',
-				description: 'Congelados con tu propia marca, en alianza con Coldfood.',
-			},
-			{
-				id: 'carga-seca',
-				label: 'Carga Seca',
-				href: '/#carga-seca',
-				tag: 'Línea Seca',
-				description: 'Exportación multi-industria. Próximamente Medellín.',
-			},
-			{
-				id: 'servicios',
-				label: 'Servicios',
-				href: '/#servicios',
-				tag: 'Comercio Exterior',
-				description: 'Transporte, agenciamiento aduanero, almacenaje, seguros y asesoría integral.',
-			},
-		],
-	},
-	{ kind: 'link', id: 'por-que-elegirnos', label: 'Por qué elegirnos', href: '/#por-que-elegirnos' },
-	{ kind: 'link', id: 'contacto', label: 'Contacto', href: '/#contacto' },
-];
+export function getNavItems(lang: Locale): NavItem[] {
+	const t = useTranslations(lang);
+
+	return [
+		{ kind: 'link', id: 'inicio', label: t.nav.inicio, href: localizePath('/#inicio', lang) },
+		{
+			kind: 'group',
+			id: 'nuestros-servicios',
+			label: t.nav.nuestrosProductos,
+			children: [
+				{
+					id: 'congelados',
+					label: t.nav.congelados.label,
+					href: localizePath('/#congelados', lang),
+					tag: t.nav.congelados.tag,
+					description: t.nav.congelados.description,
+				},
+				{
+					id: 'carga-seca',
+					label: t.nav.cargaSeca.label,
+					href: localizePath('/#carga-seca', lang),
+					tag: t.nav.cargaSeca.tag,
+					description: t.nav.cargaSeca.description,
+				},
+				{
+					id: 'servicios',
+					label: t.nav.servicios.label,
+					href: localizePath('/#servicios', lang),
+					tag: t.nav.servicios.tag,
+					description: t.nav.servicios.description,
+				},
+			],
+		},
+		{
+			kind: 'link',
+			id: 'por-que-elegirnos',
+			label: t.nav.porQueElegirnos,
+			href: localizePath('/#por-que-elegirnos', lang),
+		},
+		{ kind: 'link', id: 'contacto', label: t.nav.contacto, href: localizePath('/#contacto', lang) },
+	];
+}
 
 /** Ids que el grupo debe iluminar, listos para `data-nav-group`. */
 export function groupTargets(group: NavGroup): string {

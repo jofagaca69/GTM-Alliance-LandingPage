@@ -1,4 +1,7 @@
 ---
+import { getLocale, useTranslations } from '../i18n/utils';
+
+const t = useTranslations(getLocale(Astro.url));
 ---
 
 <section id="inicio" class="relative flex min-h-dvh items-center">
@@ -14,11 +17,10 @@
 			<h1
 				class="hero-title font-display mt-6 text-4xl leading-tight font-bold text-gtm-navy sm:text-5xl lg:text-6xl"
 			>
-				Tu aliado estratégico en  <span class="text-gtm-gold-ink">exportaciones desde Colombia.</span>
+				{t.hero.titleLead} <span class="text-gtm-gold-ink">{t.hero.titleHighlight}</span>
 			</h1>
 			<p class="hero-subtitle mt-6 max-w-2xl text-base text-slate-700 sm:text-lg lg:mx-0 mx-auto">
-				En GTM Alliance llevamos la producción colombiana al mundo. T
-				rabajamos directamente con agricultores y fabricantes, procesamos junto a Coldfood la línea de congelados y consolidamos carga seca de diferentes marcas según la necesidad de cada cliente. Todo con calidad certificada, trazabilidad completa y soluciones logísticas que hacen tu exportación más eficiente y competitiva.
+				{t.hero.subtitle}
 			</p>
 			<div
 				class="hero-cta mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start"
@@ -27,13 +29,13 @@
 					href="#contacto"
 					class="rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105"
 				>
-					Solicitar Asesoría
+					{t.hero.ctaPrimary}
 				</a>
 				<a
 					href="#servicios"
 					class="rounded-full border border-gtm-navy/30 px-8 py-3 text-sm font-semibold text-gtm-navy transition-colors hover:bg-gtm-navy/5"
 				>
-					Explorar Soluciones
+					{t.hero.ctaSecondary}
 				</a>
 			</div>
 		</div>

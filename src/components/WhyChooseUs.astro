@@ -6,6 +6,9 @@ import americas from '../assets/eventos/americas.jpg';
 import invimaLogo from '../assets/logos/invima.jpg';
 import fdaLogo from '../assets/logos/fda.png';
 import paises from '../assets/flags/paises.jpg';
+import { getLocale, useTranslations } from '../i18n/utils';
+
+const t = useTranslations(getLocale(Astro.url));
 
 const ICONS = {
 	// Insignia de certificación — copiado del sello "calidad" de FrozenLine.astro (huérfano, nunca renderizado ahí).
@@ -28,84 +31,39 @@ function svg(path: string, cls = 'h-6 w-6') {
 	return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${cls}">${path}</svg>`;
 }
 
-const mercados = [
-	{
-		nombre: 'Estados Unidos',
-		descripcion: 'Alianzas y operaciones con clientes en todo el país.',
-	},
-	{
-		nombre: 'México',
-		descripcion: 'Presencia estratégica y relaciones comerciales sólidas.',
-	},
-	{
-		nombre: 'Europa',
-		descripcion: 'Exportando calidad colombiana a mercados exigentes.',
-	},
-];
+const mercados = t.whyChooseUs.mercados;
 
 const certificaciones = [
-	{
-		nombre: 'INVIMA',
-		descripcion: 'Registro Sanitario Colombiano',
-		alt: 'Logo de INVIMA, Registro Sanitario Colombiano',
-		logo: invimaLogo,
-	},
-	{
-		nombre: 'FDA',
-		descripcion: 'Food and Drug Administration',
-		alt: 'Logo de la FDA, Food and Drug Administration de Estados Unidos',
-		logo: fdaLogo,
-	},
+	{ ...t.whyChooseUs.certificaciones[0], logo: invimaLogo },
+	{ ...t.whyChooseUs.certificaciones[1], logo: fdaLogo },
 ];
 
 const eventos = [
 	{
-		nombre: 'Corferias, Bogotá.',
-		etiqueta: 'Alimentec',
-		descripcion: 'Participamos activamente conectando oportdidades y generando valor.',
+		...t.whyChooseUs.eventos[0],
 		image: colombiaCo,
-		alt: 'Alimentec 2026 en Corferias, Bogotá',
 		posicion: 'object-[center_38%]',
 	},
 	{
-		nombre: 'ProColombia.',
-		etiqueta: 'Macrorrueda',
-		descripcion: 'Fortalecemos la industria colombiana y abrimos nuevos mercados.',
+		...t.whyChooseUs.eventos[1],
 		image: macrorrueda,
-		alt: 'Pantalla y letrero de la Macrorrueda  2026 en el recinto ferial',
 		posicion: 'object-[center_18%]',
 	},
 ];
 
 const pilares = [
-	{
-		titulo: 'Consolidación de carga',
-		descripcion: 'Unificamos múltiples productos en un solo embarque, optimizando costos y tiempos de entrega.',
-		icon: ICONS.consolidacion,
-	},
-	{
-		titulo: 'Desarrollo de marca propia',
-		descripcion: 'Creamos y adaptamos productos con tu marca, cumpliendo los estándares de cada mercado.',
-		icon: ICONS.marca,
-	},
-	{
-		titulo: 'Experiencia internacional',
-		descripcion: 'Conocemos los mercados, cumplimos sus requisitos y entregamos confianza.',
-		icon: ICONS.experiencia,
-	},
-	{
-		titulo: 'Gestión integral de exportación',
-		descripcion: 'Nos encargamos de todo el proceso: documentación, permisos, logística y entrega puerta a puerto.',
-		icon: ICONS.gestion,
-	},
+	{ ...t.whyChooseUs.pilares[0], icon: ICONS.consolidacion },
+	{ ...t.whyChooseUs.pilares[1], icon: ICONS.marca },
+	{ ...t.whyChooseUs.pilares[2], icon: ICONS.experiencia },
+	{ ...t.whyChooseUs.pilares[3], icon: ICONS.gestion },
 ];
 
 const chips = [
-	{ label: 'Calidad garantizada', icon: ICONS.escudo },
-	{ label: 'Cadena de frío controlada', icon: ICONS.frio },
-	{ label: 'Cumplimiento normativo', icon: ICONS.normativo },
-	{ label: 'Relaciones a largo plazo', icon: ICONS.alianza },
-	{ label: 'Soluciones a la medida de tu negocio', icon: ICONS.alcance },
+	{ ...t.whyChooseUs.chips[0], icon: ICONS.escudo },
+	{ ...t.whyChooseUs.chips[1], icon: ICONS.frio },
+	{ ...t.whyChooseUs.chips[2], icon: ICONS.normativo },
+	{ ...t.whyChooseUs.chips[3], icon: ICONS.alianza },
+	{ ...t.whyChooseUs.chips[4], icon: ICONS.alcance },
 ];
 ---
 
@@ -114,16 +72,15 @@ const chips = [
 		<span
 			class="elegir-eyebrow font-display inline-block text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase"
 		>
-			Por qué elegirnos
+			{t.whyChooseUs.eyebrow}
 		</span>
 		<h2
 			class="elegir-title font-display mt-3 max-w-3xl text-3xl leading-tight font-bold text-gtm-navy sm:text-4xl lg:text-5xl"
 		>
-			Experiencia y respaldo que abren fronteras
+			{t.whyChooseUs.title}
 		</h2>
 		<p class="elegir-intro mt-4 max-w-3xl text-base leading-relaxed text-slate-700 lg:text-lg">
-			Llevamos lo mejor de Colombia a los mercados que más lo valoran, con el respaldo de
-			certificaciones internacionales y presencia activa en el sector.
+			{t.whyChooseUs.intro}
 		</p>
 
 		<!-- Experiencia internacional + Certificaciones -->
@@ -131,7 +88,7 @@ const chips = [
 			<div class="elegir-panel relative min-h-[20rem] overflow-hidden rounded-3xl sm:min-h-[22rem]">
 				<Image
 					src={paises}
-					alt="Mapa de rutas comerciales de GTM Alliance: Colombia conectada con Estados Unidos, México, Europa y Centroamérica"
+					alt={t.whyChooseUs.mapaAlt}
 					widths={[480, 640, 800, 960]}
 					sizes="(min-width: 1024px) 620px, 100vw"
 					loading="lazy"
@@ -140,10 +97,10 @@ const chips = [
 				<div class="relative z-10 flex h-full min-h-[20rem] flex-col justify-between p-6 sm:min-h-[22rem] sm:p-8">
 					<div>
 						<h3 class="font-display text-xl font-bold text-white [text-shadow:0_2px_14px_rgba(10,18,32,0.9)] sm:text-2xl">
-							Experiencia <span class="text-gtm-gold">internacional</span>
+							{t.whyChooseUs.experienciaTitlePrefix} <span class="text-gtm-gold">{t.whyChooseUs.experienciaTitle}</span>
 						</h3>
 						<p class="mt-2 max-w-sm text-sm leading-relaxed text-white [text-shadow:0_1px_10px_rgba(10,18,32,0.85)]">
-							Llevamos lo mejor de Colombia a los mercados que más lo valoran.
+							{t.whyChooseUs.experienciaDescripcion}
 						</p>
 					</div>
 					<ul class="mt-5 space-y-3 sm:mt-4">
@@ -160,8 +117,8 @@ const chips = [
 			</div>
 
 			<div class="elegir-cert rounded-3xl bg-gtm-surface p-6 ring-1 ring-gtm-navy/10 sm:p-8">
-				<h3 class="font-display text-xl font-bold text-gtm-navy sm:text-2xl">Certificaciones</h3>
-				<p class="mt-2 text-sm leading-relaxed text-slate-600">Respaldan nuestra calidad.</p>
+				<h3 class="font-display text-xl font-bold text-gtm-navy sm:text-2xl">{t.whyChooseUs.certificacionesTitle}</h3>
+				<p class="mt-2 text-sm leading-relaxed text-slate-600">{t.whyChooseUs.certificacionesSubtitle}</p>
 				<div class="mt-6 grid grid-cols-2 gap-4">
 					{
 						certificaciones.map((cert) => (
@@ -196,7 +153,7 @@ const chips = [
 			<div class="flex items-center gap-4">
 				<span class="h-px flex-1 bg-gtm-navy/15" aria-hidden="true"></span>
 				<h3 class="font-display shrink-0 text-center text-lg font-bold tracking-tight text-gtm-navy sm:text-xl">
-					Presentes en los eventos más importantes del sector
+					{t.whyChooseUs.eventosTitle}
 				</h3>
 				<span class="h-px flex-1 bg-gtm-navy/15" aria-hidden="true"></span>
 			</div>
@@ -228,7 +185,7 @@ const chips = [
 				<div class="elegir-evento group relative flex aspect-[4/3] flex-col justify-between overflow-hidden rounded-2xl bg-white ring-1 ring-gtm-navy/10 sm:col-span-2 lg:col-span-1">
 					<Image
 						src={americas}
-						alt="Americas Food & Beverage Show — World Trade Center Miami"
+						alt={t.whyChooseUs.americasAlt}
 						widths={[400, 600, 800]}
 						sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
 						loading="lazy"
@@ -240,26 +197,26 @@ const chips = [
 							class="font-display inline-flex w-fit items-center gap-1.5 rounded-full bg-gtm-gold px-2.5 py-0.5 text-[0.65rem] font-bold tracking-wide text-gtm-navy uppercase"
 						>
 							<span class="h-1.5 w-1.5 rounded-full bg-gtm-navy" aria-hidden="true"></span>
-							Próximamente
+							{t.whyChooseUs.proximamenteLabel}
 						</span>
 						<div>
-							
+
 							<h4 class="font-display mt-1.5 text-sm font-bold text-white sm:text-base">
-								Americas Food &amp; Beverage Show
+								{t.whyChooseUs.americasNombre}
 							</h4>
-							<p class="mt-0.5 text-xs leading-snug text-slate-200">Miami Beach Convention Center</p>
+							<p class="mt-0.5 text-xs leading-snug text-slate-200">{t.whyChooseUs.americasLugar}</p>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			
+
 		</div>
 
 		<!-- ¿Por qué elegir GTM Alliance? -->
 		<div class="elegir-pilares mt-12 sm:mt-16">
 			<h3 class="font-display text-center text-2xl font-bold text-gtm-navy sm:text-3xl">
-				¿Por qué elegir <span class="text-gtm-gold-ink">GTM Alliance</span>?
+				{t.whyChooseUs.pilaresTitlePrefix} <span class="text-gtm-gold-ink">{t.whyChooseUs.pilaresTitleHighlight}</span>{t.whyChooseUs.pilaresTitleSuffix}
 			</h3>
 			<div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 				{

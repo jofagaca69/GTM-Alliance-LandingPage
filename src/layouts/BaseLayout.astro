@@ -7,6 +7,8 @@ import Globe from '../components/Globe.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { TELEFONO, CORREOS, SEDE_PRINCIPAL } from '../data/contact';
+import { LOCALE_META } from '../i18n/config';
+import { getLocale, useTranslations, alternateURLs } from '../i18n/utils';
 import logoImg from '../assets/logo.webp';
 import transporteInternacionalImg from '../assets/servicios/transporte-internacional.webp';
 import agenciamientoAduaneroImg from '../assets/servicios/agenciamiento-aduanero.webp';
@@ -42,8 +44,13 @@ interface Props {
 
 const { title, description, image, type = 'website', noindex = false, schema } = Astro.props;
 
+const lang = getLocale(Astro.url);
+const t = useTranslations(lang);
+const localeMeta = LOCALE_META[lang];
+
 const siteBase = Astro.site ?? new URL('https://gtm-alliance.com');
 const canonicalURL = Astro.props.canonicalURL ?? new URL(Astro.url.pathname, siteBase).href;
+const alternates = alternateURLs(Astro.url.pathname, siteBase);
 
 // Imagen OG: si la página pasa una ruta de string, se respeta tal cual (caso
 // legado). En cualquier otro caso —sin prop o con un asset importado— se
@@ -88,8 +95,10 @@ const fullTitle = `${title} | GTM Alliance`;
  * JSON-LD: un único @graph compartido por todas las páginas.
  *
  * `organizationId`/`websiteId` anclan la Organización y el WebSite con `@id`
- * para que `/` y `/pqrsd/` referencien la misma entidad en vez de emitir dos
- * nodos Organization sin relación entre sí.
+ * para que `/` y `/pqrsd/` —y sus equivalentes en `/en/`— referencien la
+ * misma entidad en vez de emitir nodos Organization sin relación entre sí.
+ * Por eso los `@id` NO llevan el locale: hay una sola Organización y un solo
+ * WebSite, independientemente del idioma de la página que los declara.
  *
  * Deliberadamente NO se incluyen (hasta confirmación del cliente):
  * `openingHoursSpecification` (horarios del footer son `placeholder: true`),
@@ -102,54 +111,52 @@ const organizationId = `${siteBase.href}#organization`;
 const websiteId = `${siteBase.href}#website`;
 const logoId = `${siteBase.href}#logo`;
 
-const servicios = [
+const servicios: {
+	slug: string;
+	name: string;
+	description: string;
+	image: ImageMetadata;
+	anchor?: string;
+}[] = [
 	{
 		slug: 'transporte-internacional',
-		name: 'Transporte Internacional',
-		description: 'Transporte internacional de carga marítimo, aéreo y terrestre para operaciones de importación y exportación.',
+		...t.schema.servicios.transporteInternacional,
 		image: transporteInternacionalImg,
 	},
 	{
 		slug: 'agenciamiento-aduanero',
-		name: 'Agenciamiento Aduanero',
-		description: 'Trámites, normativas y cumplimiento aduanero para operaciones de comercio exterior en Colombia.',
+		...t.schema.servicios.agenciamientoAduanero,
 		image: agenciamientoAduaneroImg,
 	},
 	{
 		slug: 'almacenaje-distribucion',
-		name: 'Almacenaje y Distribución',
-		description: 'Almacenaje y distribución especializados para carga refrigerada y carga seca.',
+		...t.schema.servicios.almacenajeDistribucion,
 		image: almacenajeDistribucionImg,
 	},
 	{
 		slug: 'consolidacion-carga',
-		name: 'Consolidación de Carga',
-		description: 'Agrupación y manejo especializado de carga para optimizar costos y tiempos de exportación.',
+		...t.schema.servicios.consolidacionCarga,
 		image: consolidacionCargaImg,
 	},
 	{
 		slug: 'seguro-mercancias',
-		name: 'Seguro de Mercancías',
-		description: 'Cobertura total de seguro para mercancías durante el transporte internacional.',
+		...t.schema.servicios.seguroMercancias,
 		image: seguroMercanciasImg,
 	},
 	{
 		slug: 'asesoria-comercio-exterior',
-		name: 'Asesoría en Comercio Exterior',
-		description: 'Acompañamiento estratégico y normativo en operaciones de comercio exterior.',
+		...t.schema.servicios.asesoriaComercioExterior,
 		image: asesoriaComercioExteriorImg,
 	},
 	{
 		slug: 'linea-congelados',
-		name: 'Línea de Congelados',
-		description: 'Cadena de frío con trazabilidad total del agricultor al destino final, en alianza con Coldfood: compra directa, supervisión en cultivos, procesamiento en plantas certificadas, transporte refrigerado monitoreado y exportación con seguimiento digital.',
+		...t.schema.servicios.lineaCongelados,
 		image: lineaCongeladosImg,
 		anchor: '#congelados',
 	},
 	{
 		slug: 'linea-carga-seca',
-		name: 'Línea de Carga Seca',
-		description: 'Exportación multi-industria de carga seca: almacenaje, picking, empaque, control de inventarios y coordinación logística y aduanera.',
+		...t.schema.servicios.lineaCargaSeca,
 		image: lineaCargaSecaImg,
 		anchor: '#carga-seca',
 	},
@@ -163,14 +170,14 @@ const serviceNodes = servicios.map((servicio) => ({
 	description: servicio.description,
 	provider: { '@id': organizationId },
 	areaServed: { '@type': 'Country', name: 'Colombia' },
-	url: `${siteBase.href}${servicio.anchor ?? '#servicios'}`,
+	url: `${alternates[lang]}${servicio.anchor ?? '#servicios'}`,
 	image: {
 		'@type': 'ImageObject',
 		url: new URL(servicio.image.src, siteBase).href,
 		width: servicio.image.width,
 		height: servicio.image.height,
 	},
-	inLanguage: 'es-CO',
+	inLanguage: localeMeta.schemaLanguage,
 }));
 
 const organizationNode = {
@@ -178,8 +185,7 @@ const organizationNode = {
 	'@id': organizationId,
 	name: 'GTM Alliance',
 	legalName: 'GTM Alliance S.A.S.',
-	description:
-		'Agencia colombiana de comercio exterior y logística internacional: agenciamiento aduanero, transporte marítimo, aéreo y terrestre, almacenaje en frío y carga seca, consolidación de carga, seguro de mercancías y asesoría en comercio exterior.',
+	description: t.schema.organizationDescription,
 	url: siteBase.href,
 	logo: {
 		'@type': 'ImageObject',
@@ -199,7 +205,7 @@ const organizationNode = {
 	},
 	naics: '488510',
 	isicV4: '5229',
-	knowsLanguage: ['es'],
+	knowsLanguage: ['es', 'en'],
 	address: {
 		'@type': 'PostalAddress',
 		streetAddress: SEDE_PRINCIPAL.streetAddress,
@@ -216,7 +222,10 @@ const organizationNode = {
 			telephone: TELEFONO.tel.replace('tel:', ''),
 			email: CORREOS.gerencia,
 			areaServed: 'CO',
-			availableLanguage: { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
+			availableLanguage: [
+				{ '@type': 'Language', name: 'Spanish', alternateName: 'es' },
+				{ '@type': 'Language', name: 'English', alternateName: 'en' },
+			],
 		},
 		{
 			'@type': 'ContactPoint',
@@ -224,12 +233,15 @@ const organizationNode = {
 			telephone: TELEFONO.tel.replace('tel:', ''),
 			email: CORREOS.administracion,
 			areaServed: 'CO',
-			availableLanguage: { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
+			availableLanguage: [
+				{ '@type': 'Language', name: 'Spanish', alternateName: 'es' },
+				{ '@type': 'Language', name: 'English', alternateName: 'en' },
+			],
 		},
 	],
 	hasOfferCatalog: {
 		'@type': 'OfferCatalog',
-		name: 'Servicios de comercio exterior y logística internacional',
+		name: t.schema.offerCatalogName,
 		itemListElement: servicios.map((servicio) => ({
 			'@type': 'Offer',
 			itemOffered: { '@id': `${siteBase.href}#servicio-${servicio.slug}` },
@@ -242,7 +254,7 @@ const websiteNode = {
 	'@id': websiteId,
 	url: siteBase.href,
 	name: 'GTM Alliance',
-	inLanguage: 'es-CO',
+	inLanguage: localeMeta.schemaLanguage,
 	publisher: { '@id': organizationId },
 };
 
@@ -255,7 +267,7 @@ const graphSchema = {
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={localeMeta.htmlLang}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -312,6 +324,19 @@ const graphSchema = {
 		{noindex && <meta name="robots" content="noindex, nofollow" />}
 		<link rel="canonical" href={canonicalURL} />
 
+		<!-- Hreflang: alternates recíprocos entre /es (sin prefijo) y /en.
+		     Se omiten en páginas noindex (p. ej. 404), donde no hay una versión
+		     "canónica" indexable que anclar. -->
+		{
+			!noindex && (
+				<>
+					<link rel="alternate" hreflang="es" href={alternates.es} />
+					<link rel="alternate" hreflang="en" href={alternates.en} />
+					<link rel="alternate" hreflang="x-default" href={alternates.es} />
+				</>
+			)
+		}
+
 		<!-- Open Graph -->
 		<meta property="og:type" content={type} />
 		<meta property="og:url" content={canonicalURL} />
@@ -321,7 +346,8 @@ const graphSchema = {
 		<meta property="og:image:width" content={String(ogImageWidth)} />
 		<meta property="og:image:height" content={String(ogImageHeight)} />
 		<meta property="og:site_name" content="GTM Alliance" />
-		<meta property="og:locale" content="es_CO" />
+		<meta property="og:locale" content={localeMeta.ogLocale} />
+		<meta property="og:locale:alternate" content={LOCALE_META[lang === 'es' ? 'en' : 'es'].ogLocale} />
 
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image" />
@@ -345,7 +371,7 @@ const graphSchema = {
 		<main class="relative z-10">
 			<slot />
 		</main>
-		
+
 		<Footer />
 	</body>
 </html>

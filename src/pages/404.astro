@@ -1,30 +1,51 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import es from '../i18n/es';
+import en from '../i18n/en';
+
+// Astro genera un único /404.html en la raíz (no un /en/404.html anidado, que
+// la mayoría de hosts estáticos no honran), así que esta página es bilingüe:
+// muestra ambos bloques de idioma en vez de resolver uno solo por ruta.
 ---
 
-<BaseLayout
-	title="Página no encontrada"
-	description="La página que buscas no existe o fue movida."
-	noindex
->
+<BaseLayout title={es.seo.notFound.title} description={es.seo.notFound.description} noindex>
 	<section class="flex min-h-dvh flex-col items-center justify-center px-4 py-24 text-center">
 		<span
 			class="font-display inline-block text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase"
 		>
-			Error 404
+			{es.notFound.eyebrow}
 		</span>
 		<h1 class="font-display mt-4 text-4xl leading-tight font-bold text-gtm-navy sm:text-5xl">
-			No encontramos esta página
+			{es.notFound.title}
 		</h1>
 		<p class="mt-5 max-w-xl text-lg leading-relaxed text-slate-700">
-			El enlace que seguiste puede estar desactualizado o la página fue movida. Vuelve al inicio
-			para encontrar lo que buscas.
+			{es.notFound.body}
 		</p>
 		<a
 			href="/"
 			class="mt-8 rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105"
 		>
-			Volver al inicio
+			{es.notFound.cta}
 		</a>
+
+		<div class="mt-14 w-full max-w-xl border-t border-gtm-navy/10 pt-10" lang="en">
+			<span
+				class="font-display inline-block text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase"
+			>
+				{en.notFound.eyebrow}
+			</span>
+			<h2 class="font-display mt-4 text-2xl leading-tight font-bold text-gtm-navy sm:text-3xl">
+				{en.notFound.title}
+			</h2>
+			<p class="mt-4 text-base leading-relaxed text-slate-700">
+				{en.notFound.body}
+			</p>
+			<a
+				href="/en/"
+				class="mt-6 inline-block rounded-full border border-gtm-navy/30 px-8 py-3 text-sm font-semibold text-gtm-navy transition-colors hover:bg-gtm-navy/5"
+			>
+				{en.notFound.cta}
+			</a>
+		</div>
 	</section>
 </BaseLayout>
