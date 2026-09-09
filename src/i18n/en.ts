@@ -61,13 +61,15 @@ const en: Dictionary = {
 
 	frozen: {
 		alianza: 'In partnership with Coldfood',
-		titleLead: 'FROZEN',
-		titleHighlight: 'FOODS LINE',
+		titleLead: 'Frozen',
+		titleHighlight: 'Foods Line',
 		intro:
 			'Together with Coldfood, we develop frozen food solutions for distributors, importers and private brands, bringing the quality of the Colombian countryside to international markets.',
 		cta: 'Request a quote',
-		cadenaFrioAlt:
-			'Coldfood and GTM Alliance cold chain: from Colombian farming to the certified plant and the export container',
+		heroFabricaAlt:
+			'Coldfood plant: blackberry, creole potato, cassava and plantain packs on the GTM Alliance production line',
+		heroProductAlt:
+			'Coldfood pre-cooked products: cassava croquettes, ajiaco mix and tostones, with the Colombian countryside behind',
 		pasos: [
 			{ titulo: 'Colombian producers', descripcion: 'Quality raw materials.' },
 			{ titulo: 'Specialized processing', descripcion: 'Controlled quality and freezing.' },
@@ -102,10 +104,15 @@ const en: Dictionary = {
 
 	dryCargo: {
 		heroImgAlt: 'Dry cargo line — GTM Alliance consolidation and export',
+		heroMultimarcaAlt:
+			'GTM Alliance multi-brand consolidation: Colombian products ready to export without borders',
+		heroProductosAlt:
+			'Colombian products consolidated by GTM Alliance: coffee, snacks and iconic beverages for export',
 		titleLead: 'Dry',
 		titleHighlight: 'Cargo Line',
 		introLead: 'We consolidate products from multiple',
 		introTrail: 'manufacturers into a single international shipment.',
+		cta: 'Request a quote',
 		stepperTitle: 'How GTM works',
 		prevAriaLabel: 'Previous step',
 		nextAriaLabel: 'Next step',

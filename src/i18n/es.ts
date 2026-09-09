@@ -67,8 +67,10 @@ const es = {
 		intro:
 			'De la mano de Coldfood, desarrollamos soluciones en productos congelados para distribuidores, importadores y marcas privadas, llevando la calidad del campo colombiano a mercados internacionales.',
 		cta: 'Solicitar cotización',
-		cadenaFrioAlt:
-			'Cadena de frío Coldfood y GTM Alliance: del cultivo colombiano a la planta certificada y el contenedor de exportación',
+		heroFabricaAlt:
+			'Planta Coldfood: empaques de mora, papa criolla, yuca y tajadas de plátano en la línea de producción de GTM Alliance',
+		heroProductAlt:
+			'Productos Coldfood precocidos: croquetas de yuca, mix de ajiaco y tostones, con el campo colombiano de fondo',
 		pasos: [
 			{ titulo: 'Productores colombianos', descripcion: 'Materias primas de calidad.' },
 			{ titulo: 'Procesamiento especializado', descripcion: 'Calidad y congelación controlada.' },
@@ -105,10 +107,15 @@ const es = {
 
 	dryCargo: {
 		heroImgAlt: 'Línea de carga seca — consolidación y exportación GTM Alliance',
-		titleLead: 'Línea de',
-		titleHighlight: 'Carga Seca',
+		heroMultimarcaAlt:
+			'Consolidación multimarca GTM Alliance: productos colombianos listos para exportar sin fronteras',
+		heroProductosAlt:
+			'Productos colombianos consolidados por GTM Alliance: café, snacks y bebidas icónicas para exportación',
+		titleLead: 'LINEA DE',
+		titleHighlight: 'CARGA SECA',
 		introLead: 'Consolidamos productos de múltiples',
 		introTrail: 'fabricantes en un solo embarque internacional.',
+		cta: 'Solicitar cotización',
 		stepperTitle: 'Así funciona GTM',
 		prevAriaLabel: 'Paso anterior',
 		nextAriaLabel: 'Paso siguiente',

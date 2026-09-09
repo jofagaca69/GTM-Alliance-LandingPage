@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import coldfoodLogo from '../assets/logos/coldfood.png';
-import cadenaFrio from '../assets/congelados/cadena-frio.png';
+import fabrica from '../assets/congelados/fabrica.png';
+import product from '../assets/congelados/product.png';
 import lineaFrescos from '../assets/congelados/linea-frescos.png';
 import lineaPrecocidos from '../assets/congelados/linea-precocidos.png';
 import lineaCongelados from '../assets/congelados/linea-congelados.png';
@@ -30,6 +31,11 @@ const pasos = t.frozen.pasos.map((paso, i) => ({
 	descripcion: paso.descripcion,
 	icon: PASO_ICON_LIST[i],
 }));
+
+const heroSlides = [
+	{ src: fabrica, alt: t.frozen.heroFabricaAlt },
+	{ src: product, alt: t.frozen.heroProductAlt },
+];
 
 const lineaImages = [lineaFrescos, lineaPrecocidos, lineaCongelados];
 
@@ -72,15 +78,23 @@ const lineas = t.frozen.lineas.map((linea, i) => ({
 				</div>
 
 				<div class="lg:col-span-7">
-					<div class="aspect-[2/1] overflow-hidden rounded-2xl ring-1 ring-gtm-navy/10">
-						<Image
-							src={cadenaFrio}
-							alt={t.frozen.cadenaFrioAlt}
-							widths={[560, 900, 1300, 1536]}
-							sizes="(min-width: 1024px) 570px, 100vw"
-							loading="lazy"
-							class="h-full w-full object-cover"
-						/>
+					<div class="congelados-slideshow relative aspect-[1063/650] overflow-hidden rounded-2xl ring-1 ring-gtm-navy/10">
+						{
+							heroSlides.map((slide, i) => (
+								<Image
+									src={slide.src}
+									alt={slide.alt}
+									widths={[560, 900, 1063]}
+									sizes="(min-width: 1024px) 570px, 100vw"
+									loading="lazy"
+									class:list={[
+										'congelados-slide absolute inset-0 h-full w-full object-contain object-center',
+										i > 0 && 'opacity-0',
+									]}
+									aria-hidden={i > 0 ? 'true' : undefined}
+								/>
+							))
+						}
 					</div>
 				</div>
 			</div>
@@ -196,6 +210,11 @@ const lineas = t.frozen.lineas.map((linea, i) => ({
 	if (section) {
 		const mm = gsap.matchMedia();
 
+		const slides = gsap.utils.toArray<HTMLElement>('.congelados-slide', section);
+		const slideshow = section.querySelector('.congelados-slideshow');
+		const firstSlide = slides[0];
+		const secondSlide = slides[1];
+
 		mm.add('(prefers-reduced-motion: no-preference)', () => {
 			const tl = gsap.timeline({
 				defaults: { ease: 'power3.out' },
@@ -210,6 +229,53 @@ const lineas = t.frozen.lineas.map((linea, i) => ({
 				.fromTo('.congelados-portafolio', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.2')
 				.fromTo('.congelados-producto', { y: 24, scale: 0.97 }, { y: 0, scale: 1, duration: 0.5, stagger: 0.08 }, '-=0.2')
 				.fromTo('.congelados-cta', { y: 28, scale: 0.98 }, { y: 0, scale: 1, duration: 0.6 }, '-=0.2');
+
+			const fade = 0.8;
+			const hold = 4;
+
+			if (firstSlide && secondSlide) {
+				gsap.set(firstSlide, { autoAlpha: 1 });
+				gsap.set(secondSlide, { autoAlpha: 0 });
+
+				const markActive = (index: number) => {
+					slides.forEach((slide, i) => {
+						slide.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+					});
+				};
+
+				const slideTl = gsap.timeline({
+					repeat: -1,
+					defaults: { duration: fade, ease: 'power2.inOut' },
+					scrollTrigger: slideshow
+						? {
+								trigger: slideshow,
+								start: 'top bottom',
+								end: 'bottom top',
+								toggleActions: 'play pause play pause',
+							}
+						: undefined,
+				});
+
+				slideTl
+					.to(firstSlide, { autoAlpha: 0 }, hold)
+					.to(secondSlide, { autoAlpha: 1, onStart: () => markActive(1) }, '<')
+					.to(secondSlide, { autoAlpha: 0 }, hold * 2 + fade)
+					.to(firstSlide, { autoAlpha: 1, onStart: () => markActive(0) }, '<');
+
+				const onVisibility = () => {
+					if (document.hidden) slideTl.pause();
+					else slideTl.play();
+				};
+				document.addEventListener('visibilitychange', onVisibility);
+
+				return () => {
+					document.removeEventListener('visibilitychange', onVisibility);
+					slideTl.scrollTrigger?.kill();
+					slideTl.kill();
+					tl.scrollTrigger?.kill();
+					tl.kill();
+				};
+			}
 
 			return () => {
 				tl.scrollTrigger?.kill();
@@ -226,6 +292,10 @@ const lineas = t.frozen.lineas.map((linea, i) => ({
 					scale: 1,
 				},
 			);
+			if (firstSlide) {
+				gsap.set(firstSlide, { autoAlpha: 1 });
+				gsap.set(slides.slice(1), { autoAlpha: 0 });
+			}
 		});
 	}
 </script>
