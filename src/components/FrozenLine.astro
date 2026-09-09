@@ -5,9 +5,13 @@ import cadenaFrio from '../assets/congelados/cadena-frio.png';
 import lineaFrescos from '../assets/congelados/linea-frescos.png';
 import lineaPrecocidos from '../assets/congelados/linea-precocidos.png';
 import lineaCongelados from '../assets/congelados/linea-congelados.png';
+import { TELEFONO2, whatsappHref } from '../data/contact';
 import { getLocale, useTranslations } from '../i18n/utils';
 
-const t = useTranslations(getLocale(Astro.url));
+const lang = getLocale(Astro.url);
+const t = useTranslations(lang);
+
+const CATALOGO_PDF = '/docs/catalogo-congelados.pdf';
 
 const PASO_ICONS = {
 	origen: '<path d="M12 21V10"/><path d="M12 10C12 6.5 9.5 4 6 4c0 3.5 2.5 6 6 6z"/><path d="M12 13c0-4 3-7 7-7 0 4-3 7-7 7z"/>',
@@ -58,7 +62,9 @@ const lineas = t.frozen.lineas.map((linea, i) => ({
 						{t.frozen.intro}
 					</p>
 					<a
-						href="#contacto"
+						href={whatsappHref(TELEFONO2.numero, lang)}
+						target="_blank"
+						rel="noopener noreferrer"
 						class="mt-6 inline-block rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gtm-navy"
 					>
 						{t.frozen.cta}
@@ -127,11 +133,21 @@ const lineas = t.frozen.lineas.map((linea, i) => ({
 		</div>
 
 		<div class="mt-14 sm:mt-20">
-			<div class="congelados-portafolio">
-				<span class="font-display text-xs font-semibold tracking-widest text-gtm-navy uppercase">
-					{t.frozen.portafolioEyebrow}
-				</span>
-				<h3 class="font-display mt-2 text-2xl font-bold text-gtm-navy sm:text-3xl">{t.frozen.portafolioTitle}</h3>
+			<div class="flex flex-wrap items-end justify-between gap-4">
+				<div class="congelados-portafolio">
+					<span class="font-display text-xs text-gtm-gold-ink font-semibold tracking-widest uppercase">
+						{t.frozen.portafolioEyebrow}
+					</span>
+					<h3 class="font-display mt-4 text-3xl leading-tight font-bold text-gtm-navy sm:text-4xl lg:text-5xl">{t.frozen.portafolioTitle}</h3>
+				</div>
+				<a
+					href={CATALOGO_PDF}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="congelados-cta inline-block shrink-0 rounded-full bg-gtm-gold px-6 py-2.5 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gtm-navy"
+				>
+					{t.frozen.portafolioVerMas}
+				</a>
 			</div>
 
 			<div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

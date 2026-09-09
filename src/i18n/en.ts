@@ -76,6 +76,7 @@ const en: Dictionary = {
 		],
 		portafolioEyebrow: 'Our portfolio',
 		portafolioTitle: 'Our product lines',
+		portafolioVerMas: 'See more...',
 		lineaLabel: (label: string) => `${label} Line`,
 		lineas: [
 			{
@@ -171,9 +172,9 @@ const en: Dictionary = {
 		intro:
 			'We take the best of Colombia to the markets that value it most, backed by international certifications and an active presence in the industry.',
 		mapaAlt: 'Map of GTM Alliance trade routes: Colombia connected with the United States, Mexico, Europe and Central America',
-		experienciaTitle: 'experience',
-		experienciaTitlePrefix: 'International',
-		experienciaDescripcion: 'We take the best of Colombia to the markets that value it most.',
+		experienciaTitle: 'Developed ',
+		experienciaTitlePrefix: 'Markets',
+		
 		mercados: [
 			{ nombre: 'United States', descripcion: 'Partnerships and operations with clients across the country.' },
 			{ nombre: 'Mexico', descripcion: 'Strategic presence and solid business relationships.' },
@@ -269,8 +270,8 @@ const en: Dictionary = {
 			'We connect your cargo with the world. Comprehensive foreign trade and international logistics solutions: dry cargo, frozen goods and special merchandise by sea, land and air.',
 		lineasContactoTitle: 'Contact lines',
 		lineasContacto: {
-			gerencia: 'Management',
-			administracion: 'Administration',
+			gerencia: 'Providers',
+			administracion: 'Commercial',
 		},
 		sigueenosTitle: 'Follow us',
 		navegacionTitle: 'Navigation',

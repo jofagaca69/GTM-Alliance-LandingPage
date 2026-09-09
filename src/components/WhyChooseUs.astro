@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import macrorrueda from '../assets/eventos/macrorrueda.jpeg';
 import colombiaCo from '../assets/eventos/alimentec.jpg';
-import americas from '../assets/eventos/americas.jpg';
+import americas from '../assets/eventos/americas.png';
 import invimaLogo from '../assets/logos/invima.jpg';
 import fdaLogo from '../assets/logos/fda.png';
 import paises from '../assets/flags/paises.jpg';
@@ -85,23 +85,22 @@ const chips = [
 
 		<!-- Experiencia internacional + Certificaciones -->
 		<div class="mt-12 grid gap-6 sm:mt-16 lg:grid-cols-[1.35fr_1fr]">
-			<div class="elegir-panel relative min-h-[20rem] overflow-hidden rounded-3xl sm:min-h-[22rem]">
-				<Image
-					src={paises}
-					alt={t.whyChooseUs.mapaAlt}
-					widths={[480, 640, 800, 960]}
-					sizes="(min-width: 1024px) 620px, 100vw"
-					loading="lazy"
-					class="absolute inset-0 h-full w-full object-cover object-center"
-				/>
-				<div class="relative z-10 flex h-full min-h-[20rem] flex-col justify-between p-6 sm:min-h-[22rem] sm:p-8">
+			<div class="elegir-panel relative overflow-hidden rounded-3xl bg-[#0a1220] lg:min-h-[22rem]">
+				<div class="relative aspect-[960/563] lg:absolute lg:inset-0 lg:aspect-auto lg:h-full">
+					<Image
+						src={paises}
+						alt={t.whyChooseUs.mapaAlt}
+						widths={[480, 640, 800, 960]}
+						sizes="(min-width: 1024px) 620px, 100vw"
+						loading="lazy"
+						class="h-full w-full object-cover object-center"
+					/>
+				</div>
+				<div class="relative z-10 flex flex-col justify-between p-6 lg:min-h-[22rem] lg:p-8">
 					<div>
 						<h3 class="font-display text-xl font-bold text-white [text-shadow:0_2px_14px_rgba(10,18,32,0.9)] sm:text-2xl">
 							{t.whyChooseUs.experienciaTitlePrefix} <span class="text-gtm-gold">{t.whyChooseUs.experienciaTitle}</span>
 						</h3>
-						<p class="mt-2 max-w-sm text-sm leading-relaxed text-white [text-shadow:0_1px_10px_rgba(10,18,32,0.85)]">
-							{t.whyChooseUs.experienciaDescripcion}
-						</p>
 					</div>
 					<ul class="mt-5 space-y-3 sm:mt-4">
 						{
@@ -161,7 +160,7 @@ const chips = [
 			<div class="mt-6 grid gap-4 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3">
 				{
 					eventos.map((evento) => (
-						<div class="elegir-evento group relative aspect-[4/3] overflow-hidden rounded-2xl ring-1 ring-gtm-navy/10">
+						<div class="elegir-evento group relative aspect-[1063/650] overflow-hidden rounded-2xl ring-1 ring-gtm-navy/10">
 							<Image
 								src={evento.image}
 								alt={evento.alt}
@@ -182,31 +181,21 @@ const chips = [
 					))
 				}
 
-				<div class="elegir-evento group relative flex aspect-[4/3] flex-col justify-between overflow-hidden rounded-2xl bg-white ring-1 ring-gtm-navy/10 sm:col-span-2 lg:col-span-1">
+				<div class="elegir-evento relative aspect-[1063/650] overflow-hidden rounded-2xl bg-white ring-1 ring-gtm-navy/10">
 					<Image
 						src={americas}
 						alt={t.whyChooseUs.americasAlt}
 						widths={[400, 600, 800]}
 						sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
 						loading="lazy"
-						class="absolute inset-0 h-full w-full object-contain object-center"
+						class="h-full w-full object-contain object-center"
 					/>
-					<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
-					<div class="relative z-10 flex h-full flex-col justify-between p-4 sm:p-5">
-						<span
-							class="font-display inline-flex w-fit items-center gap-1.5 rounded-full bg-gtm-gold px-2.5 py-0.5 text-[0.65rem] font-bold tracking-wide text-gtm-navy uppercase"
-						>
-							<span class="h-1.5 w-1.5 rounded-full bg-gtm-navy" aria-hidden="true"></span>
-							{t.whyChooseUs.proximamenteLabel}
-						</span>
-						<div>
-
-							<h4 class="font-display mt-1.5 text-sm font-bold text-white sm:text-base">
-								{t.whyChooseUs.americasNombre}
-							</h4>
-							<p class="mt-0.5 text-xs leading-snug text-slate-200">{t.whyChooseUs.americasLugar}</p>
-						</div>
-					</div>
+					<span
+						class="font-display absolute top-4 right-4 z-10 inline-flex max-w-[calc(100%-2rem)] items-center gap-1.5 rounded-full bg-gtm-gold px-2.5 py-0.5 text-[0.65rem] font-bold tracking-wide text-gtm-navy uppercase shadow-sm"
+					>
+						<span class="h-1.5 w-1.5 shrink-0 rounded-full bg-gtm-navy" aria-hidden="true"></span>
+						{t.whyChooseUs.proximamenteLabel}
+					</span>
 				</div>
 			</div>
 

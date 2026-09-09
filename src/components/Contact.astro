@@ -2,7 +2,7 @@
 import { TELEFONO, CORREOS, SEDE_PRINCIPAL, whatsappHref } from '../data/contact';
 import { CONTACT_FORM_CONFIG } from '../data/contact-form';
 import { getLocale, useTranslations } from '../i18n/utils';
-
+import { TELEFONO2 } from '../data/contact';
 const lang = getLocale(Astro.url);
 const t = useTranslations(lang);
 
@@ -22,22 +22,16 @@ const contactos = [
 	},
 	{
 		label: t.contact.cards.telefono.label,
-		value: TELEFONO.label,
-		href: whatsappHref(TELEFONO.numero, lang),
+		value: TELEFONO2.label,
+		href: whatsappHref(TELEFONO2.numero, lang),
 		icon: iconoTelefono,
-	},
-	{
-		label: t.contact.cards.gerencia.label,
-		value: CORREOS.gerencia,
-		href: `mailto:${CORREOS.gerencia}`,
-		icon: iconoCorreo,
 	},
 	{
 		label: t.contact.cards.administracion.label,
 		value: CORREOS.administracion,
 		href: `mailto:${CORREOS.administracion}`,
 		icon: iconoCorreo,
-	},
+	}
 ];
 ---
 
@@ -57,7 +51,7 @@ const contactos = [
 			{t.contact.intro}
 		</p>
 
-		<div class="mt-10 grid grid-cols-1 gap-6 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4">
+		<div class="mt-10 grid grid-cols-1 gap-6 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3">
 			{
 				contactos.map((item) => {
 					const Tag = item.href ? 'a' : 'div';
@@ -86,7 +80,7 @@ const contactos = [
 
 		<div class="contacto-cta mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-start">
 			<a
-				href={whatsappHref(TELEFONO.numero, lang)}
+				href={whatsappHref(TELEFONO2.numero, lang)}
 				target="_blank"
 				rel="noopener noreferrer"
 				class="rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105"

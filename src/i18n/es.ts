@@ -77,6 +77,7 @@ const es = {
 		],
 		portafolioEyebrow: 'Nuestro portafolio',
 		portafolioTitle: 'Nuestras líneas de productos',
+		portafolioVerMas: 'Ver más...',
 		lineaLabel: (label: string) => `Línea ${label}`,
 		lineas: [
 			{
@@ -176,9 +177,9 @@ const es = {
 			'Llevamos lo mejor de Colombia a los mercados que más lo valoran, con el respaldo de certificaciones internacionales y presencia activa en el sector.',
 		mapaAlt:
 			'Mapa de rutas comerciales de GTM Alliance: Colombia conectada con Estados Unidos, México, Europa y Centroamérica',
-		experienciaTitle: 'internacional',
-		experienciaTitlePrefix: 'Experiencia',
-		experienciaDescripcion: 'Llevamos lo mejor de Colombia a los mercados que más lo valoran.',
+		experienciaTitle: 'desarrollados',
+		experienciaTitlePrefix: 'Mercados',
+		
 		mercados: [
 			{ nombre: 'Estados Unidos', descripcion: 'Alianzas y operaciones con clientes en todo el país.' },
 			{ nombre: 'México', descripcion: 'Presencia estratégica y relaciones comerciales sólidas.' },
@@ -274,8 +275,8 @@ const es = {
 			'Conectamos tu carga con el mundo. Soluciones integrales en comercio exterior y logística internacional: carga seca, congelados y mercancías especiales por mar, tierra y aire.',
 		lineasContactoTitle: 'Líneas de contacto',
 		lineasContacto: {
-			gerencia: 'Gerencia',
-			administracion: 'Administración',
+			gerencia: 'Proveedores',
+			administracion: 'Comercial',
 		},
 		sigueenosTitle: 'Síguenos',
 		navegacionTitle: 'Navegación',
