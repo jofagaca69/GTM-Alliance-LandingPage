@@ -67,14 +67,24 @@ const lineas = t.frozen.lineas.map((linea, i) => ({
 					<p class="mt-4 text-base leading-relaxed text-slate-700 lg:text-lg">
 						{t.frozen.intro}
 					</p>
-					<a
-						href={whatsappHref(TELEFONO2.numero, lang)}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="mt-6 inline-block rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gtm-navy"
-					>
-						{t.frozen.cta}
-					</a>
+					<div class="mt-6 flex flex-wrap items-center gap-3">
+						<a
+							href={whatsappHref(TELEFONO2.numero, lang)}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="inline-block rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gtm-navy"
+						>
+							{t.frozen.cta}
+						</a>
+						<a
+							href={CATALOGO_PDF}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="congelados-cta inline-block shrink-0 rounded-full bg-gtm-gold px-6 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gtm-navy"
+						>
+							{t.frozen.portafolioVerMas}
+						</a>
+					</div>
 				</div>
 
 				<div class="lg:col-span-7">
@@ -154,14 +164,7 @@ const lineas = t.frozen.lineas.map((linea, i) => ({
 					</span>
 					<h3 class="font-display mt-4 text-3xl leading-tight font-bold text-gtm-navy sm:text-4xl lg:text-5xl">{t.frozen.portafolioTitle}</h3>
 				</div>
-				<a
-					href={CATALOGO_PDF}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="congelados-cta inline-block shrink-0 rounded-full bg-gtm-gold px-6 py-2.5 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gtm-navy"
-				>
-					{t.frozen.portafolioVerMas}
-				</a>
+			
 			</div>
 
 			<div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

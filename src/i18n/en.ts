@@ -113,6 +113,7 @@ const en: Dictionary = {
 		introLead: 'We consolidate products from multiple',
 		introTrail: 'manufacturers into a single international shipment.',
 		cta: 'Request a quote',
+		portafolioVerMas: 'See more...',
 		stepperTitle: 'How GTM works',
 		prevAriaLabel: 'Previous step',
 		nextAriaLabel: 'Next step',

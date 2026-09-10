@@ -116,6 +116,7 @@ const es = {
 		introLead: 'Consolidamos productos de múltiples',
 		introTrail: 'fabricantes en un solo embarque internacional.',
 		cta: 'Solicitar cotización',
+		portafolioVerMas: 'Ver más...',
 		stepperTitle: 'Así funciona GTM',
 		prevAriaLabel: 'Paso anterior',
 		nextAriaLabel: 'Paso siguiente',

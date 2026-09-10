@@ -10,6 +10,8 @@ import { getLocale, useTranslations } from '../i18n/utils';
 const lang = getLocale(Astro.url);
 const t = useTranslations(lang);
 
+const CATALOGO_PDF = '/docs/catalogo-carga-seca.pdf';
+
 const logoModules = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*.{jpg,JPG}', {
 	eager: true,
 });
@@ -57,14 +59,24 @@ const heroSlides = [
 					<p class="carga-intro mt-4 text-base leading-relaxed text-slate-700 lg:text-lg">
 						{t.dryCargo.introLead} {t.dryCargo.introTrail}
 					</p>
-					<a
-						href={whatsappHref(TELEFONO2.numero, lang)}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="mt-6 inline-block rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gtm-navy"
-					>
-						{t.dryCargo.cta}
-					</a>
+					<div class="mt-6 flex flex-wrap items-center gap-3">
+						<a
+							href={whatsappHref(TELEFONO2.numero, lang)}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="inline-block rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gtm-navy"
+						>
+							{t.dryCargo.cta}
+						</a>
+						<a
+							href={CATALOGO_PDF}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="inline-block shrink-0 rounded-full bg-gtm-gold px-6 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gtm-navy"
+						>
+							{t.dryCargo.portafolioVerMas}
+						</a>
+					</div>
 				</div>
 
 				<div class="lg:col-span-7">
