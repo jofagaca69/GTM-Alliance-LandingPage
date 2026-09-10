@@ -238,7 +238,7 @@ const es = {
 
 	contact: {
 		eyebrow: 'Contacto',
-		title: 'Conversemos sobre tus necesidades logísticas',
+		title: 'Coordinemos tu operación',
 		intro: 'Estamos listos para acompañarte en tus proyectos de comercio exterior y exportación.',
 		whatsappMessage: 'Hola, me gustaría solicitar más información.',
 		cards: {

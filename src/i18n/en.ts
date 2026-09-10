@@ -233,7 +233,7 @@ const en: Dictionary = {
 
 	contact: {
 		eyebrow: 'Contact',
-		title: 'Let\'s talk about your logistics needs',
+		title: 'Let\'s coordinate your operation',
 		intro: 'We are ready to support you in your foreign trade and export projects.',
 		whatsappMessage: 'Hi, I would like to request more information.',
 		cards: {
