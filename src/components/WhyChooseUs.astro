@@ -31,8 +31,6 @@ function svg(path: string, cls = 'h-6 w-6') {
 	return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${cls}">${path}</svg>`;
 }
 
-const mercados = t.whyChooseUs.mercados;
-
 const certificaciones = [
 	{ ...t.whyChooseUs.certificaciones[0], logo: invimaLogo },
 	{ ...t.whyChooseUs.certificaciones[1], logo: fdaLogo },
@@ -102,16 +100,6 @@ const chips = [
 							{t.whyChooseUs.experienciaTitlePrefix} <span class="text-gtm-gold">{t.whyChooseUs.experienciaTitle}</span>
 						</h3>
 					</div>
-					<!-- <ul class="mt-5 space-y-3 sm:mt-4">
-						{
-							mercados.map((mercado) => (
-								<li>
-									<p class="font-display text-sm font-bold text-white [text-shadow:0_1px_10px_rgba(10,18,32,0.9)]">{mercado.nombre}</p>
-									<p class="text-sm leading-snug text-white [text-shadow:0_1px_8px_rgba(10,18,32,0.85)]">{mercado.descripcion}</p>
-								</li>
-							))
-						}
-					</ul> -->
 				</div>
 			</div>
 

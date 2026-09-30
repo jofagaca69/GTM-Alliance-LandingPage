@@ -4,7 +4,8 @@ import { getLocale, stripLocale, localizePath, useTranslations } from '../i18n/u
 
 const currentLang = getLocale(Astro.url);
 const t = useTranslations(currentLang);
-const bare = stripLocale(Astro.url.pathname);
+// /404.html es bilingüe y vive en la raíz: el selector debe llevar a la portada de cada idioma.
+const bare = /^\/404\/?$/.test(Astro.url.pathname) ? '/' : stripLocale(Astro.url.pathname);
 ---
 
 <div
