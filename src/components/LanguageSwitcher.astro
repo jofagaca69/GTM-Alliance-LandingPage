@@ -1,0 +1,42 @@
+---
+import { LOCALES, LOCALE_META } from '../i18n/config';
+import { getLocale, stripLocale, localizePath, useTranslations } from '../i18n/utils';
+
+const currentLang = getLocale(Astro.url);
+const t = useTranslations(currentLang);
+const bare = stripLocale(Astro.url.pathname);
+---
+
+<div
+	class="lang-switcher flex shrink-0 items-center gap-0.5 rounded-full bg-gtm-navy/5 p-0.5 ring-1 ring-gtm-navy/10"
+	role="group"
+	aria-label={t.common.languageSwitcherLabel}
+>
+	{
+		LOCALES.map((locale) => {
+			const meta = LOCALE_META[locale];
+			const active = locale === currentLang;
+			return (
+				<a
+					href={localizePath(bare, locale)}
+					hreflang={meta.hreflang}
+					lang={meta.hreflang}
+					aria-current={active ? 'true' : undefined}
+					class="lang-switcher-link rounded-full px-2.5 py-1 text-xs font-semibold text-slate-500 transition-colors hover:text-gtm-navy aria-current:bg-white aria-current:text-gtm-navy aria-current:shadow-sm"
+				>
+					{meta.short}
+				</a>
+			);
+		})
+	}
+</div>
+
+<script>
+	// Conserva el hash actual (p. ej. `#servicios`) al cambiar de idioma, para
+	// que el visitante no vuelva al tope de la página tras el switch.
+	document.querySelectorAll<HTMLAnchorElement>('.lang-switcher-link').forEach((link) => {
+		if (location.hash) {
+			link.href = link.href.split('#')[0] + location.hash;
+		}
+	});
+</script>

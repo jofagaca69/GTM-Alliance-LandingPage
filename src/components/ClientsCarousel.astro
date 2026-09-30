@@ -1,0 +1,111 @@
+---
+import { Image } from 'astro:assets';
+import coldfood from '../assets/logos/coldfood.png';
+import cls from '../assets/logos/cls-logistic-solutions.png';
+import logicx from '../assets/logos/logicx.png';
+import artico from '../assets/logos/ARTICO.png';
+import presservac from '../assets/logos/PRESSERVAC.png';
+import weexp from '../assets/logos/weexp.webp';
+import one from '../assets/logos/one.png';
+import { getLocale, useTranslations } from '../i18n/utils';
+
+const t = useTranslations(getLocale(Astro.url));
+
+// Aliados estratégicos de GTM Alliance.
+const aliados = [
+	{ src: coldfood, alt: t.clients.alts.coldfood },
+	{ src: cls, alt: t.clients.alts.cls },
+	{ src: logicx, alt: t.clients.alts.logicx },
+	{ src: artico, alt: t.clients.alts.artico },
+	{ src: presservac, alt: t.clients.alts.presservac },
+	{ src: weexp, alt: t.clients.alts.weexp },
+	{ src: one, alt: t.clients.alts.one },
+];
+
+// Pista del marquee: 4 copias de `aliados` en un único array plano, para que
+// el loop GSAP (xPercent: -50) empalme exacto. Con un `flex` de N ítems solo
+// hay N-1 huecos de `gap`, así que trasladar el 50% del ancho queda medio
+// hueco corto del punto de empalme real (imperceptible con logos idénticos,
+// visible ahora que son distintos) — por eso el espaciado va como margen por
+// ítem (`mr-*` más abajo) en vez de `gap` en el contenedor.
+// Solo la primera copia (índices 0..aliados.length) es contenido accesible;
+// el resto son repeticiones puramente visuales para cubrir el ancho del
+// contenedor (max-w-4xl) y decorativas para el lector de pantalla.
+const pista = [...aliados, ...aliados, ...aliados, ...aliados];
+---
+
+<section id="clientes" class="bg-transparent py-10 sm:py-10">
+	<div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+		<span
+			class="font-display inline-block text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase"
+		>
+			{t.clients.eyebrow}
+		</span>
+		<h2 class="font-display mt-3 text-2xl font-bold text-gtm-navy sm:text-3xl">
+			{t.clients.title}
+		</h2>
+
+		<div
+			class="marquee group relative mt-10 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
+		>
+			<div class="marquee-track flex w-max items-center">
+				{
+					pista.map((item, i) => {
+						const decorativo = i >= aliados.length;
+						return (
+							<span
+								class="mr-8 flex shrink-0 items-center rounded-2xl bg-white/90 p-4 ring-1 ring-gtm-navy/10 sm:mr-10"
+								aria-hidden={decorativo ? 'true' : undefined}
+							>
+								<Image
+									src={item.src}
+									alt={decorativo ? '' : item.alt}
+									height={64}
+									densities={[1, 2]}
+									loading="lazy"
+									class="h-12 w-auto max-w-[10rem] object-contain opacity-80 transition duration-300 hover:opacity-100 sm:h-16"
+								/>
+							</span>
+						);
+					})
+				}
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	import { gsap } from '../scripts/gsap';
+
+	const section = document.querySelector('.marquee');
+	const track = document.querySelector<HTMLElement>('.marquee-track');
+
+	if (section && track) {
+		const mm = gsap.matchMedia();
+
+		mm.add('(prefers-reduced-motion: no-preference)', () => {
+			const tween = gsap.to(track, {
+				xPercent: -50,
+				duration: 25,
+				ease: 'none',
+				repeat: -1,
+			});
+
+			const pause = () => tween.pause();
+			const resume = () => tween.resume();
+
+			section.addEventListener('mouseenter', pause);
+			section.addEventListener('mouseleave', resume);
+
+			return () => {
+				tween.kill();
+				section.removeEventListener('mouseenter', pause);
+				section.removeEventListener('mouseleave', resume);
+			};
+		});
+
+		mm.add('(prefers-reduced-motion: reduce)', () => {
+			gsap.set(track, { xPercent: 0 });
+		});
+	}
+</script>
