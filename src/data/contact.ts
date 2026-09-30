@@ -1,9 +1,3 @@
-/**
- * Fuente única de la información de contacto de GTM Alliance. La consumen
- * `Contact.astro`, `Footer.astro`, `DryCargoLine.astro` y el JSON-LD
- * `Organization` de `BaseLayout.astro`.
- */
-
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n/utils';
 
@@ -19,12 +13,6 @@ export const TELEFONO2 = {
 	numero: '573012543223',
 };
 
-/**
- * URL de wa.me con el mensaje pre-cargado en el idioma del visitante
- * (`contact.whatsappMessage` en el diccionario), para que el chat de
- * WhatsApp se abra en español o en inglés según la página desde la que se
- * hizo clic.
- */
 export function whatsappHref(numero: string, lang: Locale): string {
 	const t = useTranslations(lang);
 	return `https://wa.me/${numero}?text=${encodeURIComponent(t.contact.whatsappMessage)}`;

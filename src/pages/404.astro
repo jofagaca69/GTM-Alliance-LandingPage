@@ -3,9 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import es from '../i18n/es';
 import en from '../i18n/en';
 
-// Astro genera un único /404.html en la raíz (no un /en/404.html anidado, que
-// la mayoría de hosts estáticos no honran), así que esta página es bilingüe:
-// muestra ambos bloques de idioma en vez de resolver uno solo por ruta.
 ---
 
 <BaseLayout title={es.seo.notFound.title} description={es.seo.notFound.description} noindex>

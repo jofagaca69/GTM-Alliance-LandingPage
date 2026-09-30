@@ -19,7 +19,7 @@ const year = new Date().getFullYear();
 const initialActive =
 	Astro.url.pathname === localizePath("/", lang) ? "inicio" : "pqrsd";
 
-type FooterValue = { label: string; href?: string; placeholder?: true };
+type FooterValue = { label: string; href?: string };
 
 const lineasContacto: { titulo: string; valores: FooterValue[] }[] = [
 	{
@@ -48,7 +48,7 @@ const lineasContacto: { titulo: string; valores: FooterValue[] }[] = [
 	},
 ];
 
-const oficinas: { ciudad: string; direccion: string; placeholder?: true }[] = [
+const oficinas: { ciudad: string; direccion: string }[] = [
 	{ ciudad: SEDE_PRINCIPAL.ciudad, direccion: SEDE_PRINCIPAL.direccion },
 ];
 
@@ -56,19 +56,15 @@ const horarios: {
 	dias: string;
 	horas: string;
 	cerrado?: boolean;
-	placeholder?: true;
 }[] = t.footer.horarios.map((horario, i) => ({
 	...horario,
 	cerrado: i === t.footer.horarios.length - 1,
-	placeholder: true,
 }));
 
-/* Glifos de marca (Simple Icons, viewBox 24x24, `fill="currentColor"`). */
 const redes: {
 	nombre: string;
 	href: string;
 	icon: string;
-	placeholder?: true;
 }[] = [
 	{
 		nombre: "LinkedIn",
@@ -96,9 +92,6 @@ const legales: FooterValue[] = [
 	},
 ];
 
-/* Enlace de navegación del footer: punto dorado a la izquierda que aparece
-   cuando el scrollspy marca la sección. `data-[active]:hover:` es necesario
-   para ganarle a `hover:text-gtm-navy` sin depender del orden de variantes. */
 const navLinkClass =
 	"relative block pl-3 text-sm text-slate-500 transition-colors before:absolute before:top-1/2 before:left-0 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full before:bg-gtm-gold before:opacity-0 before:transition-opacity hover:text-gtm-navy data-[active]:text-gtm-gold-ink data-[active]:before:opacity-100 data-[active]:hover:text-gtm-gold-ink";
 ---
@@ -107,7 +100,7 @@ const navLinkClass =
 	class="relative z-10 border-t border-gtm-navy/10 bg-gtm-bone text-slate-600 backdrop-blur-sm"
 >
 	<div class="mx-auto max-w-6xl px-4 pt-16 pb-8 sm:px-6 lg:px-8">
-		<!-- Banda de marca -->
+
 		<div
 			class="flex flex-col gap-6 border-b border-gtm-navy/10 pb-10 sm:flex-row sm:items-center sm:justify-between sm:gap-10"
 		>
@@ -128,11 +121,10 @@ const navLinkClass =
 			</p>
 		</div>
 
-		<!-- Columnas del footer -->
 		<div
 			class="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8"
 		>
-			<!-- 1. Líneas de contacto + LinkedIn -->
+
 			<div class="flex flex-col gap-5 lg:col-span-3">
 				<h3
 					class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase"
@@ -195,7 +187,6 @@ const navLinkClass =
 				</div>
 			</div>
 
-			<!-- 2. Navegación -->
 			<div class="flex flex-col gap-5 lg:col-span-3">
 				<h3
 					class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase"
@@ -250,7 +241,6 @@ const navLinkClass =
 				</ul>
 			</div>
 
-			<!-- 3. Oficinas de Atención -->
 			<div class="flex flex-col gap-5 lg:col-span-3">
 				<h3
 					class="font-display text-xs font-semibold tracking-widest text-gtm-gold-ink uppercase"
@@ -302,7 +292,6 @@ const navLinkClass =
 				</div>
 			</div>
 
-			<!-- 4. General (derecha) -->
 			<div
 				class="flex flex-col gap-5 sm:col-span-2 lg:col-span-3 lg:col-start-10"
 			>
@@ -341,7 +330,6 @@ const navLinkClass =
 			</div>
 		</div>
 
-		<!-- Divider + copyright -->
 		<div
 			class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-gtm-navy/10 pt-8 sm:flex-row"
 		>

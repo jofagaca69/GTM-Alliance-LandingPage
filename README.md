@@ -92,3 +92,5 @@ Los formularios de **Contacto** y **PQRSD** se envían a [Web3Forms](https://web
 ## Despliegue
 
 El resultado de `pnpm build` es la carpeta `dist/` (HTML/CSS/JS estático). Se puede publicar en cualquier hosting estático (Vercel, Netlify, Cloudflare Pages, cPanel, etc.) subiendo el contenido de `dist/` o conectando el repositorio con el comando de build `pnpm build` y directorio de salida `dist`. El dominio configurado en `astro.config.mjs` (`site`) es `https://gtm-alliance.com`.
+
+`public/.htaccess` se copia a `dist/` en cada build y configura, en Hostinger (Apache/LiteSpeed): redirección `www` → dominio sin `www` (301), cabeceras de seguridad (HSTS, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`), caché larga para recursos con hash y la página 404. Al subir `dist/` manualmente, verifique que el archivo oculto `.htaccess` también se suba.

@@ -10,8 +10,6 @@ import { getLocale, useTranslations } from '../i18n/utils';
 const lang = getLocale(Astro.url);
 const t = useTranslations(lang);
 
-// Ruta del catálogo de Carga Seca (p. ej. '/docs/catalogo-carga-seca.pdf').
-// Mientras sea null el botón permanece oculto; al entregarse el PDF, súbalo a public/docs/ y asigne la ruta.
 const CATALOGO_PDF: string | null = null;
 
 const logoModules = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*.{jpg,JPG}', {
@@ -107,7 +105,6 @@ const heroSlides = [
 			</div>
 		</div>
 
-		<!-- Stepper: Así funciona GTM -->
 		<div class="carga-stepper mt-12 sm:mt-16">
 			<div class="flex items-center justify-between gap-4">
 				<h3 class="font-display text-2xl font-bold text-gtm-navy sm:text-3xl">{t.dryCargo.stepperTitle}</h3>
@@ -177,7 +174,6 @@ const heroSlides = [
 			</div>
 		</div>
 
-		<!-- Carrusel de marcas -->
 		<div class="carga-marcas mt-12 sm:mt-16">
 			<h3 class="font-display text-xl font-bold leading-tight text-gtm-navy sm:text-2xl">
 				{t.dryCargo.marcasTitle}

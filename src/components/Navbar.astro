@@ -9,9 +9,6 @@ const lang = getLocale(Astro.url);
 const t = useTranslations(lang);
 const navItems = getNavItems(lang);
 
-// Estado activo inicial (antes de que el scrollspy tome el control), para
-// que el HTML servido ya llegue correcto y no haya flash en la primera
-// pintura. Fuera del home no hay secciones que espiar.
 const initialActive = Astro.url.pathname === localizePath('/', lang) ? 'inicio' : '';
 ---
 
@@ -138,7 +135,6 @@ const initialActive = Astro.url.pathname === localizePath('/', lang) ? 'inicio' 
 		</div>
 	</div>
 
-	<!-- Mobile panel -->
 	<nav
 		id="nav-panel"
 		aria-label={t.nav.ariaMobile}
@@ -178,7 +174,6 @@ const initialActive = Astro.url.pathname === localizePath('/', lang) ? 'inicio' 
 </header>
 
 <script>
-	// Mobile menu toggle
 	const toggle = document.getElementById('nav-toggle');
 	const panel = document.getElementById('nav-panel');
 	const iconOpen = document.getElementById('icon-open');
@@ -204,7 +199,6 @@ const initialActive = Astro.url.pathname === localizePath('/', lang) ? 'inicio' 
 		link.addEventListener('click', () => setMobileOpen(false));
 	});
 
-	// Desktop dropdown
 	const dropdownBtn = document.getElementById('dropdown-btn');
 	const dropdownPanel = document.getElementById('dropdown-panel');
 	const dropdownChevron = document.getElementById('dropdown-chevron');

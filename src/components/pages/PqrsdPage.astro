@@ -240,9 +240,6 @@ const pqrsdSchema = [
 		const radicadoDisplay = document.getElementById('pqrsd-radicado-display');
 		const accessKey = CONTACT_FORM_CONFIG.accessKey.trim();
 
-		// Textos localizados, pasados desde el frontmatter vía `data-*` en
-		// `#pqrsd-form-status` (un `<script>` de navegador no puede resolver
-		// `Astro.currentLocale`).
 		const i18nText = {
 			default: statusEl?.dataset.statusDefault ?? '',
 			success: statusEl?.dataset.statusSuccess ?? '',

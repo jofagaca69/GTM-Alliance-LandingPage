@@ -5,7 +5,6 @@ import { ARCS, KEYFRAMES, MARKERS, ROUTES, focusAngles, toCobeOffset, unwrapChai
 import { createVehicleLayer, type VehicleLayer } from './globe-vehicles';
 import { debounce, getDpr } from './utils';
 
-/** Compartidos entre las options de cobe y la proyección de la capa de vehículos. */
 const ARC_HEIGHT = 0.28;
 const MARKER_ELEVATION = 0.01;
 
@@ -16,15 +15,11 @@ type GlobeState = {
 	offsetX: number;
 	offsetY: number;
 	opacity: number;
-	/** Rotación idle actual (rad), derivada de driftPhase/driftAmp. Nunca se tweenea directamente. */
 	drift: number;
-	/** Fase (rad) del vaivén idle. Se integra en el rAF, nunca se tweenea. */
 	driftPhase: number;
-	/** Amplitud (rad) del vaivén idle — sí se tweenea por ScrollTrigger. */
 	driftAmp: number;
 };
 
-/** Velocidad angular (rad/s) de la fase del vaivén idle. Periodo ≈ 25 s. */
 const DRIFT_OMEGA = 0.25;
 
 type GlobeFrame = Omit<GlobeState, 'drift' | 'driftPhase'>;
@@ -38,7 +33,6 @@ function hasWebGL(): boolean {
 	}
 }
 
-/** Arranca el globo de fondo. Devuelve un disposer para limpiar todo. */
 export function initGlobe(): () => void {
 	const layer = document.getElementById('globe-layer');
 	const canvasEl = document.getElementById('globe-canvas') as HTMLCanvasElement | null;
@@ -65,17 +59,11 @@ export function initGlobe(): () => void {
 	let cssH = layer.clientHeight;
 	let dpr = getDpr();
 
-	// mapSamples se hornea en createGlobe y no se puede cambiar con update().
 	const mapSamples = smallQuery.matches || lowPower ? 8000 : 16000;
 
-	// Resolver los keyframes a ángulos una sola vez, con camino corto.
 	const angles = KEYFRAMES.map((k) => focusAngles(k.focus.lat, k.focus.lon));
 	const phis = unwrapChain(angles.map((a) => a.phi));
 
-	/** Resuelve los keyframes a valores absolutos con el damping móvil ya
-	 * aplicado, para que cada tramo tenga un `from`/`to` explícito (nunca
-	 * dependiente del estado vivo) y el keyframe inicial use el mismo damping
-	 * que el resto. */
 	function resolveKeyframes(desktop: boolean): GlobeFrame[] {
 		const amp = desktop ? 1 : 0.35;
 		return KEYFRAMES.map((kf, i) => ({
@@ -155,7 +143,6 @@ export function initGlobe(): () => void {
 		}
 	}
 
-	// cobe v2 no trae loop de animación propio: lo manejamos aquí.
 	let raf = 0;
 	let last = performance.now();
 	function frame(now: number) {

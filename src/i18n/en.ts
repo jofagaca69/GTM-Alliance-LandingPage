@@ -1,10 +1,5 @@
 import type { Dictionary } from './es';
 
-/**
- * English dictionary. Typed against `Dictionary` (`typeof es`), so a missing
- * or extra key here is a type error caught by `pnpm astro check` — no
- * separate translation test needed.
- */
 const en: Dictionary = {
 	common: {
 		languageSwitcherLabel: 'Change language',
@@ -182,7 +177,7 @@ const en: Dictionary = {
 		mapaAlt: 'Map of GTM Alliance trade routes: Colombia connected with the United States, Mexico, Europe and Central America',
 		experienciaTitle: 'Developed ',
 		experienciaTitlePrefix: 'Markets',
-		
+
 		mercados: [
 			{ nombre: 'United States', descripcion: 'Partnerships and operations with clients across the country.' },
 			{ nombre: 'Mexico', descripcion: 'Strategic presence and solid business relationships.' },
