@@ -1,15 +1,7 @@
 import type { Arc, Marker } from 'cobe';
 
-/**
- * Datos puros (sin DOM) para el globo de fondo: lugares, marcadores, arcos
- * de rutas de importación/exportación, y la coreografía de keyframes que
- * las secciones de la página disparan al hacer scroll.
- */
-
 const DEG = Math.PI / 180;
 
-/** phi/theta que centran (lat, lon) frente a la cámara. Derivado de la
- * función interna de proyección de cobe (ver plan de implementación). */
 export function focusAngles(lat: number, lon: number) {
 	return {
 		phi: Math.PI - (lon * DEG - Math.PI / 2),
@@ -17,8 +9,6 @@ export function focusAngles(lat: number, lon: number) {
 	};
 }
 
-/** Desenrolla una cadena de ángulos phi para que cada paso tome el camino
- * más corto (nunca más de media vuelta), en vez de saltar módulo 2π. */
 export function unwrapChain(phis: number[]): number[] {
 	const TWO_PI = Math.PI * 2;
 	const out = [phis[0]];
@@ -31,8 +21,6 @@ export function unwrapChain(phis: number[]): number[] {
 	return out;
 }
 
-/** Convierte un desplazamiento deseado en píxeles CSS a las unidades que
- * espera `offset` de cobe, compensando el factor 1/2 · scale del shader. */
 export function toCobeOffset(pxX: number, pxY: number, scale: number): [number, number] {
 	return [(2 * pxX) / scale, (2 * pxY) / scale];
 }
@@ -47,9 +35,7 @@ const PLACES = {
 	panama: { lat: 8.9824, lon: -79.5199 },
 } as const;
 
-// gtm-gold #d4a537
 const GOLD: [number, number, number] = [0.831, 0.647, 0.216];
-// ruta de importación — contraste frío
 const SKY: [number, number, number] = [0.44, 0.72, 0.95];
 
 export const MARKERS: Marker[] = [
@@ -61,21 +47,15 @@ export const MARKERS: Marker[] = [
 	{ location: [PLACES.rotterdam.lat, PLACES.rotterdam.lon], size: 0.08, color: SKY },
 ];
 
-/** Modo de transporte de una ruta: determina qué icono la recorre. */
 export type RouteMode = 'air' | 'sea';
 
 export type Route = Arc & {
 	id: string;
 	mode: RouteMode;
-	/** Vueltas de ida (t: 0→1) por segundo. */
 	speed: number;
-	/** Vehículos simultáneos sobre la ruta, con fase escalonada. */
 	count: number;
 };
 
-/** Rutas del globo: geometría de arco + metadatos para la capa de
- * vehículos (aviones/barcos). `ARCS`/`MARKERS` (lo que consume cobe) se
- * derivan de aquí. */
 export const ROUTES: Route[] = [
 	{
 		id: 'cn-co',
@@ -118,15 +98,11 @@ export const ROUTES: Route[] = [
 export const ARCS: Arc[] = ROUTES.map(({ from, to, color }) => ({ from, to, color }));
 
 type GlobeKeyframe = {
-	/** Selector CSS de la sección cuya entrada dispara este keyframe.
-	 * `null` es el estado inicial (no lleva ScrollTrigger propio). */
 	trigger: string | null;
 	focus: { lat: number; lon: number };
-	/** Fracción del tamaño CSS del canvas. + = derecha / abajo. */
 	offsetX: number;
 	offsetY: number;
 	scale: number;
-	/** Amplitud (rad) del vaivén de rotación de reposo (autorrotación). 0 = quieto y centrado. */
 	driftAmp: number;
 	opacity: number;
 };

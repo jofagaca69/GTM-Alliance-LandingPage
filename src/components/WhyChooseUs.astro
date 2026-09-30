@@ -11,16 +11,12 @@ import { getLocale, useTranslations } from '../i18n/utils';
 const t = useTranslations(getLocale(Astro.url));
 
 const ICONS = {
-	// Insignia de certificación — copiado del sello "calidad" de FrozenLine.astro (huérfano, nunca renderizado ahí).
 	sello: '<circle cx="12" cy="8.5" r="5.25"/><path d="M9.25 8.5l1.85 1.85L14.75 6.5"/><path d="M9 13.25L7.25 19.5 12 17l4.75 2.5-1.75-6.25"/>',
 	escudo: '<path d="M12 3l7 3.2v5.3c0 4.9-3.1 8.4-7 9.5-3.9-1.1-7-4.6-7-9.5V6.2L12 3z"/><path d="M9 12l2 2 4-4.5"/>',
-	// Copo de nieve — copiado de "cadenaFrio" en FrozenLine.astro.
 	frio: '<path d="M12 2.5v19M4.5 7l15 10M4.5 17L19.5 7"/><path d="M12 6.25l-1.75 1.05M12 6.25l1.75 1.05M12 17.75l-1.75-1.05M12 17.75l1.75-1.05M7.1 9.3l.3-2.05M7.1 9.3l-1.9.8M16.9 9.3l-.3-2.05M16.9 9.3l1.9.8M7.1 14.7l.3 2.05M7.1 14.7l-1.9-.8M16.9 14.7l-.3 2.05M16.9 14.7l1.9-.8"/>',
 	normativo: '<rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 4V3.5A1.5 1.5 0 0110.5 2h3A1.5 1.5 0 0115 3.5V4"/><path d="M9 13l2 2 4-4.5"/>',
 	alianza: '<circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/>',
-	// Pin de alcance — copiado de "alcance" en FrozenLine.astro.
 	alcance: '<path d="M12 21s7-7.6 7-12.75A7 7 0 105 8.25C5 13.4 12 21 12 21z"/><circle cx="12" cy="8.25" r="2.5"/>',
-	// Piezas para armar consolidación de carga / marca / gestión de exportación.
 	consolidacion: '<rect x="3.5" y="8" width="17" height="12" rx="1.5"/><path d="M3.5 12.5h17M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/>',
 	marca: '<path d="M11 3H4.8A1.8 1.8 0 003 4.8V11c0 .48.19.93.53 1.27l8.4 8.4a1.8 1.8 0 002.54 0l6.2-6.2a1.8 1.8 0 000-2.54l-8.4-8.4A1.8 1.8 0 0011 3z"/><circle cx="7.5" cy="7.5" r="1.4"/>',
 	experiencia: '<path d="M12 21s7-7.6 7-12.75A7 7 0 105 8.25C5 13.4 12 21 12 21z"/><circle cx="12" cy="8.25" r="2.5"/>',
@@ -81,7 +77,6 @@ const chips = [
 			{t.whyChooseUs.intro}
 		</p>
 
-		<!-- Experiencia internacional + Certificaciones -->
 		<div class="mt-12 grid gap-6 sm:mt-16 lg:grid-cols-[1.35fr_1fr]">
 			<div class="elegir-panel relative overflow-hidden rounded-3xl bg-[#0a1220] lg:min-h-[22rem]">
 				<div class="relative aspect-[960/563] lg:absolute lg:inset-0 lg:aspect-auto lg:h-full">
@@ -135,7 +130,6 @@ const chips = [
 			</div>
 		</div>
 
-		<!-- Presentes en los eventos más importantes del sector -->
 		<div class="elegir-eventos mt-12 sm:mt-16">
 			<div class="flex items-center gap-4">
 				<span class="h-px flex-1 bg-gtm-navy/15" aria-hidden="true"></span>
@@ -187,10 +181,8 @@ const chips = [
 				</div>
 			</div>
 
-
 		</div>
 
-		<!-- ¿Por qué elegir GTM Alliance? -->
 		<div class="elegir-pilares mt-12 sm:mt-16">
 			<h3 class="font-display text-center text-2xl font-bold text-gtm-navy sm:text-3xl">
 				{t.whyChooseUs.pilaresTitlePrefix} <span class="text-gtm-gold-ink">{t.whyChooseUs.pilaresTitleHighlight}</span>{t.whyChooseUs.pilaresTitleSuffix}
@@ -212,7 +204,6 @@ const chips = [
 			</div>
 		</div>
 
-		<!-- Franja de confianza -->
 		<div class="elegir-chips mt-12 rounded-2xl bg-[linear-gradient(160deg,#1c2f4a_0%,#0a1220_100%)] px-6 py-6 sm:mt-16 sm:px-8">
 			<ul class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
 				{

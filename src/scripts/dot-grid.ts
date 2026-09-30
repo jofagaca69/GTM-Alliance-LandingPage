@@ -9,10 +9,8 @@ const MAX_ALPHA = 0.75;
 const INFLUENCE_RADIUS = 170;
 const BASE_COLOR = '28, 47, 74';
 const ACCENT_COLOR = '138, 106, 18';
-/** Umbral (px) bajo el cual el puntero suavizado se considera "asentado" y se detiene el rAF. */
 const SETTLE_EPSILON = 0.1;
 
-/** Arranca el dot grid interactivo de fondo. Devuelve un disposer para limpiar todo. */
 export function initDotGrid(): () => void {
 	const canvasEl = document.getElementById('dot-grid-canvas') as HTMLCanvasElement | null;
 	if (!canvasEl) return () => {};
@@ -21,8 +19,6 @@ export function initDotGrid(): () => void {
 	if (!canvasCtx) return () => {};
 	const ctx = canvasCtx;
 
-	// Buffer fuera de pantalla: la retícula tenue completa, pintada una sola vez por resize.
-	// Por frame solo se repinta (drawImage) más el puñado de puntos bajo el spotlight.
 	const baseCanvas = document.createElement('canvas');
 	const baseCanvasCtx = baseCanvas.getContext('2d');
 	if (!baseCanvasCtx) return () => {};
@@ -75,7 +71,6 @@ export function initDotGrid(): () => void {
 
 		if (!pointer.active) return;
 
-		// Solo se recorren las celdas dentro del radio de influencia, no la retícula entera.
 		const colStart = Math.max(0, Math.floor((pointer.x - INFLUENCE_RADIUS) / cell));
 		const colEnd = Math.ceil((pointer.x + INFLUENCE_RADIUS) / cell);
 		const rowStart = Math.max(0, Math.floor((pointer.y - INFLUENCE_RADIUS) / cell));
@@ -131,8 +126,6 @@ export function initDotGrid(): () => void {
 		raf = requestAnimationFrame(frame);
 	}
 
-	// Solo hay algo que animar en dispositivos con puntero fino (mouse/trackpad);
-	// en táctil la retícula queda estática y no se monta ni el loop ni sus listeners.
 	function wake() {
 		if (raf || !fineQuery.matches) return;
 		raf = requestAnimationFrame(frame);

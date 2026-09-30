@@ -1,11 +1,3 @@
-/**
- * Diccionario en español — fuente de la forma para el resto de idiomas.
- * `en.ts` se tipa contra `Dictionary` (`typeof es`), así que a cualquier clave
- * que falte o sobre en inglés `pnpm astro check` la reporta como error de tipos.
- *
- * Agrupado por componente, en el mismo orden en que aparecen en `index.astro`.
- */
-
 const es = {
 	common: {
 		languageSwitcherLabel: 'Cambiar idioma',
@@ -187,7 +179,7 @@ const es = {
 			'Mapa de rutas comerciales de GTM Alliance: Colombia conectada con Estados Unidos, México, Europa y Centroamérica',
 		experienciaTitle: 'desarrollados',
 		experienciaTitlePrefix: 'Mercados',
-		
+
 		mercados: [
 			{ nombre: 'Estados Unidos', descripcion: 'Alianzas y operaciones con clientes en todo el país.' },
 			{ nombre: 'México', descripcion: 'Presencia estratégica y relaciones comerciales sólidas.' },

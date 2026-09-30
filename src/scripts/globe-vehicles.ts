@@ -1,20 +1,8 @@
 import type { Route } from './globe-routes';
 import { arcPoint, project, type Camera } from './globe-project';
 
-/**
- * Capa DOM que dibuja aviones y barcos recorriendo los `arcs` del globo.
- * cobe no soporta iconos (sus `arcs` son solo geometría WebGL), así que esta
- * capa reproyecta la misma curva con `globe-project.ts` y posiciona `<span>`
- * absolutos encima del canvas, sincronizados frame a frame con `globe.ts`.
- */
-
-// Avión de papel apuntando a la derecha: una sola forma sólida y gruesa para
-// que sobreviva el blur/drop-shadow a ~20px sin perder la silueta.
 const PLANE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12 2 4l7 8-7 8 20-8z"/></svg>';
 
-// Buque de carga apuntando a la derecha: silueta baja y ancha (a diferencia
-// del avión, alto y en punta) para que la diferencia sobreviva el blur.
-// Casco + un único bloque de puente (contenedores finos se pierden por completo).
 const SHIP_SVG =
 	'<svg viewBox="0 0 24 24" fill="currentColor">' +
 	'<path d="M1 15.5h18l-2.6 4.8a2 2 0 01-1.8 1.1H5.4a2 2 0 01-1.8-1.1L1 15.5z"/>' +
@@ -22,21 +10,19 @@ const SHIP_SVG =
 	'</svg>';
 
 const EDGE_FADE = 0.08;
-const TRIP_PERIOD = 2; // ida (t: 0→1) + vuelta (t: 1→0)
+const TRIP_PERIOD = 2;
 const HEADING_EPS = 0.008;
 
 function clamp(v: number, min: number, max: number): number {
 	return v < min ? min : v > max ? max : v;
 }
 
-/** Fracción de opacidad para desvanecer suavemente al llegar/salir de cada extremo de la ruta. */
 function edgeFade(t: number): number {
 	if (t < EDGE_FADE) return t / EDGE_FADE;
 	if (t > 1 - EDGE_FADE) return (1 - t) / EDGE_FADE;
 	return 1;
 }
 
-/** Posición cíclica de ida y vuelta sobre el arco (t: 0↔1) y el sentido actual. */
 function cycle(speed: number, phase: number, clock: number): { t: number; dir: 1 | -1 } {
 	let raw = (clock * speed + phase * TRIP_PERIOD) % TRIP_PERIOD;
 	if (raw < 0) raw += TRIP_PERIOD;
@@ -83,7 +69,6 @@ export function createVehicleLayer(
 				'will-change:transform,opacity;filter:drop-shadow(0 0 1px rgba(250,248,243,.95));';
 			el.innerHTML = route.mode === 'air' ? PLANE_SVG : SHIP_SVG;
 			frag.appendChild(el);
-			// Fase escalonada: reparte los vehículos de una misma ruta a lo largo del ciclo.
 			vehicles.push({ route, phase: (i + 0.5) / route.count, el });
 		}
 	}

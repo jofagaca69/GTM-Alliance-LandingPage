@@ -11,7 +11,6 @@ import { getLocale, useTranslations } from '../i18n/utils';
 
 const t = useTranslations(getLocale(Astro.url));
 
-// Aliados estratégicos de GTM Alliance.
 const aliados = [
 	{ src: coldfood, alt: t.clients.alts.coldfood },
 	{ src: cls, alt: t.clients.alts.cls },
@@ -22,15 +21,6 @@ const aliados = [
 	{ src: one, alt: t.clients.alts.one },
 ];
 
-// Pista del marquee: 4 copias de `aliados` en un único array plano, para que
-// el loop GSAP (xPercent: -50) empalme exacto. Con un `flex` de N ítems solo
-// hay N-1 huecos de `gap`, así que trasladar el 50% del ancho queda medio
-// hueco corto del punto de empalme real (imperceptible con logos idénticos,
-// visible ahora que son distintos) — por eso el espaciado va como margen por
-// ítem (`mr-*` más abajo) en vez de `gap` en el contenedor.
-// Solo la primera copia (índices 0..aliados.length) es contenido accesible;
-// el resto son repeticiones puramente visuales para cubrir el ancho del
-// contenedor (max-w-4xl) y decorativas para el lector de pantalla.
 const pista = [...aliados, ...aliados, ...aliados, ...aliados];
 ---
 

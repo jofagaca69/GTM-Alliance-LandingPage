@@ -1,23 +1,9 @@
-/**
- * Reimplementación (sin DOM) de la matemática interna de cobe v2: convertir
- * lat/lon a un punto en la esfera, proyectar ese punto a píxeles de pantalla
- * con la misma cámara que usa el shader, y ubicar puntos sobre la curva de
- * un arco. Permite que la capa DOM de vehículos (aviones/barcos) seguido en
- * `globe-vehicles.ts` quede pixel-exacta con los arcos que dibuja cobe.
- *
- * Portado de `node_modules/cobe/dist/index.esm.js` (funciones internas `U`,
- * `O` y la curva del vertex shader de arcos `Fe`).
- */
-
 const DEG = Math.PI / 180;
 
-/** Radio base de la esfera en cobe (constante interna, no configurable). */
 export const GLOBE_RADIUS = 0.8;
 
 export type Vec3 = [number, number, number];
 
-/** Convierte lat/lon (grados) al punto unitario sobre la esfera que usa
- * cobe internamente. Idéntico a `U()` en el bundle. */
 export function latLonToVec3([lat, lon]: [number, number]): Vec3 {
 	const r = lat * DEG;
 	const a = lon * DEG - Math.PI;
@@ -29,8 +15,6 @@ export type Camera = {
 	phi: number;
 	theta: number;
 	scale: number;
-	/** Offset en las mismas unidades crudas que recibe `offset` de cobe
-	 * (ver `toCobeOffset` en globe-routes.ts), no en píxeles. */
 	offsetX: number;
 	offsetY: number;
 	cssW: number;
@@ -40,16 +24,11 @@ export type Camera = {
 export type Projected = {
 	x: number;
 	y: number;
-	/** Profundidad tras rotar por phi/theta; >= 0 significa "de cara". */
 	z: number;
-	/** distancia² al centro de pantalla, en el mismo espacio que el corte
-	 * de silueta de cobe (visible si >= 0.64 o si z >= 0). */
 	edgeDistSq: number;
 	visible: boolean;
 };
 
-/** Proyecta un punto de la esfera a píxeles CSS del canvas, replicando la
- * cámara del shader (función `O()` en el bundle). */
 export function project(v: Vec3, cam: Camera): Projected {
 	const { phi, theta, scale, offsetX, offsetY, cssW, cssH } = cam;
 	const cosPhi = Math.cos(phi);
@@ -71,9 +50,6 @@ export function project(v: Vec3, cam: Camera): Projected {
 	return { x, y, z, edgeDistSq, visible };
 }
 
-/** Punto sobre la Bézier cuadrática que cobe usa para dibujar un arco entre
- * `from` y `to` (curva del vertex shader de arcos, función `Fe` en el
- * bundle). `t` va de 0 (from) a 1 (to). */
 export function arcPoint(
 	from: [number, number],
 	to: [number, number],

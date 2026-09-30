@@ -225,9 +225,6 @@ const contactos = [
 	const acceptButton = document.getElementById('contact-accept-policy');
 	const accessKey = (form?.querySelector('[name="access_key"]') as HTMLInputElement | null)?.value.trim() ?? '';
 
-	// Textos localizados, pasados desde el frontmatter vía `data-*` en
-	// `#contact-form-status` (un `<script>` de navegador no puede resolver
-	// `Astro.currentLocale`).
 	const i18nText = {
 		default: statusEl?.dataset.statusDefault ?? '',
 		sending: statusEl?.dataset.statusSending ?? '',

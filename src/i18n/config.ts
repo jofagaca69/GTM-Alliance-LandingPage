@@ -1,10 +1,3 @@
-/**
- * Configuración de idiomas del sitio. Coherente con `i18n` en `astro.config.mjs`
- * (`defaultLocale: 'es'`, `routing.prefixDefaultLocale: false`): el español no
- * lleva prefijo de ruta (`/`, `/pqrsd/`) y el inglés siempre lo lleva (`/en/`,
- * `/en/pqrsd/`).
- */
-
 export const LOCALES = ['es', 'en'] as const;
 
 export type Locale = (typeof LOCALES)[number];
@@ -12,17 +5,11 @@ export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = 'es';
 
 type LocaleMeta = {
-	/** Etiqueta corta para el switch de idioma (ES / EN). */
 	short: string;
-	/** Nombre completo para `aria-label`/`title`. */
 	label: string;
-	/** Valor de `<html lang="...">`. */
 	htmlLang: string;
-	/** Valor de `og:locale`. */
 	ogLocale: string;
-	/** Código de idioma para `hreflang` y `inLanguage` en JSON-LD. */
 	hreflang: string;
-	/** Locale con región para `inLanguage` en JSON-LD (coherente con `sitemap()` en astro.config.mjs). */
 	schemaLanguage: string;
 };
 

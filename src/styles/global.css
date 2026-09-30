@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Plus Jakarta Sans — cuerpo de texto (variable, wght 200–800) */
 @font-face {
 	font-family: "Plus Jakarta Sans";
 	src:
@@ -11,7 +10,6 @@
 	font-display: swap;
 }
 
-/* Zodiak — títulos, énfasis, labels y wordmark (variable, wght 100–900) */
 @font-face {
 	font-family: "Zodiak";
 	src:
@@ -25,14 +23,10 @@
 @theme {
 	--color-gtm-navy: #1c2f4a;
 	--color-gtm-gold: #d4a537;
-	/* Dorado accesible para TEXTO sobre fondo claro: #d4a537 sobre #faf8f3 da 2.2:1 (falla AA).
-	   #8a6a12 da 4.7:1. --color-gtm-gold se mantiene intacto para usos como fondo (botones CTA). */
 	--color-gtm-gold-ink: #8a6a12;
 	--color-gtm-bone: #faf8f3;
 	--color-gtm-surface: #ffffff;
 	--color-gtm-deep: #0a1220;
-	/* Superficie glaciar exclusiva de la línea de Congelados: mismo azul de marca
-	   (--color-gtm-navy) sobre un tinte de fondo más frío que el blanco/hueso del resto del sitio. */
 	--color-gtm-ice: #eef4f8;
 
 	--font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
@@ -49,7 +43,6 @@ html {
 	color-scheme: light;
 }
 
-/* Fallback cuando no hay WebGL disponible: esfera estática en CSS */
 .globe-fallback {
 	position: relative;
 }
