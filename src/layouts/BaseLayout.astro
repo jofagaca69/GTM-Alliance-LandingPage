@@ -162,7 +162,15 @@ const servicios: {
 	},
 ];
 
-const serviceNodes = servicios.map((servicio) => ({
+// Las imágenes de servicio solo se citan en el JSON-LD (no se muestran aquí),
+// así que se optimizan a WebP en vez de publicar los JPG originales.
+const serviceImages = await Promise.all(
+	servicios.map((servicio) =>
+		getImage({ src: servicio.image, format: 'webp', width: Math.min(1200, servicio.image.width), quality: 80 }),
+	),
+);
+
+const serviceNodes = servicios.map((servicio, i) => ({
 	'@type': 'Service',
 	'@id': `${siteBase.href}#servicio-${servicio.slug}`,
 	name: servicio.name,
@@ -173,9 +181,9 @@ const serviceNodes = servicios.map((servicio) => ({
 	url: `${alternates[lang]}${servicio.anchor ?? '#servicios'}`,
 	image: {
 		'@type': 'ImageObject',
-		url: new URL(servicio.image.src, siteBase).href,
-		width: servicio.image.width,
-		height: servicio.image.height,
+		url: new URL(serviceImages[i].src, siteBase).href,
+		width: serviceImages[i].attributes.width,
+		height: serviceImages[i].attributes.height,
 	},
 	inLanguage: localeMeta.schemaLanguage,
 }));

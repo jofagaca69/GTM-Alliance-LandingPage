@@ -10,7 +10,9 @@ import { getLocale, useTranslations } from '../i18n/utils';
 const lang = getLocale(Astro.url);
 const t = useTranslations(lang);
 
-const CATALOGO_PDF = '/docs/catalogo-carga-seca.pdf';
+// Ruta del catálogo de Carga Seca (p. ej. '/docs/catalogo-carga-seca.pdf').
+// Mientras sea null el botón permanece oculto; al entregarse el PDF, súbalo a public/docs/ y asigne la ruta.
+const CATALOGO_PDF: string | null = null;
 
 const logoModules = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*.{jpg,JPG}', {
 	eager: true,
@@ -68,14 +70,16 @@ const heroSlides = [
 						>
 							{t.dryCargo.cta}
 						</a>
-						<a
-							href={CATALOGO_PDF}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="inline-block shrink-0 rounded-full bg-gtm-gold px-6 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gtm-navy"
-						>
-							{t.dryCargo.portafolioVerMas}
-						</a>
+						{CATALOGO_PDF && (
+							<a
+								href={CATALOGO_PDF}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="inline-block shrink-0 rounded-full bg-gtm-gold px-6 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gtm-navy"
+							>
+								{t.dryCargo.portafolioVerMas}
+							</a>
+						)}
 					</div>
 				</div>
 

@@ -14,7 +14,7 @@ export const TELEFONO = {
 };
 
 export const TELEFONO2 = {
-	label: '+57  301 254 3223',
+	label: '+57 301 254 3223',
 	tel: 'tel:+573012543223',
 	numero: '573012543223',
 };
