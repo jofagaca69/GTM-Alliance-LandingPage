@@ -4,12 +4,23 @@
  * (no se envía en el POST). Ver https://web3forms.com/
  */
 export const CONTACT_FORM_CONFIG = {
-	accessKey: 'f428109f-17d9-4806-bf12-29eee74f244a',
+	accessKey: 'e630ba10-c30e-4bb4-85fc-5d64c7825f6a',
 	fromName: 'GTM Alliance',
 	contact: {
 		subject: 'Nuevo mensaje de contacto — gtm-alliance.com',
 	},
 	pqrsd: {
 		subject: 'Nueva solicitud PQRSD — gtm-alliance.com',
+		radicadoPrefix: 'PQRSD',
 	},
 };
+
+/** Consecutivo de radicado para PQRSD (generado en el cliente al enviar). */
+export function generateNumeroRadicado(date = new Date()): string {
+	const y = date.getFullYear();
+	const m = String(date.getMonth() + 1).padStart(2, '0');
+	const d = String(date.getDate()).padStart(2, '0');
+	const suffix = Math.random().toString(36).slice(2, 6).toUpperCase();
+
+	return `${CONTACT_FORM_CONFIG.pqrsd.radicadoPrefix}-${y}${m}${d}-${suffix}`;
+}

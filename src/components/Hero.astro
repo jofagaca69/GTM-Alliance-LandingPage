@@ -1,4 +1,7 @@
 ---
+import { getLocale, useTranslations } from '../i18n/utils';
+
+const t = useTranslations(getLocale(Astro.url));
 ---
 
 <section id="inicio" class="relative flex min-h-dvh items-center">
@@ -14,10 +17,10 @@
 			<h1
 				class="hero-title font-display mt-6 text-4xl leading-tight font-bold text-gtm-navy sm:text-5xl lg:text-6xl"
 			>
-				Conectamos tu carga colombiana <span class="text-gtm-gold-ink">con el mundo</span>
+				{t.hero.titleLead} <span class="text-gtm-gold-ink">{t.hero.titleHighlight}</span>
 			</h1>
 			<p class="hero-subtitle mt-6 max-w-2xl text-base text-slate-700 sm:text-lg lg:mx-0 mx-auto">
-				Ayudamos a productores, industrias y empresas a expandirse hacia mercados internacionales mediante soluciones de comercio exterior, exportación, logística internacional, cadena de frío y carga seca, garantizando trazabilidad y cumplimiento en cada operación.
+				{t.hero.subtitle}
 			</p>
 			<div
 				class="hero-cta mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start"
@@ -26,13 +29,13 @@
 					href="#contacto"
 					class="rounded-full bg-gtm-gold px-8 py-3 text-sm font-semibold text-gtm-navy shadow-lg shadow-gtm-gold/30 transition-transform hover:scale-105"
 				>
-					Solicitar Asesoría
+					{t.hero.ctaPrimary}
 				</a>
 				<a
 					href="#servicios"
 					class="rounded-full border border-gtm-navy/30 px-8 py-3 text-sm font-semibold text-gtm-navy transition-colors hover:bg-gtm-navy/5"
 				>
-					Explorar Soluciones
+					{t.hero.ctaSecondary}
 				</a>
 			</div>
 		</div>

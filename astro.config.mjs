@@ -9,9 +9,27 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://gtm-alliance.com',
 
+  i18n: {
+    defaultLocale: 'es',
+    locales: ['es', 'en'],
+    routing: {
+      prefixDefaultLocale: false
+    }
+  },
+
   vite: {
     plugins: [tailwindcss()]
   },
 
-  integrations: [sitemap()]
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: 'es',
+        locales: {
+          es: 'es-CO',
+          en: 'en-US'
+        }
+      }
+    })
+  ]
 });

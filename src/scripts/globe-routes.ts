@@ -187,6 +187,15 @@ export const KEYFRAMES: GlobeKeyframe[] = [
 		opacity: 0.72,
 	},
 	{
+		trigger: '#por-que-elegirnos',
+		focus: PLACES.miami,
+		offsetX: 0.22,
+		offsetY: 0,
+		scale: 1.25,
+		driftAmp: 0.04,
+		opacity: 0.7,
+	},
+	{
 		trigger: '#contacto',
 		focus: PLACES.bogota,
 		offsetX: 0.2,

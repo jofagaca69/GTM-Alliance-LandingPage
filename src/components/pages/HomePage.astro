@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../Hero.astro';
+import ClientsCarousel from '../ClientsCarousel.astro';
+import Services from '../Services.astro';
+import FrozenLine from '../FrozenLine.astro';
+import DryCargoLine from '../DryCargoLine.astro';
+import WhyChooseUs from '../WhyChooseUs.astro';
+import Contact from '../Contact.astro';
+import { getLocale, useTranslations } from '../../i18n/utils';
+
+const t = useTranslations(getLocale(Astro.url));
+---
+
+<BaseLayout title={t.seo.home.title} description={t.seo.home.description}>
+	<Hero />
+	<ClientsCarousel />
+
+	<FrozenLine />
+	<DryCargoLine />
+	<Services />
+	<WhyChooseUs />
+	<Contact />
+</BaseLayout>
